@@ -1,0 +1,12 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: ec-mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ec_db
+      MYSQL_ROOT_PASSWORD: qwer1234  # 본인이 사용할 비번으로 수정
+    volumes:
+      - ./mysql_data:/var/lib/mysql

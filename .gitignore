@@ -1,0 +1,14 @@
+### OS System Files ###
+.DS_Store
+Thumbs.db
+._*
+
+### IDE Settings ###
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+### Logs ###
+*.log
