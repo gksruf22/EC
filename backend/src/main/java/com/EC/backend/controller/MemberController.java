@@ -1,6 +1,7 @@
 package com.EC.backend.controller;
 
 import com.EC.backend.domain.Member;
+import com.EC.backend.dto.LoginRequestDto;
 import com.EC.backend.dto.MemberSignupRequest;
 import com.EC.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,12 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<Long> signup(@RequestBody MemberSignupRequest dto) {
         return ResponseEntity.ok(memberService.signup(dto));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto dto) {
+        String token = memberService.login(dto);
+        return ResponseEntity.ok(token);
     }
 
     @GetMapping

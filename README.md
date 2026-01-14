@@ -67,3 +67,22 @@ docker-compose up -d
 주요 설정 파일은 `backend/src/main/resources` 위치에 있습니다.
 - `application.properties`: 공통 설정 (Active Profile 설정)
 - `application-dev.properties`: 개발 환경 설정 (DB 연결 정보 등)
+
+## API 문서 (API Documentation)
+서버 실행 후 Swagger UI를 통해 API 문서를 확인할 수 있습니다.
+- **URL**: `http://localhost:8080/swagger-ui/index.html`
+
+## 에러 처리 (Error Handling)
+모든 에러 응답은 다음과 같은 통일된 JSON 포맷으로 반환됩니다:
+```json
+{
+  "status": 400,
+  "message": "에러 메시지",
+  "timestamp": "2024-01-01T12:00:00"
+}
+```
+
+## 환경 변수 설정 (Environment Variables)
+보안을 위해 다음 값들은 환경 변수나 별도의 설정 파일로 관리해야 합니다.
+- `jwt.secret`: JWT 서명을 위한 비밀키
+- `app.cors.allowed-origins`: CORS 허용 도메인 (예: `http://localhost:3000`)

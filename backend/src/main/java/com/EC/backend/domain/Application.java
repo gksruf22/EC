@@ -15,8 +15,8 @@ public class Application extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", unique = true)
     private Member member;
 
     @Column(columnDefinition = "TEXT")
@@ -24,5 +24,10 @@ public class Application extends BaseTimeEntity {
 
     @Column(columnDefinition = "TEXT")
     private String experience;
+
+    // 합격 여부 상태
+    @Enumerated(EnumType.STRING)
+    @Builder.Default // Builder 사용 시 기본값을 유지하기 위해 필요
+    private ApplicationStatus status = ApplicationStatus.PENDING;
 }
 
