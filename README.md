@@ -10,6 +10,12 @@
 - **ORM**: Spring Data JPA
 - **Security**: Spring Security, OAuth2 Client
 
+### Frontend
+- **Language**: TypeScript
+- **Framework**: React
+- **Build Tool**: Vite
+- **Libraries**: React Router Dom, Axios, React Icons, ESLint
+
 ### Database & Environment
 - **Docker**: 데이터베이스 환경 구성을 위해 Docker Compose 사용
 
@@ -30,7 +36,7 @@ EC
 │   │       └── application*.properties # 설정 파일
 │   ├── build.gradle
 │   └── docker-compose.yml
-├── frontend/           # (예정) 프론트엔드 디렉토리
+├── frontend/           # React + TypeScript 프론트엔드 소스 코드
 └── .gitignore          # Git 제외 파일 설정
 ```
 
@@ -57,6 +63,16 @@ docker-compose up -d
 ./gradlew bootRun
 ```
 * 기본적으로 `dev` 프로필이 활성화되어 있습니다 (`application.properties` 참조).
+
+### 4. 프론트엔드 실행 (Run Frontend)
+`frontend` 디렉토리로 이동하여 의존성을 설치하고 개발 서버를 실행
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+* 기본적으로 `5173` 포트에서 실행됩니다 (`http://localhost:5173`).
 
 ## 주요 기능 (Features)
 - **회원 관리**: 회원 가입 및 정보 관리
