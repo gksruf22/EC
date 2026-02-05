@@ -1,14 +1,15 @@
 .header {
-  display: flex;
-  /* 1fr(로고) : auto(메뉴 내용만큼) : 1fr(빈공간/버튼) 비율로 나눔 */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: grid;
   grid-template-columns: 1fr auto 1fr;
-  justify-content: space-between;
-  /* 로고 - 메뉴 - 버튼 사이 간격 균등 분배 */
   align-items: center;
+
+  height: 70px;
   padding: 0 40px;
   background-color: #ffffff;
-  z-index: 1000;
-  /* 헤더 상단 고정 */
 }
 
 .header ul {
@@ -30,14 +31,13 @@
 .logo {
   cursor: pointer;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
   gap: 70px;
-  /* 항목 사이의 간격 */
   margin: 0;
   padding: 0;
   align-items: center;
@@ -53,7 +53,6 @@
 
 .nav-links a:hover {
   color: #d9d9d9;
-  /* 마우스 올렸을 때 색상 변경 */
 }
 
 .header-right {

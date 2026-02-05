@@ -1,0 +1,92 @@
+/* 공통 컨테이너 */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 1. Hero 섹션 */
+.about-hero {
+    background: linear-gradient(0deg, rgba(90, 160, 90) 0%, rgb(180, 210, 160) 100%);
+    padding: 120px 0;
+    /* 헤더 높이를 고려한 상단 여백 */
+    text-align: center;
+}
+
+.about-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.about-hero h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.about-hero p {
+    font-size: 1rem;
+    color: #ffffff;
+    margin-top: 20px;
+}
+
+/* 2. 핵심 가치 섹션 */
+.about-values {
+    padding: 80px 0;
+    background-color: #ffffff;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.underline {
+    width: 50px;
+    height: 4px;
+    background-color: rgba(90, 160, 90);
+    margin: 10px auto;
+}
+
+.value-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.card {
+    padding: 40px 20px;
+    background: #fcfcfc;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+/* 3. 연혁 섹션 */
+.about-history {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.timeline {
+    margin-top: 40px;
+}
+
+.time-item {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}

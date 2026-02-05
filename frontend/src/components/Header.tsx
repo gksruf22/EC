@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Header.css';
 import logo from '../assets/logo.png';
 
@@ -5,22 +6,22 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <a href="/">
+        <Link to="/">
           <img src={logo} alt="Service Logo" className="logo-img" />
-        </a>
+        </Link>
       </div>
       <nav>
         <ul className="nav-links">
-          <li><a href="/">홈</a></li>
-          <li><a href="/about">소개</a></li>
-          <li><a href="/about">구성원</a></li>
-          <li><a href="/about">공지사항</a></li>
+          <li><Link to="/">홈</Link></li>
+          <li><Link to="/about">소개</Link></li>
+          <li><Link to="/members">구성원</Link></li>
+          <li><Link to="/notice">공지사항</Link></li>
         </ul>
       </nav>
       <div className="header-right">
-        <a href="/signup" className="signup">회원가입</a>
-        <a> | </a>
-        <a href="/login" className="login">로그인</a>
+        <Link to="/signup" className="signup">회원가입</Link>
+        <span className="separator">|</span>
+        <Link to="/login" className="login">로그인</Link>
       </div>
     </header>
   );
