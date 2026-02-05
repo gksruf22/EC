@@ -19,6 +19,7 @@ const Header = () => {
       </nav>
       <div className="header-right">
         <a href="/signup" className="signup">회원가입</a>
+        <a> | </a>
         <a href="/login" className="login">로그인</a>
       </div>
     </header>
