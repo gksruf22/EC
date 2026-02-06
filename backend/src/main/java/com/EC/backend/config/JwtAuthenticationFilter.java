@@ -5,46 +5,51 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserDetailsService userDetailsService;
+    private final StringRedisTemplate redisTemplate; // Redis 추가
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        // 1. 헤더에서 Authorization 값을 가져옴
-        String authHeader = request.getHeader("Authorization");
+        // 1. Request Header에서 JWT 토큰 추출
+        String token = resolveToken(request);
 
-        // 2. Bearer 토큰인지 확인
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            String email = jwtTokenProvider.getEmailFromToken(token); // 토큰에서 이메일 추출
+        // 2. 토큰 유효성 검사
+        if (token != null && jwtTokenProvider.validateToken(token)) {
 
-            // 3. 인증 정보가 없고 이메일이 있다면 시큐리티 바구니에 정보 담기
-            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            // 3. Redis에 해당 토큰이 블랙리스트(로그아웃)로 등록되어 있는지 확인
+            String isLogout = redisTemplate.opsForValue().get("BLACKLIST:" + token);
 
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            // 4. 블랙리스트에 없다면 정상적으로 인증 객체를 SecurityContext에 저장
+            if (ObjectUtils.isEmpty(isLogout)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+
+        // 5. 다음 필터로 진행 (반드시 실행되어야 함)
         filterChain.doFilter(request, response);
+    }
+
+    // Header에서 토큰을 꺼내오는 헬퍼 메서드
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }

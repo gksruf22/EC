@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
+import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.beans.Transient;
 
@@ -64,5 +66,18 @@ public class MemberService {
         }
 
         return jwtTokenProvider.createToken(member.getEmail());
+    }
+
+    @Transactional
+    public void logout(String token) {
+        long expiration = jwtTokenProvider.getExpiration(token);
+        long now = new Date().getTime();
+        long remainTime = expiration - now;
+
+        redisTemplate.opsForValue().set(
+                "BLACKLIST: " + token,
+                "logout",
+                Duration.ofMillis(remainTime)
+        );
     }
 }
