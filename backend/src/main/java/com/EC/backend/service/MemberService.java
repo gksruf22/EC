@@ -6,19 +6,24 @@ import com.EC.backend.dto.LoginRequestDto;
 import com.EC.backend.repository.MemberRepository;
 import com.EC.backend.dto.MemberSignupRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
+import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.beans.Transient;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder; // 비밀번호 암호화. 나중에 Security 설정 시 빈으로 등록해야 함
     private final JwtTokenProvider jwtTokenProvider;
+    private final StringRedisTemplate redisTemplate;
 
     @Transactional
     public Long signup(MemberSignupRequest dto) {
@@ -46,6 +51,11 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    }
+
     @Transactional
     public String login(LoginRequestDto dto) {
         Member member = memberRepository.findByEmail(dto.getEmail())
@@ -55,6 +65,19 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
 
-        return jwtTokenProvider.createToken(member.getEmail());
+        return jwtTokenProvider.createToken(member.getEmail(), member.getRole().name());
+    }
+
+    @Transactional
+    public void logout(String token) {
+        long expiration = jwtTokenProvider.getExpiration(token);
+        long now = new Date().getTime();
+        long remainTime = expiration - now;
+
+        redisTemplate.opsForValue().set(
+                "BLACKLIST: " + token,
+                "logout",
+                Duration.ofMillis(remainTime)
+        );
     }
 }

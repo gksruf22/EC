@@ -83,3 +83,15 @@
 .login:hover {
   color: rgba(90, 160, 90);
 }
+
+.user-name {
+  text-decoration: none;
+  color: #4a90e2;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.user-name:hover {
+  color: rgba(90, 160, 90);
+}

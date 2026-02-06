@@ -1,0 +1,15 @@
+.apply-container {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.apply-container h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.apply-container p {
+  font-size: 16px;
+  color: #666;
+}
