@@ -9,7 +9,6 @@
 .about-hero {
     background: linear-gradient(0deg, rgba(90, 160, 90) 0%, rgb(180, 210, 160) 100%);
     padding: 120px 0;
-    /* 헤더 높이를 고려한 상단 여백 */
     text-align: center;
 }
 
@@ -73,6 +72,18 @@
     font-size: 1rem;
     line-height: 1.6;
     margin-top: 15px;
+}
+
+.icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.value-icon {
+    font-size: 2rem;
+    color: rgba(90, 160, 90);
 }
 
 /* 3. 연혁 섹션 */
