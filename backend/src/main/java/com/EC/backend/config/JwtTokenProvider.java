@@ -32,14 +32,16 @@ public class JwtTokenProvider {
     }
 
     // 토큰 생성
-    public String createToken(String email) {
+    public String createToken(String email, String role) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
+        Date validity = new Date(now.getTime() + EXPIRATION_TIME);
+
 
         return Jwts.builder()
                 .setSubject(email)
+                .claim("auth", role)
                 .setIssuedAt(now)
-                .setExpiration(expiryDate)
+                .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

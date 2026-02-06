@@ -65,7 +65,7 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
 
-        return jwtTokenProvider.createToken(member.getEmail());
+        return jwtTokenProvider.createToken(member.getEmail(), member.getRole().name());
     }
 
     @Transactional

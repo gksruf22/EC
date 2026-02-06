@@ -14,7 +14,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (token: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -54,9 +54,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+  const logout = async () => {
+    try {
+      if (isAuthenticated) {
+        await api.post('/members/logout');
+      }
+    } catch (error) {
+      console.error('로그아웃 요청 실패:', error);
+    } finally {
+      localStorage.removeItem('token');
+      setUser(null);
+    }
   };
 
   const isAuthenticated = !!user;
