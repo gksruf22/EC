@@ -18,7 +18,7 @@ const Footer = () => {
             {" "}
             <a href="https://github.com/beagnihtemos14" target="_blank" rel="noopener noreferrer">안은빈</a>
             {" "}
-            <a href="https://github.com/" target="_blank" rel="noopener noreferrer">OOO</a>
+            <a href="https://github.com/chae006" target="_blank" rel="noopener noreferrer">김채영</a>
           </p>
           <p className="copyright">© 2026 Endless Creation. All rights reserved.</p>
         </div>
@@ -29,6 +29,7 @@ const Footer = () => {
           <ul>
             <li><Link to="/about">소개</Link></li>
             <li><Link to="/members">구성원</Link></li>
+            <li><Link to="/apply">지원하기</Link></li>
             <li><Link to="/notice">공지사항</Link></li>
           </ul>
         </div>

@@ -7,6 +7,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
+    emailCode: '',
     password: '',
     confirmPassword: '',
     name: '',
@@ -16,6 +17,11 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
+
+  const handleSendEmailCode = () => {
+    // TODO: 이메일 인증 번호 발송 기능 구현 예정
+    alert('이메일 인증 기능은 추후 구현 예정입니다.');
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -103,6 +109,23 @@ const Signup = () => {
               placeholder="example@seoultech.ac.kr"
               required
             />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="emailCode">이메일 인증</label>
+            <div className="input-with-button">
+              <input
+                type="text"
+                id="emailCode"
+                name="emailCode"
+                value={formData.emailCode}
+                onChange={handleChange}
+                placeholder="인증 번호 입력"
+              />
+              <button type="button" className="verify-btn" onClick={handleSendEmailCode}>
+                인증 번호 받기
+              </button>
+            </div>
           </div>
 
           <div className="form-group">
