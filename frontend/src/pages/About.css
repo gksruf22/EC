@@ -7,7 +7,7 @@
 
 /* 1. Hero 섹션 */
 .about-hero {
-    background: linear-gradient(0deg, rgba(90, 160, 90) 0%, rgb(180, 210, 160) 100%);
+    background: linear-gradient(0deg, rgb(90, 160, 90) 0%, rgb(180, 210, 160) 100%);
     padding: 120px 0;
     text-align: center;
 }
@@ -44,7 +44,7 @@
 .underline {
     width: 50px;
     height: 4px;
-    background-color: rgba(90, 160, 90);
+    background-color: rgb(90, 160, 90);
     margin: 10px auto;
 }
 
@@ -83,7 +83,7 @@
 
 .value-icon {
     font-size: 2rem;
-    color: rgba(90, 160, 90);
+    color: rgb(90, 160, 90);
 }
 
 /* 3. 연혁 섹션 */
