@@ -18,7 +18,7 @@ const Footer = () => {
             {" "}
             <a href="https://github.com/beagnihtemos14" target="_blank" rel="noopener noreferrer">안은빈</a>
             {" "}
-            <a href="https://github.com/" target="_blank" rel="noopener noreferrer">OOO</a>
+            <a href="https://github.com/chae006" target="_blank" rel="noopener noreferrer">김채영</a>
           </p>
           <p className="copyright">© 2026 Endless Creation. All rights reserved.</p>
         </div>

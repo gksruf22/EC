@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Members from './pages/Members';
 import Notice from './pages/Notice';
+import Apply from './pages/Apply';
 
 function App() {
   return (
