@@ -32,7 +32,7 @@
   color: #333;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 2px solid rgba(90, 160, 90);
+  border-bottom: 2px solid rgb(90, 160, 90);
 }
 
 .info-grid {
@@ -75,7 +75,7 @@
 }
 
 .badge-user {
-  background-color: rgba(90, 160, 90);
+  background-color: rgb(90, 160, 90);
   color: white;
 }
 
