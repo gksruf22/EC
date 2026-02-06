@@ -7,6 +7,8 @@ import com.EC.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -27,6 +29,12 @@ public class MemberController {
     public ResponseEntity<String> login(@RequestBody LoginRequestDto dto) {
         String token = memberService.login(dto);
         return ResponseEntity.ok(token);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<Member> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        Member member = memberService.findByEmail(userDetails.getUsername());
+        return ResponseEntity.ok(member);
     }
 
     @GetMapping

@@ -46,6 +46,11 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    }
+
     @Transactional
     public String login(LoginRequestDto dto) {
         Member member = memberRepository.findByEmail(dto.getEmail())
