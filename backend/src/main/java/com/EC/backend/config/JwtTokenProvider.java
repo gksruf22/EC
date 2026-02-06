@@ -36,7 +36,6 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date validity = new Date(now.getTime() + EXPIRATION_TIME);
 
-
         return Jwts.builder()
                 .setSubject(email)
                 .claim("auth", role)
