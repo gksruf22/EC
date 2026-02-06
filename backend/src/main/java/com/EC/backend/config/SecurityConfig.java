@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 안함
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/members/signup", "/api/members/login").permitAll() // 가입/로그인은 누구나 가능
+                        .requestMatchers("/api/members/email-verification/**").permitAll()
                         .requestMatchers("/api/applications/result").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // Swagger 허용
                         .requestMatchers("/api/applications/admin/**").hasRole("ADMIN") // 관리자 전용
