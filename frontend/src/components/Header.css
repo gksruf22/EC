@@ -52,7 +52,7 @@
 }
 
 .nav-links a:hover {
-  color: rgba(90, 160, 90);
+  color: rgb(90, 160, 90);
 }
 
 .header-right {
@@ -70,7 +70,7 @@
 }
 
 .signup:hover {
-  color: rgba(90, 160, 90);
+  color: rgb(90, 160, 90);
 }
 
 .login {
@@ -81,7 +81,7 @@
 }
 
 .login:hover {
-  color: rgba(90, 160, 90);
+  color: rgb(90, 160, 90);
 }
 
 .user-name {
@@ -93,5 +93,5 @@
 }
 
 .user-name:hover {
-  color: #357abd;
+  color: rgb(90, 160, 90);
 }

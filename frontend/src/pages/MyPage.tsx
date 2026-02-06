@@ -7,8 +7,8 @@ const MyPage = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     alert('로그아웃되었습니다.');
     navigate('/');
   };
