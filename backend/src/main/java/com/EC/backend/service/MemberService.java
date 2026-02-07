@@ -36,6 +36,12 @@ public class MemberService {
             throw new IllegalStateException("이미 가입된 이메일입니다.");
         }
 
+        // 이메일 인증 완료 여부 확인 (서버 사이드 검증)
+        String verificationStatus = redisTemplate.opsForValue().get("AUTH_COMPLETE:" + dto.getEmail());
+        if (verificationStatus == null || !verificationStatus.equals("DONE")) {
+            throw new IllegalStateException("이메일 인증이 완료되지 않았습니다.");
+        }
+
         Member member = Member.builder()
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
@@ -44,7 +50,12 @@ public class MemberService {
                 .phoneNumber(dto.getPhoneNumber())
                 .build();
 
-        return memberRepository.save(member).getId();
+        Member savedMember = memberRepository.save(member);
+        
+        // 회원가입 완료 후 인증 완료 플래그 삭제 (재사용 방지)
+        redisTemplate.delete("AUTH_COMPLETE:" + dto.getEmail());
+        
+        return savedMember.getId();
     }
 
     public List<Member> findAll() {
