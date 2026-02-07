@@ -24,6 +24,7 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder; // 비밀번호 암호화. 나중에 Security 설정 시 빈으로 등록해야 함
     private final JwtTokenProvider jwtTokenProvider;
     private final StringRedisTemplate redisTemplate;
+    private final EmailService emailService;
 
     @Transactional
     public Long signup(MemberSignupRequest dto) {
@@ -34,6 +35,11 @@ public class MemberService {
 
         if(memberRepository.existsByEmail(dto.getEmail())) {
             throw new IllegalStateException("이미 가입된 이메일입니다.");
+        }
+
+        // 이메일 인증 체크
+        if (!emailService.isVerified(dto.getEmail())) {
+            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
         }
 
         Member member = Member.builder()

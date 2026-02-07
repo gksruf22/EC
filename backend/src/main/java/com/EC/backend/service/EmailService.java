@@ -18,6 +18,8 @@ public class EmailService {
     private final MemberRepository memberRepository;
 
     private final long VERIFICATION_LIMIT_TIME = 5 * 60L; // 5분
+    private final String KEY_PREFIX_CHECK_CODE = "CHECK_CODE:";
+    private final String KEY_PREFIX_AUTH_COMPLETE = "AUTH_COMPLETE:";
 
     public void sendVerificationCode(String email) {
         if(memberRepository.findByEmail(email).isPresent()) {
@@ -27,7 +29,7 @@ public class EmailService {
         String code = String.valueOf((int)(Math.random() * 899999) + 100000);
 
         redisTemplate.opsForValue().set(
-                "CHECK_CODE:" + email,
+                KEY_PREFIX_CHECK_CODE + email,
                 code,
                 Duration.ofSeconds(VERIFICATION_LIMIT_TIME)
         );
@@ -36,7 +38,7 @@ public class EmailService {
     }
 
     public boolean verifyCode(String email, String code) {
-        String savedCode = redisTemplate.opsForValue().get("CHECK_CODE:" + email);
+        String savedCode = redisTemplate.opsForValue().get(KEY_PREFIX_CHECK_CODE + email);
 
         if (savedCode == null) {
             throw new IllegalStateException("인증 시간이 만료되었거나 요청 이력이 없습니다.");
@@ -45,14 +47,18 @@ public class EmailService {
         if (savedCode.equals(code)) {
             // 인증 완료 상태를 10분간 유지
             redisTemplate.opsForValue().set(
-                    "AUTH_COMPLETE:" + email,
+                    KEY_PREFIX_AUTH_COMPLETE + email,
                     "DONE",
                     Duration.ofMinutes(10)
             );
-            redisTemplate.delete("CHECK_CODE:" + email);
+            redisTemplate.delete(KEY_PREFIX_CHECK_CODE + email);
             return true;
         }
         return false;
+    }
+
+    public boolean isVerified(String email) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(KEY_PREFIX_AUTH_COMPLETE + email));
     }
 
     private void sendMail(String email, String code) {
