@@ -20,6 +20,8 @@ import java.beans.Transient;
 @RequiredArgsConstructor
 @Transactional
 public class MemberService {
+    private static final String EMAIL_VERIFICATION_KEY_PREFIX = "AUTH_COMPLETE:";
+    
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder; // 비밀번호 암호화. 나중에 Security 설정 시 빈으로 등록해야 함
     private final JwtTokenProvider jwtTokenProvider;
@@ -37,7 +39,7 @@ public class MemberService {
         }
 
         // 이메일 인증 완료 여부 확인 (서버 사이드 검증)
-        String verificationStatus = redisTemplate.opsForValue().get("AUTH_COMPLETE:" + dto.getEmail());
+        String verificationStatus = redisTemplate.opsForValue().get(EMAIL_VERIFICATION_KEY_PREFIX + dto.getEmail());
         if (verificationStatus == null || !verificationStatus.equals("DONE")) {
             throw new IllegalStateException("이메일 인증이 완료되지 않았습니다.");
         }
@@ -53,7 +55,7 @@ public class MemberService {
         Member savedMember = memberRepository.save(member);
         
         // 회원가입 완료 후 인증 완료 플래그 삭제 (재사용 방지)
-        redisTemplate.delete("AUTH_COMPLETE:" + dto.getEmail());
+        redisTemplate.delete(EMAIL_VERIFICATION_KEY_PREFIX + dto.getEmail());
         
         return savedMember.getId();
     }
