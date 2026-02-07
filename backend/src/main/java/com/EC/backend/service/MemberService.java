@@ -33,13 +33,13 @@ public class MemberService {
             throw new IllegalArgumentException("서울과학기술대학교 이메일(@seoultech.ac.kr)로만 가입 가능합니다.");
         }
 
+        if(memberRepository.existsByEmail(dto.getEmail())) {
+            throw new IllegalStateException("이미 가입된 이메일입니다.");
+        }
+
         // 이메일 인증 체크
         if (!emailService.isVerified(dto.getEmail())) {
             throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
-        }
-
-        if(memberRepository.existsByEmail(dto.getEmail())) {
-            throw new IllegalStateException("이미 가입된 이메일입니다.");
         }
 
         Member member = Member.builder()
