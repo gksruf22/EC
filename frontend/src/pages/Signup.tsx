@@ -17,10 +17,62 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
+  
+  // 이메일 인증 관련 상태
+  const [emailSending, setEmailSending] = useState(false);
+  const [isEmailSent, setIsEmailSent] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [emailVerifying, setEmailVerifying] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
-  const handleSendEmailCode = () => {
-    // TODO: 이메일 인증 번호 발송 기능 구현 예정
-    alert('이메일 인증 기능은 추후 구현 예정입니다.');
+  const handleSendEmailCode = async () => {
+    if (!formData.email) {
+      setEmailError('이메일을 입력해주세요.');
+      return;
+    }
+    if (!formData.email.endsWith('@seoultech.ac.kr')) {
+      setEmailError('잘못된 이메일 형식입니다.');
+      return;
+    }
+
+    setEmailSending(true);
+    setError('');
+    setEmailError(null);
+
+    try {
+      await api.post(`/members/email-verification/request?email=${encodeURIComponent(formData.email)}`);
+      setIsEmailSent(true);
+      alert('인증 코드가 이메일로 발송되었습니다. (5분 내 입력해주세요)');
+    } catch (err: any) {
+      const errorMsg = err.response?.data || '인증 코드 발송에 실패했습니다.';
+      if (errorMsg.includes('이미 가입된 이메일')) {
+        setEmailError('이미 가입된 이메일입니다.');
+      } else {
+        setError(errorMsg);
+      }
+    } finally {
+      setEmailSending(false);
+    }
+  };
+
+  const handleVerifyEmailCode = async () => {
+    if (!formData.emailCode) {
+      setError('인증 코드를 입력해주세요.');
+      return;
+    }
+
+    setEmailVerifying(true);
+    setError('');
+
+    try {
+      await api.post(`/members/email-verification/verify?email=${encodeURIComponent(formData.email)}&code=${formData.emailCode}`);
+      setIsEmailVerified(true);
+      alert('이메일 인증이 완료되었습니다!');
+    } catch (err: any) {
+      setError(err.response?.data || '인증 코드가 일치하지 않습니다.');
+    } finally {
+      setEmailVerifying(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +82,11 @@ const Signup = () => {
       [name]: value,
     });
     setError('');
+    
+    // 이메일 입력 시 에러 초기화
+    if (name === 'email') {
+      setEmailError(null);
+    }
     
     if (name === 'password' || name === 'confirmPassword') {
       setPasswordMatch(null);
@@ -57,6 +114,10 @@ const Signup = () => {
     }
     if (!formData.name || !formData.studentId || !formData.phoneNumber) {
       setError('모든 필드를 입력해주세요.');
+      return false;
+    }
+    if (!isEmailVerified) {
+      setError('이메일 인증을 완료해주세요.');
       return false;
     }
     return true;
@@ -99,7 +160,10 @@ const Signup = () => {
         <h1>회원가입</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">이메일</label>
+            <label htmlFor="email">
+              이메일
+              {emailError && <span className="email-error">{emailError}</span>}
+            </label>
             <input
               type="email"
               id="email"
@@ -107,12 +171,16 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="example@seoultech.ac.kr"
+              className={emailError ? 'input-error' : ''}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="emailCode">이메일 인증</label>
+            <label htmlFor="emailCode">
+              이메일 인증
+              {isEmailVerified && <span className="verified-badge"> ✓ 인증완료</span>}
+            </label>
             <div className="input-with-button">
               <input
                 type="text"
@@ -121,10 +189,37 @@ const Signup = () => {
                 value={formData.emailCode}
                 onChange={handleChange}
                 placeholder="인증 번호 입력"
+                disabled={isEmailVerified}
               />
-              <button type="button" className="verify-btn" onClick={handleSendEmailCode}>
-                인증 번호 받기
-              </button>
+              {!isEmailSent ? (
+                <button 
+                  type="button" 
+                  className="verify-btn" 
+                  onClick={handleSendEmailCode}
+                  disabled={emailSending || isEmailVerified}
+                >
+                  {emailSending ? '발송 중...' : '인증 번호 받기'}
+                </button>
+              ) : !isEmailVerified ? (
+                <>
+                  <button 
+                    type="button" 
+                    className="verify-btn confirm-btn" 
+                    onClick={handleVerifyEmailCode}
+                    disabled={emailVerifying}
+                  >
+                    {emailVerifying ? '확인 중...' : '인증 확인'}
+                  </button>
+                  <button 
+                    type="button" 
+                    className="verify-btn resend-btn" 
+                    onClick={handleSendEmailCode}
+                    disabled={emailSending}
+                  >
+                    재발송
+                  </button>
+                </>
+              ) : null}
             </div>
           </div>
 

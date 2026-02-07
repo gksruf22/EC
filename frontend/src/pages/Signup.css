@@ -42,6 +42,13 @@
   font-weight: 400;
 }
 
+.email-error {
+  margin-left: 8px;
+  color: #d32f2f;
+  font-size: 12px;
+  font-weight: 400;
+}
+
 .password-match {
   margin-left: 8px;
   color: #2e7d32;
@@ -144,6 +151,39 @@
   transition: background-color 0.3s;
 }
 
-.verify-btn:hover {
+.verify-btn:hover:not(:disabled) {
   background-color: #404040;
+}
+
+.verify-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.verify-btn.confirm-btn {
+  background-color: #4a90e2;
+}
+
+.verify-btn.confirm-btn:hover:not(:disabled) {
+  background-color: #357abd;
+}
+
+.verify-btn.resend-btn {
+  background-color: #6c757d;
+  padding: 12px 12px;
+}
+
+.verify-btn.resend-btn:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.verified-badge {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.form-group input:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
 }
