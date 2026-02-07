@@ -78,16 +78,26 @@ const Signup = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    // 이메일 입력 시 에러 초기화 및 인증 상태 리셋
+    if (name === 'email') {
+      setEmailError(null);
+      setIsEmailSent(false);
+      setIsEmailVerified(false);
+      setFormData(prev => ({
+        ...prev,
+        email: value,
+        emailCode: ''
+      }));
+      setError('');
+      return; 
+    }
+
     setFormData({
       ...formData,
       [name]: value,
     });
     setError('');
-    
-    // 이메일 입력 시 에러 초기화
-    if (name === 'email') {
-      setEmailError(null);
-    }
     
     if (name === 'password' || name === 'confirmPassword') {
       setPasswordMatch(null);

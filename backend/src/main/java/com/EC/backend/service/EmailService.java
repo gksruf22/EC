@@ -55,6 +55,10 @@ public class EmailService {
         return false;
     }
 
+    public boolean isVerified(String email) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey("AUTH_COMPLETE:" + email));
+    }
+
     private void sendMail(String email, String code) {
         try {
             MimeMessage mimeMessage = emailSender.createMimeMessage();

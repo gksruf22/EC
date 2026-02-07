@@ -24,12 +24,18 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder; // 비밀번호 암호화. 나중에 Security 설정 시 빈으로 등록해야 함
     private final JwtTokenProvider jwtTokenProvider;
     private final StringRedisTemplate redisTemplate;
+    private final EmailService emailService;
 
     @Transactional
     public Long signup(MemberSignupRequest dto) {
         // 도메인 체크
         if(!dto.getEmail().endsWith("@seoultech.ac.kr")) {
             throw new IllegalArgumentException("서울과학기술대학교 이메일(@seoultech.ac.kr)로만 가입 가능합니다.");
+        }
+
+        // 이메일 인증 체크
+        if (!emailService.isVerified(dto.getEmail())) {
+            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
         }
 
         if(memberRepository.existsByEmail(dto.getEmail())) {
