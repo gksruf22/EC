@@ -65,7 +65,8 @@ const Signup = () => {
     setError('');
 
     try {
-      await api.post(`/members/email-verification/verify?email=${encodeURIComponent(formData.email)}&code=${formData.emailCode}`);
+      const normalizedCode = encodeURIComponent(formData.emailCode.trim());
+      await api.post(`/members/email-verification/verify?email=${encodeURIComponent(formData.email)}&code=${normalizedCode}`);
       setIsEmailVerified(true);
       alert('이메일 인증이 완료되었습니다!');
     } catch (err: any) {
