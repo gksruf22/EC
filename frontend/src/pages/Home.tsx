@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Home.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const Home = () => {
   const originalSlides = [
@@ -51,6 +53,28 @@ const Home = () => {
     const timer = setInterval(nextSlide, 3000);
     return () => clearInterval(timer);
   }, [current])
+
+  const [value, setValue] = useState(new Date());
+
+  const handleDateChange = (nextValue: any) => {
+    if (nextValue instanceof Date) {
+      setValue(nextValue);
+    }
+  };
+
+  const events = [
+    { date: '2026-02-12', title: '정기 세미나' },
+    { date: '2026-02-15', title: '동아리 지원'},
+    { date: '2026-02-28', title: 'MT'},
+  ];
+
+  const titleContent = ({ date, view }: { date: Date, view: string }) => {
+    if (view === 'month') {
+      const dateStr = date.toISOString().split('T')[0];
+      const hasEvent = events.find((e) => e.date === dateStr);
+      return hasEvent ? <div className="event-dot"></div> : null;
+    }
+  };
 
   return (
     <div className="home-container">
@@ -122,6 +146,50 @@ const Home = () => {
               }}
             ></span>
           ))}
+        </div>
+      </section>
+
+      <section className="calendar-section">
+        <div className="section-header">
+          <h2>EC 캘린더</h2>
+        </div>
+
+        <div className="calendar-container">
+          <div className="calendar-wrapper">
+            <Calendar
+              onChange={handleDateChange}
+              value={value}
+              formatDay={(locale, date) => date.toLocaleDateString("en", { day: 'numeric' })}
+              tileContent={titleContent}
+
+              prev2Label={null}
+              next2Label={null}
+              minDetail="year"
+
+              tileClassName={({ date, view }) => {
+                if (view === 'month') {
+                  // 0은 일요일, 6은 토요일입니다.
+                  if (date.getDay() === 0) return 'sun';
+                  if (date.getDay() === 6) return 'sat';
+                }
+              }}
+            />
+          </div>
+
+          <div className="event-details">
+            <h3>{value.toLocaleDateString()} 일정</h3>
+            <ul className="event-list">
+              {events
+                .filter(e => e.date === value.toISOString().split('T')[0])
+                .map((e, i) => (
+                  <li key={i}>{e.title}</li>
+                ))
+              }
+              {events.filter(e => e.date === value.toISOString().split('T')[0]).length === 0 && (
+                <p className="no-events">등록된 일정이 없습니다.</p>
+              )}
+            </ul>
+          </div>
         </div>
       </section>
     </div>

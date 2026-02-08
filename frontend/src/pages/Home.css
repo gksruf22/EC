@@ -123,3 +123,135 @@
     width: 25px;
     border-radius: 5px;
 }
+
+.calendar-section {
+    max-width: 1100px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+.section-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.calendar-container {
+    display: flex;
+    gap: 50px;
+    background: #fcfcfc;
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid #eee;
+}
+
+/* 1. 달력 본체 커스텀 */
+.calendar-wrapper {
+    flex: 1.5;
+}
+
+.react-calendar {
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    font-family: inherit;
+}
+
+/* 요일 및 날짜 스타일 */
+.react-calendar__navigation button {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.react-calendar__tile {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border-radius: 10px;
+}
+
+.react-calendar__tile--active {
+    background: #007bff !important;
+    color: white !important;
+}
+
+/* 이벤트가 있는 날짜에 찍히는 점 */
+/* 이벤트가 있는 날짜에 찍히는 점 */
+.event-dot {
+    height: 6px;
+    width: 6px;
+    background-color: #ff4d4f;
+    border-radius: 50%;
+    margin-top: 4px;
+}
+
+/* 2. 오른쪽 상세 일정 영역 */
+.event-details {
+    flex: 1;
+    padding: 20px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.event-details h3 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.event-list {
+    list-style: none;
+    padding: 0;
+}
+
+.event-list li {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background: #f0f4ff;
+    color: #007bff;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.no-events {
+    color: #999;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* 반응형 설정 */
+@media (max-width: 768px) {
+    .calendar-container {
+        flex-direction: column;
+    }
+}
+
+.react-calendar__month-view__days__day.sat {
+    color: #007bff !important;
+}
+
+.react-calendar__month-view__days__day.sun {
+    color: #ff4d4f !important;
+}
+
+.react-calendar__navigation__label:disabled {
+    opacity: 1 !important;
+    color: #333 !important;
+    background: none !important;
+    cursor: default;
+}
+
+.react-calendar__navigation__label:enabled:hover {
+    background-color: #f8f9fa;
+}
