@@ -150,45 +150,46 @@ const Home = () => {
       </section>
 
       <section className="calendar-section">
-        <div className="section-header">
-          <h2>EC 캘린더</h2>
-        </div>
-
         <div className="calendar-container">
-          <div className="calendar-wrapper">
-            <Calendar
-              onChange={handleDateChange}
-              value={value}
-              formatDay={(locale, date) => date.toLocaleDateString("en", { day: 'numeric' })}
-              tileContent={titleContent}
-
-              prev2Label={null}
-              next2Label={null}
-              minDetail="year"
-
-              tileClassName={({ date, view }) => {
-                if (view === 'month') {
-                  // 0은 일요일, 6은 토요일입니다.
-                  if (date.getDay() === 0) return 'sun';
-                  if (date.getDay() === 6) return 'sat';
-                }
-              }}
-            />
+          <div className="section-header">
+            <h2>EC 캘린더</h2>
           </div>
+          <div className="calendar-content">
+            <div className="calendar-wrapper">
+              <Calendar
+                onChange={handleDateChange}
+                value={value}
+                formatDay={(locale, date) => date.toLocaleDateString("en", { day: 'numeric' })}
+                tileContent={titleContent}
 
-          <div className="event-details">
-            <h3>{value.toLocaleDateString()} 일정</h3>
-            <ul className="event-list">
-              {events
-                .filter(e => e.date === value.toISOString().split('T')[0])
-                .map((e, i) => (
-                  <li key={i}>{e.title}</li>
-                ))
-              }
-              {events.filter(e => e.date === value.toISOString().split('T')[0]).length === 0 && (
-                <p className="no-events">등록된 일정이 없습니다.</p>
-              )}
-            </ul>
+                prev2Label={null}
+                next2Label={null}
+                minDetail="year"
+
+                tileClassName={({ date, view }) => {
+                  if (view === 'month') {
+                    // 0은 일요일, 6은 토요일
+                    if (date.getDay() === 0) return 'sun';
+                    if (date.getDay() === 6) return 'sat';
+                  }
+                }}
+              />
+            </div>
+
+            <div className="event-details">
+              <h3>{value.toLocaleDateString()} 일정</h3>
+              <ul className="event-list">
+                {events
+                  .filter(e => e.date === value.toISOString().split('T')[0])
+                  .map((e, i) => (
+                    <li key={i}>{e.title}</li>
+                  ))
+                }
+                {events.filter(e => e.date === value.toISOString().split('T')[0]).length === 0 && (
+                  <p className="no-events">등록된 일정이 없습니다.</p>
+                )}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
