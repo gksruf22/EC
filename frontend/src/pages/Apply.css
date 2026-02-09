@@ -1,15 +1,283 @@
-.apply-container {
-  padding: 40px 20px;
-  text-align: center;
+.apply-page {
+  padding: 60px 20px;
+  background-color: #fcfcfc;
+  min-height: 100vh;
 }
 
-.apply-container h1 {
-  font-size: 32px;
-  margin-bottom: 20px;
+.apply-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.apply-list-full {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.List-header {
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.List-header h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 10px;
   color: #333;
 }
 
-.apply-container p {
+.List-header .subtitle {
   font-size: 16px;
   color: #666;
+}
+
+.recruitment-list-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.recruitment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.recruitment-card:hover {
+  border-color: rgb(90, 160, 90);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  transform: translateY(-5px);
+}
+
+.recruitment-card h3 {
+  font-size: 1.4rem;
+  color: #222;
+  margin: 5px 0;
+}
+
+.recruitment-card .period {
+  color: #888;
+  font-size: 0.95rem;
+}
+
+.badge {
+  display: inline-block;
+  background: rgb(90, 160, 90);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.view-btn:hover {
+  background: rgb(90, 160, 90);
+  color: white;
+}
+
+/* Detail & Form Views */
+/* Inherits .apply-container styles */
+.detail-view,
+.form-view {}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.back-btn:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+.info-grid {
+  display: flex;
+  gap: 30px;
+  margin: 30px 0;
+  padding: 25px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-item strong {
+  color: #333;
+  font-size: 14px;
+}
+
+.info-item span {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.detail-content {
+  margin: 40px 0;
+  line-height: 1.8;
+  color: #444;
+}
+
+.detail-content h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  margin-top: 30px;
+  border-left: 4px solid rgb(90, 160, 90);
+  padding-left: 10px;
+  color: #222;
+}
+
+.detail-content ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.detail-content li {
+  margin-bottom: 8px;
+}
+
+.apply-start-btn {
+  width: 100%;
+  padding: 18px;
+  background: rgb(90, 160, 90);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 20px;
+}
+
+.apply-start-btn:hover {
+  background: rgb(75, 140, 75);
+}
+
+/* Form View Specifics */
+.selected-title {
+  color: rgb(90, 160, 90);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.apply-form {
+  margin-top: 20px;
+}
+
+.apply-form h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  color: #333;
+}
+
+.info-section,
+.content-section {
+  margin-bottom: 40px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.input-group input,
+.input-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-group input:disabled {
+  background: #f5f5f5;
+  color: #888;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color: rgb(90, 160, 90);
+  outline: none;
+}
+
+/* Scoped to avoid conflict with Login.css/Signup.css */
+.apply-page .apply-form .submit-btn {
+  width: 100%;
+  padding: 18px;
+  background: rgb(90, 160, 90);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.apply-page .apply-form .submit-btn:hover {
+  background: rgb(75, 140, 75);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .apply-page {
+    padding: 30px 15px;
+  }
+
+  .apply-container {
+    padding: 30px 20px;
+  }
+
+  .List-header h1 {
+    font-size: 2rem;
+  }
+
+  .info-grid {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .recruitment-card {
+    padding: 25px;
+  }
 }

@@ -95,3 +95,90 @@
 .user-name:hover {
   color: rgb(90, 160, 90);
 }
+
+.menu-toggle {
+  display: none;
+  /* 데스크톱 숨김 */
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.mobile-auth {
+  display: none;
+  /* 데스크톱 숨김 */
+}
+
+/* --- 반응형 레이아웃 (900px 이하) --- */
+@media (max-width: 900px) {
+  .header {
+    display: flex;
+    /* 그리드 대신 flex로 전환하여 양끝 배치 */
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  .header-right {
+    display: none;
+    /* 데스크톱 전용 우측 버튼 숨김 */
+  }
+
+  .menu-toggle {
+    display: block;
+    /* 햄버거 버튼 활성화 */
+  }
+
+  /* 모바일 네비게이션 드롭다운/사이드바 */
+  .nav-container {
+    position: fixed;
+    top: 70px;
+    /* 헤더 높이 바로 아래 */
+    right: -100%;
+    /* 화면 밖 대기 */
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: white;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    box-sizing: border-box;
+    z-index: 999;
+  }
+
+  .nav-container.active {
+    right: 0;
+    /* 열렸을 때 화면 안으로 */
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+  }
+
+  .nav-links a {
+    font-size: 18px;
+    /* 모바일에서 가독성을 위해 키움 */
+    display: block;
+    width: 100%;
+  }
+
+  /* 모바일용 로그인 섹션 추가 스타일 */
+  .mobile-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+  }
+
+  .mobile-auth a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+  }
+}
