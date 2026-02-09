@@ -159,7 +159,7 @@ const Home = () => {
               <Calendar
                 onChange={handleDateChange}
                 value={value}
-                formatDay={(locale, date) => date.toLocaleDateString("en", { day: 'numeric' })}
+                formatDay={(_, date) => date.toLocaleDateString("en", { day: 'numeric' })}
                 tileContent={titleContent}
 
                 prev2Label={null}
