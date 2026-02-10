@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -17,9 +18,15 @@ public class EventController {
 
     private final EventService eventService;
 
-    // 모든 활동 공고 조회 (최신순)
+    // 1. 진행 중인 모든 활동 공고 조회 (누구나 가능)
     @GetMapping
     public ResponseEntity<List<EventResponseDto>> getAllEvents() {
-        return ResponseEntity.ok(eventService.getAllEvents());
+        return ResponseEntity.ok(eventService.findAllVisibleEvents());
+    }
+
+    // 2. 특정 활동 상세 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<EventResponseDto> getEvent(@PathVariable Long id) {
+        return ResponseEntity.ok(eventService.findById(id));
     }
 }

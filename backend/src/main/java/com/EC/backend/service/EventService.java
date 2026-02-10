@@ -19,7 +19,21 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
-    // 1. 활동 공고 등록 (관리자)
+    // 모든 활동 조회 (Controller의 findAllVisibleEvents와 연결)
+    public List<EventResponseDto> findAllVisibleEvents() {
+        return eventRepository.findAll().stream()
+                .map(EventResponseDto::new) // Entity를 DTO로 변환
+                .collect(Collectors.toList());
+    }
+
+    // 특정 활동 상세 조회 (Controller의 findById와 연결)
+    public EventResponseDto findById(Long id) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 활동을 찾을 수 없습니다. ID: " + id));
+        return new EventResponseDto(event);
+    }
+
+    // 활동 공고 등록 (관리자)
     @Transactional
     public Long createEvent(EventRequestDto dto) {
         Event event = Event.builder()
@@ -34,7 +48,7 @@ public class EventService {
         return eventRepository.save(event).getId();
     }
 
-    // 2. 모든 활동 조회 (최신순)
+    // 모든 활동 조회 (최신순)
     public List<EventResponseDto> getAllEvents() {
         return eventRepository.findAllByOrderByIdDesc().stream()
                 .map(EventResponseDto::new)

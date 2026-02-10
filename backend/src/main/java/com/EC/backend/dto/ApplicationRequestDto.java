@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ApplicationRequestDto {
-    private String motive;     // 지원 동기
-    private String experience; // 관련 활동 경험
+    private Long eventId; // 어떤 활동에 지원하는지
+    private String content; // 지원 내용 (일반 활동이면 비워둠)
 }
