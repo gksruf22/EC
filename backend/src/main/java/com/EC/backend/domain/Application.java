@@ -5,8 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter // 나중에 상태 변경(합격/불합격)을 위해 Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class Application extends BaseTimeEntity {
@@ -15,19 +14,22 @@ public class Application extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", unique = true)
-    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member; // 지원자
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
+    private Event event; // 지원한 활동 (모집, 세미나 등)
 
     @Column(columnDefinition = "TEXT")
-    private String motive;
+    private String content; // 정기 모집일 때만 채워지는 자기소개 내용
 
-    @Column(columnDefinition = "TEXT")
-    private String experience;
-
-    // 합격 여부 상태
     @Enumerated(EnumType.STRING)
-    @Builder.Default // Builder 사용 시 기본값을 유지하기 위해 필요
-    private ApplicationStatus status = ApplicationStatus.PENDING;
-}
+    private ApplicationStatus status; // PENDING, APPROVED 등
 
+    // 관리자가 합격/불합격 상태를 변경할 때 사용
+    public void updateStatus(ApplicationStatus status) {
+        this.status = status;
+    }
+}
