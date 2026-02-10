@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -32,14 +33,25 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 안함
+                // SecurityConfig.java의 authorizeHttpRequests 부분
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/members/signup", "/api/members/login").permitAll() // 가입/로그인은 누구나 가능
-                        .requestMatchers("/api/members/logout").authenticated()
+                        // 1. 누구나 접근 가능한 경로 (로그인, 가입, 인증, 조회성 데이터)
+                        .requestMatchers("/api/members/signup", "/api/members/login").permitAll()
                         .requestMatchers("/api/members/email-verification/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                        // 2. [조회 기능] 일반 유저와 관리자 모두 가능 (공지사항 보기, 일정 보기 등)
+                        .requestMatchers(HttpMethod.GET, "/api/notices/**", "/api/calendar/**").permitAll()
                         .requestMatchers("/api/applications/result").permitAll()
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // Swagger 허용
-                        .requestMatchers("/api/applications/admin/**").hasRole("ADMIN") // 관리자 전용
-                        .anyRequest().authenticated() // 그 외 모든 요청은 토큰 필요
+
+                        // 3. [관리자 전용] 모든 관리 기능을 /api/admin/**으로 묶거나 개별 지정
+                        // .hasRole("ADMIN")은 내부적으로 "ROLE_ADMIN"이라는 권한이 있는지 확인합니다.
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/applications/admin/**").hasRole("ADMIN")
+
+                        // 4. 그 외 로그아웃이나 마이페이지 등은 인증만 되면 허용
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
 

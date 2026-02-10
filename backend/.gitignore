@@ -41,3 +41,4 @@ mysql_data/
 
 ### AWS 관련 ###
 *.pem
+.
