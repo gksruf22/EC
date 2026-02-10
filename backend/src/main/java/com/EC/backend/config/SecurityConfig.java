@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/notices/**", "/api/calendar/**").permitAll()
                         .requestMatchers("/api/applications/result").permitAll()
                         .requestMatchers("/api/events/**").permitAll()
+                        .requestMatchers("/api/notices/**").permitAll()
 
                         // 3. [관리자 전용] 모든 관리 기능을 /api/admin/**으로 묶거나 개별 지정
                         // .hasRole("ADMIN")은 내부적으로 "ROLE_ADMIN"이라는 권한이 있는지 확인합니다.

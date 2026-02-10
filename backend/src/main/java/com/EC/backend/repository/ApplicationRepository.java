@@ -23,4 +23,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     // 4. [조회용] 특정 회원이 특정 활동에 쓴 지원서 딱 하나만 가져오기
     Optional<Application> findByMemberAndEvent(Member member, Event event);
+
+    // 5. [관리자용] 특정 기수의 지원자 명단을 최신순으로 가져오기 (새로 추가)
+    List<Application> findByGenerationOrderByCreatedAtDesc(int generation);
 }

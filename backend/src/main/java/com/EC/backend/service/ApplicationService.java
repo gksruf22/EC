@@ -3,6 +3,8 @@ package com.EC.backend.service;
 import com.EC.backend.domain.*;
 import com.EC.backend.dto.ApplicationRequestDto;
 import com.EC.backend.dto.ApplicationResponseDto;
+import com.EC.backend.dto.AdminApplicationResponseDto;
+import com.EC.backend.dto.ApplicationDetailResponseDto;
 import com.EC.backend.repository.ApplicationRepository;
 import com.EC.backend.repository.EventRepository;
 import com.EC.backend.repository.MemberRepository;
@@ -21,7 +23,7 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final MemberRepository memberRepository;
-    private final EventRepository eventRepository; // 추가
+    private final EventRepository eventRepository;
 
     // 1. 지원서 제출 (apply)
     @Transactional
@@ -44,8 +46,8 @@ public class ApplicationService {
 
         // [설정] 활동 유형에 따른 초기 상태 분기
         ApplicationStatus initialStatus = (event.getEventType() == EventType.RECRUITMENT)
-                ? ApplicationStatus.PENDING
-                : ApplicationStatus.APPROVED;
+                ? ApplicationStatus.PENDING // 동아리 정기 모집이면 PENDING
+                : ApplicationStatus.APPROVED; // 이 외 활동(정기 세미나, 해커톤 등)은 바로 APPROVED
 
         // DTO -> Entity 변환 (이전의 motive/experience 대신 통합된 content 사용 권장)
         Application application = Application.builder()
@@ -53,15 +55,49 @@ public class ApplicationService {
                 .event(event)
                 .content(dto.getContent())
                 .status(initialStatus)
+                .generation(dto.getGeneration()) // 기수 정보 포함
                 .build();
 
         Application savedApplication = applicationRepository.save(application);
         return new ApplicationResponseDto(savedApplication);
     }
 
-    // 2. 결과 조회 (로그인 기반으로 변경 추천하나, 기존 로직 유지)
+    // 2. 특정 기수 지원자 명단 조회 (관리자 전용)
+    public List<AdminApplicationResponseDto> getApplicationsByGeneration(int generation) {
+        return applicationRepository.findByGenerationOrderByCreatedAtDesc(generation).stream()
+                .map(a -> new AdminApplicationResponseDto(
+                        a.getId(),
+                        a.getMember().getName(),
+                        a.getMember().getStudentId(),
+                        a.getStatus()))
+                .collect(Collectors.toList());
+    }
+
+    // 3. 지원서 상세 정보 조회 (관리자 전용)
+    public ApplicationDetailResponseDto getApplicationDetail(Long id) {
+        Application a = applicationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("지원서를 찾을 수 없습니다. ID: " + id));
+
+        return new ApplicationDetailResponseDto(
+                a.getId(),
+                a.getMember().getName(),
+                a.getMember().getStudentId(),
+                a.getMember().getPhoneNumber(),
+                a.getContent(),
+                a.getStatus()
+        );
+    }
+
+    // 4. 지원서 상태 변경 (관리자 전용)
+    @Transactional
+    public void updateStatus(Long applicationId, ApplicationStatus status) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 지원서를 찾을 수 없습니다."));
+        application.updateStatus(status);
+    }
+
+    // 5. 결과 조회 (유저용)
     public ApplicationStatus checkResult(Long eventId, String name, String studentId) {
-        // 특정 이벤트에 대한 결과 조회로 업그레이드
         Member member = memberRepository.findByNameAndStudentId(name, studentId)
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 지원 정보가 없습니다."));
 
@@ -74,21 +110,13 @@ public class ApplicationService {
         return application.getStatus();
     }
 
-    // 3. 지원서 상태 변경 (관리자)
-    @Transactional
-    public void updateStatus(Long applicationId, ApplicationStatus status) {
-        Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 지원서를 찾을 수 없습니다."));
-        application.updateStatus(status);
-    }
-
-    // 4. 특정 이벤트의 모든 지원서 조회 (관리자용)
+    // 기존 컨트롤러와의 호환성을 위해
     public List<ApplicationResponseDto> findAllByEvent(Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 활동이 존재하지 않습니다."));
 
         return applicationRepository.findAllByEvent(event).stream()
-                .map(ApplicationResponseDto::new)
+                .map(ApplicationResponseDto::new) // Application 엔티티를 DTO로 변환
                 .collect(Collectors.toList());
     }
 }

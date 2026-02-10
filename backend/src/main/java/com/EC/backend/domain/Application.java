@@ -28,6 +28,9 @@ public class Application extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status; // PENDING, APPROVED 등
 
+    @Column(name = "gen_number", nullable = false)
+    private int generation;
+
     // 관리자가 합격/불합격 상태를 변경할 때 사용
     public void updateStatus(ApplicationStatus status) {
         this.status = status;
