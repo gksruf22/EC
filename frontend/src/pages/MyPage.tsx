@@ -2,9 +2,13 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './MyPage.css';
 
+import PasswordChangeModal from '../components/PasswordChangeModal';
+import { useState } from 'react';
+
 const MyPage = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -34,15 +38,15 @@ const MyPage = () => {
       <ul className="tablewrite">
         <li>
           <dl>
-            <dt><span className="point">아이디</span></dt>
+            <dt><span>아이디</span></dt>
             <dd>{user.email}</dd>
           </dl>
         </li>
         <li>
           <dl>
-            <dt><span className="point">비밀번호</span></dt>
+            <dt><span>비밀번호</span></dt>
             <dd>
-              <button type="button" className="btn-st3 bg-light" title="비밀번호 변경" onClick={() => alert('비밀번호 변경 기능은 준비중입니다.')}>
+              <button type="button" className="btn-st3 bg-light" title="비밀번호 변경" onClick={() => setIsPasswordModalOpen(true)}>
                 비밀번호 변경
               </button>
             </dd>
@@ -50,19 +54,19 @@ const MyPage = () => {
         </li>
         <li>
           <dl>
-            <dt><span className="point">이름</span></dt>
+            <dt><span>이름</span></dt>
             <dd>{user.name}</dd>
           </dl>
         </li>
         <li>
           <dl>
-            <dt><span className="point">학번</span></dt>
+            <dt><span>학번</span></dt>
             <dd>{user.studentId}</dd>
           </dl>
         </li>
         <li>
           <dl>
-            <dt><span className="point">전화번호</span></dt>
+            <dt><span>전화번호</span></dt>
             <dd>{user.phoneNumber}</dd>
           </dl>
         </li>
@@ -73,6 +77,10 @@ const MyPage = () => {
           로그아웃
         </button>
       </div>
+      <PasswordChangeModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   );
 };
