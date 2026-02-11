@@ -3,31 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import './MyPage.css';
 
 import PasswordChangeModal from '../components/PasswordChangeModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const MyPage = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
-  const handleLogout = async () => {
-    await logout();
-    alert('로그아웃되었습니다.');
-    navigate('/');
-  };
+  useEffect(() => {
+    if (!loading && !user) {
+      const confirmLogin = window.confirm('로그인이 필요한 페이지입니다. 로그인페이지로 이동하시겠습니까?');
+      if (confirmLogin) {
+        navigate('/login');
+      } else {
+        navigate('/');
+      }
+    }
+  }, [user, loading, navigate]);
 
-  if (!user) {
-    return (
-      <div className="mypage-container">
-        <div className="mypage-box">
-          <h1>로그인이 필요합니다</h1>
-          <button onClick={() => navigate('/login')} className="btn-primary">
-            로그인하기
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div>Loading...</div>;
+  if (!user) return null;
 
   return (
     <div className="mypage-container">
@@ -72,9 +67,10 @@ const MyPage = () => {
         </li>
       </ul>
 
+      {/* 나중에 로직 추가 */}
       <div className="action-buttons">
-        <button onClick={handleLogout} className="btn-logout">
-          로그아웃
+        <button className="btn-infoedit">
+          정보 수정 요청
         </button>
       </div>
       <PasswordChangeModal
