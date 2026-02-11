@@ -4,6 +4,8 @@ import com.EC.backend.config.JwtTokenProvider;
 import com.EC.backend.domain.Member;
 import com.EC.backend.dto.LoginRequestDto;
 import com.EC.backend.dto.MemberSignupRequest;
+import com.EC.backend.dto.MemberUpdateRequestDto;
+import com.EC.backend.dto.PasswordUpdateDto;
 import com.EC.backend.service.EmailService;
 import com.EC.backend.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,6 +52,27 @@ public class MemberController {
     public ResponseEntity<String> login(@RequestBody LoginRequestDto dto) {
         String token = memberService.login(dto);
         return ResponseEntity.ok(token);
+    }
+
+    @PatchMapping("/me")
+    public ResponseEntity<Void> updateProfile(
+            @AuthenticationPrincipal String email,
+            @RequestBody MemberUpdateRequestDto dto) {
+
+        memberService.updateMyInfo(email, dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/me/password")
+    public ResponseEntity<String> updatePassword(
+            @AuthenticationPrincipal String email,
+            @RequestBody PasswordUpdateDto dto) {
+        try {
+            memberService.updatePassword(email, dto);
+            return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/logout")
