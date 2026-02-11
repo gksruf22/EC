@@ -27,42 +27,51 @@ const MyPage = () => {
 
   return (
     <div className="mypage-container">
-      <div className="mypage-box">
+      <div className="mypage-header">
         <h1>마이페이지</h1>
-        
-        <div className="user-info-section">
-          <h2>내 정보</h2>
-          <div className="info-grid">
-            <div className="info-item">
-              <label>이름</label>
-              <span>{user.name}</span>
-            </div>
-            <div className="info-item">
-              <label>이메일</label>
-              <span>{user.email}</span>
-            </div>
-            <div className="info-item">
-              <label>학번</label>
-              <span>{user.studentId}</span>
-            </div>
-            <div className="info-item">
-              <label>전화번호</label>
-              <span>{user.phoneNumber}</span>
-            </div>
-            <div className="info-item">
-              <label>권한</label>
-              <span className={user.role === 'ROLE_ADMIN' ? 'badge-admin' : 'badge-user'}>
-                {user.role === 'ROLE_ADMIN' ? '관리자' : '일반 회원'}
-              </span>
-            </div>
-          </div>
-        </div>
+      </div>
+      
+      <ul className="tablewrite">
+        <li>
+          <dl>
+            <dt><span className="point">아이디</span></dt>
+            <dd>{user.email}</dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt><span className="point">비밀번호</span></dt>
+            <dd>
+              <button type="button" className="btn-st3 bg-light" title="비밀번호 변경" onClick={() => alert('비밀번호 변경 기능은 준비중입니다.')}>
+                비밀번호 변경
+              </button>
+            </dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt><span className="point">이름</span></dt>
+            <dd>{user.name}</dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt><span className="point">학번</span></dt>
+            <dd>{user.studentId}</dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt><span className="point">전화번호</span></dt>
+            <dd>{user.phoneNumber}</dd>
+          </dl>
+        </li>
+      </ul>
 
-        <div className="action-buttons">
-          <button onClick={handleLogout} className="btn-logout">
-            로그아웃
-          </button>
-        </div>
+      <div className="action-buttons">
+        <button onClick={handleLogout} className="btn-logout">
+          로그아웃
+        </button>
       </div>
     </div>
   );

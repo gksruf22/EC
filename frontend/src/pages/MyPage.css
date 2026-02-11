@@ -1,71 +1,131 @@
 .mypage-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 140px);
   padding: 40px 20px;
   background-color: #f5f5f5;
+  min-height: calc(100vh - 140px);
 }
 
 .mypage-box {
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
   width: 100%;
-  max-width: 600px;
+  max-width: 100%;
 }
 
-.mypage-box h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #333;
+.mypage-container {
+  padding: 40px 20px;
+  background-color: #fff;
+  min-height: calc(100vh - 140px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mypage-header h1 {
   font-size: 28px;
-}
-
-.user-info-section {
-  margin-bottom: 30px;
-}
-
-.user-info-section h2 {
-  font-size: 20px;
   color: #333;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
   border-bottom: 2px solid rgb(90, 160, 90);
 }
 
-.info-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* Table Write Style */
+.tablewrite {
+  border-top: 1px solid #ddd;
+  margin-bottom: 50px;
+  list-style: none;
+  padding: 0;
 }
 
-.info-item {
+.tablewrite>li {
+  border-bottom: 1px solid #ddd;
+}
+
+.tablewrite>li>dl {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background-color: #f9f9f9;
-  border-radius: 6px;
+  min-height: 60px;
+  margin: 0;
 }
 
-.info-item label {
-  font-weight: 600;
-  color: #666;
-  font-size: 14px;
-}
-
-.info-item span {
+.tablewrite>li>dl>dt {
+  width: 160px;
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  font-weight: 500;
   color: #333;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
 }
 
+.tablewrite>li>dl>dd {
+  flex: 1;
+  padding: 15px 20px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tablewrite .point::before {
+  content: '*';
+  color: #ff4d4f;
+  margin-right: 4px;
+}
+
+/* Utility Classes */
+.d-flex {
+  display: flex;
+  align-items: center;
+}
+
+.max-mid {
+  width: 100%;
+  max-width: 400px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.ml-1 {
+  margin-left: 8px;
+}
+
+/* Button Styles */
+.btn-st3 {
+  height: 40px;
+  padding: 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-st3.bg-light {
+  background-color: #f8f9fa;
+  border-color: #ddd;
+}
+
+.btn-st3.bg-black_r {
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+.btn-st3:hover {
+  opacity: 0.9;
+}
+
+/* Badge Styles */
 .badge-admin,
 .badge-user {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -79,38 +139,54 @@
   color: white;
 }
 
+/* Action Buttons */
 .action-buttons {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
-.btn-primary,
 .btn-logout {
-  padding: 12px 24px;
+  padding: 12px 30px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-primary {
-  background-color: #4a90e2;
+  background-color: #666;
   color: white;
-}
-
-.btn-primary:hover {
-  background-color: #357abd;
-}
-
-.btn-logout {
-  background-color: #e74c3c;
-  color: white;
+  transition: background-color 0.3s;
 }
 
 .btn-logout:hover {
-  background-color: #c0392b;
+  background-color: #444;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tablewrite>li>dl {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tablewrite>li>dl>dt {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    font-size: 13px;
+  }
+
+  .tablewrite>li>dl>dd {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .max-mid {
+    max-width: 100%;
+  }
+
+  .block-pc {
+    display: none;
+  }
 }
