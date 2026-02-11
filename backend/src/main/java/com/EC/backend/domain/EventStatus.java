@@ -1,6 +1,7 @@
 package com.EC.backend.domain;
 
 public enum EventStatus {
-    OPEN,       // 신청 가능
-    CLOSED      // 마감됨
+    READY,   // 신청 시작 전
+    OPEN,    // 신청 진행 중
+    CLOSED   // 신청 마감
 }

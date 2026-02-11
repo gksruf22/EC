@@ -13,6 +13,8 @@ public class EventRequestDto {
     private String description;
     private EventType eventType;
     private EventStatus status;
-    private LocalDateTime deadline;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private Integer maxParticipants;
+    private int generation;
 }

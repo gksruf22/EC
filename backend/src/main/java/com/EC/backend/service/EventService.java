@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,13 +37,32 @@ public class EventService {
     // 활동 공고 등록 (관리자)
     @Transactional
     public Long createEvent(EventRequestDto dto) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = dto.getStartDate();
+        LocalDateTime end = dto.getEndDate();
+
+        if (now.isAfter(end)) {
+            throw new IllegalArgumentException("신청 기간을 지원 기간 앞으로 설정할 수 없습니다. 날짜를 확인해주세요.");
+        }
+
+        EventStatus status;
+        if (now.isBefore(start)) {
+            // 현재 시간이 시작 시간 전이면 READY
+            status = EventStatus.READY;
+        } else {
+            // 그 외(현재 시간이 시작과 종료 사이)는 OPEN
+            status = EventStatus.OPEN;
+        }
+
         Event event = Event.builder()
                 .title(dto.getTitle())
                 .description(dto.getDescription())
                 .eventType(dto.getEventType())
                 .status(dto.getStatus())
-                .deadline(dto.getDeadline())
+                .startDate(start)
+                .endDate(end)
                 .maxParticipants(dto.getMaxParticipants())
+                .generation(dto.getGeneration())
                 .build();
 
         return eventRepository.save(event).getId();

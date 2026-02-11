@@ -25,6 +25,8 @@ public class ApplicationService {
     private final MemberRepository memberRepository;
     private final EventRepository eventRepository;
 
+    LocalDateTime now = LocalDateTime.now();
+
     // 1. 지원서 제출 (apply)
     @Transactional
     public ApplicationResponseDto apply(String email, ApplicationRequestDto dto) {
@@ -34,12 +36,17 @@ public class ApplicationService {
         Event event = eventRepository.findById(dto.getEventId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 활동이 존재하지 않습니다."));
 
-        // [체크 1] 모집 기간 확인 (DB의 deadline 기준)
-        if (event.getStatus() == EventStatus.CLOSED || LocalDateTime.now().isAfter(event.getDeadline())) {
+        // [체크 1] 모집 시작 기간 확인
+        if (event.getStatus() == EventStatus.READY || now.isBefore(event.getStartDate())) {
+            throw new IllegalStateException("아직 모집 기간이 아닙니다. 모집 시작일: " + event.getStartDate());
+        }
+
+        // [체크 2] 모집 마감 기간 확인 (기존 로직 유지)
+        if (event.getStatus() == EventStatus.CLOSED || now.isAfter(event.getEndDate())) {
             throw new IllegalStateException("모집이 마감된 활동입니다.");
         }
 
-        // [체크 2] 중복 지원 확인 (이벤트별로 1회)
+        // [체크 3] 중복 지원 확인 (이벤트별로 1회)
         if (applicationRepository.existsByMemberAndEvent(member, event)) {
             throw new IllegalStateException("이미 신청한 활동입니다.");
         }

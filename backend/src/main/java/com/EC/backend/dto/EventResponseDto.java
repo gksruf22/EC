@@ -13,7 +13,9 @@ public class EventResponseDto {
     private String description;
     private EventType eventType;
     private EventStatus status;
-    private LocalDateTime deadline;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private int generation;
 
     public EventResponseDto(Event event) {
         this.id = event.getId();
@@ -21,6 +23,8 @@ public class EventResponseDto {
         this.description = event.getDescription();
         this.eventType = event.getEventType();
         this.status = event.getStatus();
-        this.deadline = event.getDeadline();
+        this.startDate = event.getStartDate();
+        this.endDate = event.getEndDate();
+        this.generation = event.getGeneration();
     }
 }
