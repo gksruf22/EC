@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class NoticeController {
 
     private final NoticeService noticeService;
@@ -28,9 +29,25 @@ public class NoticeController {
         return ResponseEntity.ok(noticeService.findById(id));
     }
 
-    // 공지사항 등록 (어드민 전용)
+    // 공지사항 등록 (관리자)
     @PostMapping("/api/admin/notices")
     public ResponseEntity<Long> createNotice(@RequestBody NoticeRequestDto dto, Principal principal) {
         return ResponseEntity.ok(noticeService.createNotice(dto, principal.getName()));
+    }
+
+    // 공지사항 수정 (관리자)
+    @PutMapping("/admin/notices/{id}")
+    public ResponseEntity<Void> updateNotice(
+            @PathVariable Long id,
+            @RequestBody NoticeRequestDto dto) {
+        noticeService.updateNotice(id, dto);
+        return ResponseEntity.ok().build();
+    }
+
+    // 공지사항 삭제 (관리자)
+    @DeleteMapping("/admin/notices/{id}")
+    public ResponseEntity<Void> deleteNotice(@PathVariable Long id) {
+        noticeService.deleteNotice(id);
+        return ResponseEntity.ok().build();
     }
 }

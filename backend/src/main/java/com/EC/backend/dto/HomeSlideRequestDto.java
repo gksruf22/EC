@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NoticeRequestDto {
-    private String title;
-    private String content;
+public class HomeSlideRequestDto {
     private String imageUrl;
+    private String title;
+    private String linkUrl;
+    private int sequence;
 }

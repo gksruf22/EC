@@ -10,6 +10,7 @@ public class MemberResponseDto {
     private String email;
     private String name;
     private String studentId;
+    private String phoneNumber;
     private Role role;
 
     public MemberResponseDto(Member member) {
@@ -17,6 +18,7 @@ public class MemberResponseDto {
         this.email = member.getEmail();
         this.name = member.getName();
         this.studentId = member.getStudentId();
+        this.phoneNumber = member.getPhoneNumber();
         this.role = member.getRole();
     }
 }

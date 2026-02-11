@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NoticeRequestDto {
-    private String title;
-    private String content;
-    private String imageUrl;
+public class PasswordUpdateDto {
+    private String oldPassword;
+    private String newPassword;
 }
