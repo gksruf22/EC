@@ -2,68 +2,81 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './MyPage.css';
 
+import PasswordChangeModal from '../components/PasswordChangeModal';
+import { useState, useEffect } from 'react';
+
 const MyPage = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
-  const handleLogout = async () => {
-    await logout();
-    alert('로그아웃되었습니다.');
-    navigate('/');
-  };
+  useEffect(() => {
+    if (!loading && !user) {
+      const confirmLogin = window.confirm('로그인이 필요한 페이지입니다. 로그인페이지로 이동하시겠습니까?');
+      if (confirmLogin) {
+        navigate('/login');
+      } else {
+        navigate('/');
+      }
+    }
+  }, [user, loading, navigate]);
 
-  if (!user) {
-    return (
-      <div className="mypage-container">
-        <div className="mypage-box">
-          <h1>로그인이 필요합니다</h1>
-          <button onClick={() => navigate('/login')} className="btn-primary">
-            로그인하기
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div>Loading...</div>;
+  if (!user) return null;
 
   return (
     <div className="mypage-container">
-      <div className="mypage-box">
+      <div className="mypage-header">
         <h1>마이페이지</h1>
-        
-        <div className="user-info-section">
-          <h2>내 정보</h2>
-          <div className="info-grid">
-            <div className="info-item">
-              <label>이름</label>
-              <span>{user.name}</span>
-            </div>
-            <div className="info-item">
-              <label>이메일</label>
-              <span>{user.email}</span>
-            </div>
-            <div className="info-item">
-              <label>학번</label>
-              <span>{user.studentId}</span>
-            </div>
-            <div className="info-item">
-              <label>전화번호</label>
-              <span>{user.phoneNumber}</span>
-            </div>
-            <div className="info-item">
-              <label>권한</label>
-              <span className={user.role === 'ROLE_ADMIN' ? 'badge-admin' : 'badge-user'}>
-                {user.role === 'ROLE_ADMIN' ? '관리자' : '일반 회원'}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="action-buttons">
-          <button onClick={handleLogout} className="btn-logout">
-            로그아웃
-          </button>
-        </div>
       </div>
+      
+      <ul className="tablewrite">
+        <li>
+          <dl>
+            <dt><span>아이디</span></dt>
+            <dd>{user.email}</dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt><span>비밀번호</span></dt>
+            <dd>
+              <button type="button" className="btn-st3 bg-light" title="비밀번호 변경" onClick={() => setIsPasswordModalOpen(true)}>
+                비밀번호 변경
+              </button>
+            </dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt><span>이름</span></dt>
+            <dd>{user.name}</dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt><span>학번</span></dt>
+            <dd>{user.studentId}</dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt><span>전화번호</span></dt>
+            <dd>{user.phoneNumber}</dd>
+          </dl>
+        </li>
+      </ul>
+
+      {/* 나중에 로직 추가 */}
+      <div className="action-buttons">
+        <button className="btn-infoedit">
+          정보 수정 요청
+        </button>
+      </div>
+      <PasswordChangeModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   );
 };

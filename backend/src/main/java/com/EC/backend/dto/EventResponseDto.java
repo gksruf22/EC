@@ -3,24 +3,40 @@ package com.EC.backend.dto;
 import com.EC.backend.domain.Event;
 import com.EC.backend.domain.EventStatus;
 import com.EC.backend.domain.EventType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class EventResponseDto {
     private Long id;
     private String title;
+
+    @NotBlank(message = "공지사항 설명은 필수 입력 항목입니다.")
     private String description;
     private EventType eventType;
     private EventStatus status;
-    private LocalDateTime deadline;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private int generation;
+    private boolean isApplied;
 
     public EventResponseDto(Event event) {
+        this(event, false);
+    }
+
+    public EventResponseDto(Event event, boolean isApplied) {
         this.id = event.getId();
         this.title = event.getTitle();
         this.description = event.getDescription();
         this.eventType = event.getEventType();
         this.status = event.getStatus();
-        this.deadline = event.getDeadline();
+        this.startDate = event.getStartDate();
+        this.endDate = event.getEndDate();
+        this.generation = event.getGeneration();
+        this.isApplied = isApplied;
     }
 }

@@ -75,13 +75,44 @@
 
 .badge {
   display: inline-block;
-  background: rgb(90, 160, 90);
-  color: white;
   padding: 4px 10px;
   border-radius: 5px;
   font-size: 12px;
   font-weight: 600;
   align-self: flex-start;
+}
+
+.badge.open {
+  background: rgb(90, 160, 90);
+  color: white;
+}
+
+.badge.closed {
+  background: #999;
+  color: white;
+}
+
+.badge.ready {
+  background: #f39c12;
+  color: white;
+}
+
+/* 디자인 수정 필요 */
+.badge.applied-check {
+  background: #f3b012;
+  color: white;
+}
+
+.type-badge {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: #f0f0f0;
+  color: #555;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .view-btn:hover {
@@ -91,8 +122,6 @@
 
 /* Detail & Form Views */
 /* Inherits .apply-container styles */
-.detail-view,
-.form-view {}
 
 .back-btn {
   background: none;
@@ -256,6 +285,27 @@
 
 .apply-page .apply-form .submit-btn:hover {
   background: rgb(75, 140, 75);
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-size: 1.1rem;
+}
+
+.no-data.error {
+  color: #e74c3c;
+}
+
+.notice-box {
+  background: #f0f8ff;
+  border: 1px solid #d0e3ff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #004085;
 }
 
 /* Mobile Responsive */

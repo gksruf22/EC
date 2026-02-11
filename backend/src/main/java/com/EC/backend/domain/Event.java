@@ -18,7 +18,7 @@ public class Event extends BaseTimeEntity {
     @Column(nullable = false)
     private String title; // 활동 제목
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description; // 활동 내용 설명
 
     @Enumerated(EnumType.STRING)
@@ -29,9 +29,13 @@ public class Event extends BaseTimeEntity {
     @Column(nullable = false)
     private EventStatus status; // OPEN 또는 CLOSED
 
-    private LocalDateTime deadline; // 신청 마감 기한
+    private LocalDateTime startDate; // 신청 시작
+    private LocalDateTime endDate; // 신청 마감
 
     private Integer maxParticipants; // 최대 인원 (일반 활동 선착순 시 필요)
+
+    @Column(name = "gen_number", nullable = false)
+    private int generation; // 기수
 
     // 관리자가 상태를 바꿀 때 사용하는 메서드
     public void updateStatus(EventStatus status) {

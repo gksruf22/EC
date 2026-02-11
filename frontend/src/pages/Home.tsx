@@ -152,7 +152,7 @@ const Home = () => {
       <section className="calendar-section">
         <div className="calendar-container">
           <div className="section-header">
-            <h2>EC 캘린더</h2>
+            <h2>동아리 일정</h2>
           </div>
           <div className="calendar-content">
             <div className="calendar-wrapper">
