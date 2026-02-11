@@ -13,6 +13,7 @@ interface EventItem {
   startDate: string;
   endDate: string;
   generation: number;
+  applied: boolean;
 }
 
 const Apply = () => {
@@ -68,15 +69,16 @@ const Apply = () => {
 
     try {
       const payload = {
-        generation: selectedItem.generation,
         eventId: selectedItem.id,
-        motive: selectedItem.eventType === 'RECRUITMENT' ? formData.motive : '일반 활동 지원',
-        experience: selectedItem.eventType === 'RECRUITMENT' ? formData.experience : '없음'
+        motive: formData.motive || (selectedItem.eventType === 'GENERAL' ? '일반 활동 신청' : ''),
+        experience: formData.experience || (selectedItem.eventType === 'GENERAL' ? '해당 없음' : '')
       };
 
       await api.post('/applications', payload);
       alert('지원이 완료되었습니다!');
-      navigate('/');
+
+
+      window.location.href = '/apply';
     } catch (error: any) {
       console.error('Apply failed:', error);
       const errorData = error.response?.data;
@@ -111,20 +113,18 @@ const Apply = () => {
             <p className="subtitle">현재 모집 중인 항목을 확인하고 지원하세요.</p>
           </div>
           <div className="recruitment-list-vertical">
-            {error ? (
-              <p className="no-data error">{error}</p>
-            ) : events.length === 0 ? (
-              <p className="no-data">현재 진행 중인 모집이 없습니다.</p>
-            ) : (
-              events.map(item => (
-                <div key={item.id} className="recruitment-card" onClick={() => handleItemClick(item)}>
-                  {getStatusBadge(item.status)}
-                  <h3>{item.title}</h3>
-                  <p className="period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
-                  <p className="type-badge">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</p>
-                </div>
-              ))
-            )}
+            {events.map(item => (
+              <div
+                key={item.id}
+                className={`recruitment-card ${item.applied ? 'applied' : ''}`}
+                onClick={() => handleItemClick(item)}
+              >
+                {item.applied ? <span className="badge applied-check">신청완료 ✅</span> : getStatusBadge(item.status)}
+                <h3>{item.title}</h3>
+                <p className="period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
+                <p className="type-badge">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</p>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -134,7 +134,7 @@ const Apply = () => {
         <div className="apply-container detail-view">
           <button className="back-btn" onClick={() => setStep('list')}>← 목록으로</button>
           <h1>{selectedItem.title}</h1>
-          
+
           <div className="info-grid">
             <div className="info-item">
               <strong>모집 기간</strong>
@@ -151,12 +151,14 @@ const Apply = () => {
             <p style={{ whiteSpace: 'pre-line' }}>{selectedItem.description}</p>
           </div>
 
-          {selectedItem.status === 'OPEN' ? (
+          {selectedItem.applied ? (
+            <button className="apply-start-btn completed" disabled>이미 신청한 활동입니다</button>
+          ) : selectedItem.status === 'OPEN' ? (
             <button className="apply-start-btn" onClick={handleStartApply}>지원하기</button>
-          ) : selectedItem.status === 'READY' ? (
-            <button className="apply-start-btn" disabled style={{ background: '#ccc', cursor: 'not-allowed' }}>모집 예정</button>
           ) : (
-            <button className="apply-start-btn" disabled style={{ background: '#999', cursor: 'not-allowed' }}>모집 마감</button>
+            <button className="apply-start-btn" disabled style={{ background: '#999', cursor: 'not-allowed' }}>
+              {selectedItem.status === 'READY' ? '모집 예정' : '모집 마감'}
+            </button>
           )}
         </div>
       )}
@@ -167,7 +169,7 @@ const Apply = () => {
           <button className="back-btn" onClick={() => setStep('detail')}>← 이전으로</button>
           <h1>지원서 작성</h1>
           <p className="selected-title">{selectedItem.title}</p>
-          
+
           <form onSubmit={handleSubmit} className="apply-form">
             <section className="info-section">
               <h3>기본 정보</h3>

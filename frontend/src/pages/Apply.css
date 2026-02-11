@@ -97,6 +97,12 @@
   color: white;
 }
 
+/* 디자인 수정 필요 */
+.badge.applied-check {
+  background: #f3b012;
+  color: white;
+}
+
 .type-badge {
   position: absolute;
   top: 30px;
