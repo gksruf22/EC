@@ -1,46 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import api from '../utils/api';
 import './Apply.css';
 
-// 지원 항목 데이터 (나중에 백엔드 연동 가능)
-const recruitmentList = [
-  {
-    id: 1,
-    title: "2026년 EC 35기 신입 부원 정기 모집",
-    period: "2026.02.01 ~ 2026.03.15",
-    target: "서울과학기술대학교 재학생 (전공 무관)",
-    description: "사람과 컴퓨터를 사랑하는 EC에서 35기 신입 부원을 모집합니다! 함께 스터디하고 프로젝트를 진행하며 성장할 열정 넘치는 분들을 기다립니다.",
-    qualifications: ["개발에 관심이 있는 분", "매주 정기 세미나 참석이 가능한 분", "협업의 가치를 소중히 여기는 분"]
-  },
-  {
-    id: 2,
-    title: "2026 상반기 내부 해커톤 'Endless Hack' 운영진 모집",
-    period: "2026.03.20 ~ 2026.03.30",
-    target: "EC 정부원",
-    description: "EC의 꽃, 해커톤을 기획하고 운영할 운영진을 모집합니다.",
-    qualifications: ["기획 및 디자인에 관심 있는 부원", "행사 운영 경험을 쌓고 싶은 부원"]
-  }
-];
+interface EventItem {
+  id: number;
+  title: string;
+  description: string;
+  eventType: 'RECRUITMENT' | 'GENERAL';
+  status: 'READY' | 'OPEN' | 'CLOSED';
+  startDate: string;
+  endDate: string;
+  generation: number;
+}
 
 const Apply = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // 화면 전환 상태: 'list' | 'detail' | 'form'
+  const [events, setEvents] = useState<EventItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [step, setStep] = useState<'list' | 'detail' | 'form'>('list');
-  const [selectedItem, setSelectedItem] = useState<typeof recruitmentList[0] | null>(null);
+  const [selectedItem, setSelectedItem] = useState<EventItem | null>(null);
 
   const [formData, setFormData] = useState({ motive: '', experience: '' });
 
-  // 리스트에서 항목 클릭 시 상세 정보로 이동
-  const handleItemClick = (item: typeof recruitmentList[0]) => {
+  // Fetch events from backend
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await api.get('/events');
+        setEvents(response.data);
+        setError(null);
+      } catch (err) {
+        console.error('Failed to fetch events:', err);
+        setError('모집 공고를 불러오는데 실패했습니다.');
+      }
+    };
+    fetchEvents();
+  }, []);
+
+  const handleItemClick = (item: EventItem) => {
     setSelectedItem(item);
     setStep('detail');
     window.scrollTo(0, 0);
   };
 
-  // 상세 정보에서 '지원하기' 클릭 시 폼으로 이동 (로그인 체크)
   const handleStartApply = () => {
     if (!isAuthenticated) {
       alert('지원을 위해 로그인이 필요합니다.');
@@ -56,16 +62,48 @@ const Apply = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('제출 데이터:', { recruitmentId: selectedItem?.id, ...user, ...formData });
-    alert('지원이 완료되었습니다!');
-    navigate('/');
+    if (!selectedItem) return;
+
+    try {
+      const payload = {
+        generation: selectedItem.generation,
+        eventId: selectedItem.id,
+        motive: selectedItem.eventType === 'RECRUITMENT' ? formData.motive : '일반 활동 지원',
+        experience: selectedItem.eventType === 'RECRUITMENT' ? formData.experience : '없음'
+      };
+
+      await api.post('/applications', payload);
+      alert('지원이 완료되었습니다!');
+      navigate('/');
+    } catch (error: any) {
+      console.error('Apply failed:', error);
+      const errorData = error.response?.data;
+      const errorMessage = (typeof errorData === 'string' ? errorData : errorData?.message) || '지원 신청에 실패했습니다. 관리자에게 문의해주세요.';
+      alert(errorMessage);
+    }
+  };
+
+  // Helper to format date
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('ko-KR', {
+      year: 'numeric', month: '2-digit', day: '2-digit'
+    });
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'OPEN': return <span className="badge open">모집 중</span>;
+      case 'READY': return <span className="badge ready">모집 예정</span>;
+      case 'CLOSED': return <span className="badge closed">마감</span>;
+      default: return null;
+    }
   };
 
   return (
     <div className="apply-page">
-      {/* --- 1. 리스트 화면 --- */}
+      {/* 1. List View */}
       {step === 'list' && (
         <div className="apply-list-full">
           <div className="List-header">
@@ -73,18 +111,25 @@ const Apply = () => {
             <p className="subtitle">현재 모집 중인 항목을 확인하고 지원하세요.</p>
           </div>
           <div className="recruitment-list-vertical">
-            {recruitmentList.map(item => (
-              <div key={item.id} className="recruitment-card" onClick={() => handleItemClick(item)}>
-                <span className="badge">모집 중</span>
-                <h3>{item.title}</h3>
-                <p className="period">{item.period}</p>
-              </div>
-            ))}
+            {error ? (
+              <p className="no-data error">{error}</p>
+            ) : events.length === 0 ? (
+              <p className="no-data">현재 진행 중인 모집이 없습니다.</p>
+            ) : (
+              events.map(item => (
+                <div key={item.id} className="recruitment-card" onClick={() => handleItemClick(item)}>
+                  {getStatusBadge(item.status)}
+                  <h3>{item.title}</h3>
+                  <p className="period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
+                  <p className="type-badge">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       )}
 
-      {/* --- 2. 상세 정보 화면 --- */}
+      {/* 2. Detail View */}
       {step === 'detail' && selectedItem && (
         <div className="apply-container detail-view">
           <button className="back-btn" onClick={() => setStep('list')}>← 목록으로</button>
@@ -92,30 +137,31 @@ const Apply = () => {
           
           <div className="info-grid">
             <div className="info-item">
-              <strong>신청 기간</strong>
-              <span>{selectedItem.period}</span>
+              <strong>모집 기간</strong>
+              <span>{formatDate(selectedItem.startDate)} ~ {formatDate(selectedItem.endDate)}</span>
             </div>
             <div className="info-item">
-              <strong>지원 자격</strong>
-              <span>{selectedItem.target}</span>
+              <strong>구분</strong>
+              <span>{selectedItem.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</span>
             </div>
           </div>
 
           <div className="detail-content">
             <h3>설명</h3>
-            <p>{selectedItem.description}</p>
-            
-            <h3>상세 요건</h3>
-            <ul>
-              {selectedItem.qualifications.map((q, i) => <li key={i}>{q}</li>)}
-            </ul>
+            <p style={{ whiteSpace: 'pre-line' }}>{selectedItem.description}</p>
           </div>
 
-          <button className="apply-start-btn" onClick={handleStartApply}>지원하기</button>
+          {selectedItem.status === 'OPEN' ? (
+            <button className="apply-start-btn" onClick={handleStartApply}>지원하기</button>
+          ) : selectedItem.status === 'READY' ? (
+            <button className="apply-start-btn" disabled style={{ background: '#ccc', cursor: 'not-allowed' }}>모집 예정</button>
+          ) : (
+            <button className="apply-start-btn" disabled style={{ background: '#999', cursor: 'not-allowed' }}>모집 마감</button>
+          )}
         </div>
       )}
 
-      {/* --- 3. 지원서 작성 폼 (기존 내용) --- */}
+      {/* 3. Form View */}
       {step === 'form' && selectedItem && (
         <div className="apply-container form-view">
           <button className="back-btn" onClick={() => setStep('detail')}>← 이전으로</button>
@@ -130,22 +176,31 @@ const Apply = () => {
               <div className="input-group"><label>전화번호</label><input type="text" value={user?.phoneNumber || ''} disabled /></div>
             </section>
 
-            <section className="content-section">
-              <div className="input-group">
-                <label>지원 동기</label>
-                <textarea name="motive" value={formData.motive} onChange={handleChange} required rows={8} />
-              </div>
-              <div className="input-group">
-                <label>관련 경험</label>
-                <textarea name="experience" value={formData.experience} onChange={handleChange} required rows={8} />
-              </div>
-            </section>
-            <button type="submit" className="submit-btn">제출하기</button>
+            {selectedItem.eventType === 'RECRUITMENT' ? (
+              <section className="content-section">
+                <div className="input-group">
+                  <label>지원 동기</label>
+                  <textarea name="motive" value={formData.motive} onChange={handleChange} required rows={8} placeholder="지원 동기를 작성해주세요." />
+                </div>
+                <div className="input-group">
+                  <label>관련 경험</label>
+                  <textarea name="experience" value={formData.experience} onChange={handleChange} required rows={8} placeholder="관련된 경험이나 프로젝트가 있다면 작성해주세요." />
+                </div>
+              </section>
+            ) : (
+              <section className="content-section">
+                <div className="notice-box">
+                  <p>이 활동은 별도의 지원서 작성 없이 바로 신청이 가능합니다.</p>
+                  <p>아래 '신청하기' 버튼을 누르면 접수가 완료됩니다.</p>
+                </div>
+              </section>
+            )}
+
+            <button type="submit" className="submit-btn">{selectedItem.eventType === 'RECRUITMENT' ? '제출하기' : '신청하기'}</button>
           </form>
         </div>
       )}
     </div>
   );
 };
-
 export default Apply;
