@@ -5,9 +5,12 @@ import com.EC.backend.domain.EventStatus;
 import com.EC.backend.domain.EventType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class EventResponseDto {
     private Long id;
     private String title;
@@ -19,8 +22,13 @@ public class EventResponseDto {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int generation;
+    private boolean isApplied;
 
     public EventResponseDto(Event event) {
+        this(event, false);
+    }
+
+    public EventResponseDto(Event event, boolean isApplied) {
         this.id = event.getId();
         this.title = event.getTitle();
         this.description = event.getDescription();
@@ -29,5 +37,6 @@ public class EventResponseDto {
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
         this.generation = event.getGeneration();
+        this.isApplied = isApplied;
     }
 }

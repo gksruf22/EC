@@ -2,9 +2,12 @@ package com.EC.backend.service;
 
 import com.EC.backend.domain.Event;
 import com.EC.backend.domain.EventStatus;
+import com.EC.backend.domain.Member;
 import com.EC.backend.dto.EventRequestDto;
 import com.EC.backend.dto.EventResponseDto;
+import com.EC.backend.repository.ApplicationRepository;
 import com.EC.backend.repository.EventRepository;
+import com.EC.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,19 +22,44 @@ import java.util.stream.Collectors;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final MemberRepository memberRepository;
+    private final ApplicationRepository applicationRepository;
 
-    // 모든 활동 조회 (Controller의 findAllVisibleEvents와 연결)
-    public List<EventResponseDto> findAllVisibleEvents() {
-        return eventRepository.findAll().stream()
-                .map(EventResponseDto::new) // Entity를 DTO로 변환
+    // 모든 활동 조회 (최신순)
+    public List<EventResponseDto> findAllVisibleEvents(String email) {
+        // 1. 모든 이벤트를 가져옵니다.
+        List<Event> events = eventRepository.findAll();
+
+        // 2. 비로그인 유저라면 무조건 isApplied = false로 반환합니다.
+        if (email == null) {
+            return events.stream()
+                    .map(event -> new EventResponseDto(event, false))
+                    .collect(Collectors.toList());
+        }
+
+        // 3. 로그인 유저라면 각 이벤트에 대해 지원 내역이 있는지 확인합니다.
+        Member member = memberRepository.findByEmail(email).orElse(null);
+
+        return events.stream()
+                .map(event -> {
+                    boolean applied = (member != null) &&
+                            applicationRepository.existsByMemberAndEvent(member, event);
+                    return new EventResponseDto(event, applied);
+                })
                 .collect(Collectors.toList());
     }
 
     // 특정 활동 상세 조회 (Controller의 findById와 연결)
-    public EventResponseDto findById(Long id) {
-        Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 활동을 찾을 수 없습니다. ID: " + id));
-        return new EventResponseDto(event);
+    public EventResponseDto findById(Long id, String email) {
+        Event event = eventRepository.findById(id).orElseThrow();
+        boolean isApplied = false;
+
+        if (email != null) {
+            Member member = memberRepository.findByEmail(email).orElse(null);
+            isApplied = (member != null) && applicationRepository.existsByMemberAndEvent(member, event);
+        }
+
+        return new EventResponseDto(event, isApplied);
     }
 
     // 활동 공고 등록 (관리자)
@@ -66,13 +94,6 @@ public class EventService {
                 .build();
 
         return eventRepository.save(event).getId();
-    }
-
-    // 모든 활동 조회 (최신순)
-    public List<EventResponseDto> getAllEvents() {
-        return eventRepository.findAllByOrderByIdDesc().stream()
-                .map(EventResponseDto::new)
-                .collect(Collectors.toList());
     }
 
     // 3. 활동 상태 변경 (관리자: 마감 처리 등)
