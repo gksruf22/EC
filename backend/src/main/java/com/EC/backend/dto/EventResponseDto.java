@@ -3,6 +3,7 @@ package com.EC.backend.dto;
 import com.EC.backend.domain.Event;
 import com.EC.backend.domain.EventStatus;
 import com.EC.backend.domain.EventType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import java.time.LocalDateTime;
 
@@ -10,6 +11,8 @@ import java.time.LocalDateTime;
 public class EventResponseDto {
     private Long id;
     private String title;
+
+    @NotBlank(message = "공지사항 설명은 필수 입력 항목입니다.")
     private String description;
     private EventType eventType;
     private EventStatus status;

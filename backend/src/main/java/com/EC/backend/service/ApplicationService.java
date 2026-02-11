@@ -60,7 +60,8 @@ public class ApplicationService {
         Application application = Application.builder()
                 .member(member)
                 .event(event)
-                .content(dto.getContent())
+                .motive(dto.getMotive())
+                .experience(dto.getExperience())
                 .status(initialStatus)
                 .generation(dto.getGeneration()) // 기수 정보 포함
                 .build();
@@ -90,7 +91,8 @@ public class ApplicationService {
                 a.getMember().getName(),
                 a.getMember().getStudentId(),
                 a.getMember().getPhoneNumber(),
-                a.getContent(),
+                a.getMotive(),
+                a.getExperience(),
                 a.getStatus()
         );
     }

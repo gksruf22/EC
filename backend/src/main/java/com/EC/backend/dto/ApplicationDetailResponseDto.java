@@ -13,6 +13,7 @@ public class ApplicationDetailResponseDto {
     private String name;            // 이름
     private String studentId;       // 학번
     private String phoneNumber;     // 전화번호
-    private String content;         // 지원 동기 및 관련 경험
+    private String motive;
+    private String experience;
     private ApplicationStatus status; // 현재 상태
 }

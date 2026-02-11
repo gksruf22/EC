@@ -18,7 +18,7 @@ public class Event extends BaseTimeEntity {
     @Column(nullable = false)
     private String title; // 활동 제목
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description; // 활동 내용 설명
 
     @Enumerated(EnumType.STRING)

@@ -3,6 +3,7 @@ package com.EC.backend.controller;
 import com.EC.backend.domain.EventStatus;
 import com.EC.backend.dto.EventRequestDto;
 import com.EC.backend.service.EventService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class AdminEventController {
 
     // 1. 새로운 활동(정기모집/일반활동) 등록
     @PostMapping
-    public ResponseEntity<Long> createEvent(@RequestBody EventRequestDto dto) {
+    public ResponseEntity<Long> createEvent(@Valid @RequestBody EventRequestDto dto) {
         return ResponseEntity.ok(eventService.createEvent(dto));
     }
 
