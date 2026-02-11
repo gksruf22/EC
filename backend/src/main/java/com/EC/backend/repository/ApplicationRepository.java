@@ -25,5 +25,5 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     Optional<Application> findByMemberAndEvent(Member member, Event event);
 
     // 5. [관리자용] 특정 기수의 지원자 명단을 최신순으로 가져오기 (새로 추가)
-    List<Application> findByGenerationOrderByCreatedAtDesc(int generation);
+    List<Application> findByEventGenerationOrderByCreatedAtDesc(int generation);
 }

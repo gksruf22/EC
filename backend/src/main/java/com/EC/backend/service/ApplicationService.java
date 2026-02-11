@@ -63,7 +63,6 @@ public class ApplicationService {
                 .motive(dto.getMotive())
                 .experience(dto.getExperience())
                 .status(initialStatus)
-                .generation(dto.getGeneration()) // 기수 정보 포함
                 .build();
 
         Application savedApplication = applicationRepository.save(application);
@@ -72,7 +71,8 @@ public class ApplicationService {
 
     // 2. 특정 기수 지원자 명단 조회 (관리자 전용)
     public List<AdminApplicationResponseDto> getApplicationsByGeneration(int generation) {
-        return applicationRepository.findByGenerationOrderByCreatedAtDesc(generation).stream()
+        // ⭐️ 바뀐 메서드 이름 호출: findByEventGeneration...
+        return applicationRepository.findByEventGenerationOrderByCreatedAtDesc(generation).stream()
                 .map(a -> new AdminApplicationResponseDto(
                         a.getId(),
                         a.getMember().getName(),
