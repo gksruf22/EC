@@ -44,7 +44,11 @@ public class NoticeService {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 공지사항을 찾을 수 없습니다."));
 
-        // 엔티티 내부의 update 메서드 호출
+        String oldImageUrl = notice.getImageUrl();
+        if (oldImageUrl != null && !oldImageUrl.equals(dto.getImageUrl())) {
+            s3Service.deleteFile(oldImageUrl);
+        }
+
         notice.update(dto.getTitle(), dto.getContent(), dto.getImageUrl());
     }
 
@@ -53,6 +57,7 @@ public class NoticeService {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 공지사항을 찾을 수 없습니다."));
 
+        // ⭐️ 삭제 시 S3 파일도 함께 삭제
         if (notice.getImageUrl() != null) {
             s3Service.deleteFile(notice.getImageUrl());
         }

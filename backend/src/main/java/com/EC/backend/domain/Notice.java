@@ -36,7 +36,7 @@ public class Notice {
         this.title = title;
         this.content = content;
         this.author = author;
-        this.imageUrl = getImageUrl();
+        this.imageUrl = imageUrl;
         this.createdAt = LocalDateTime.now();
     }
 

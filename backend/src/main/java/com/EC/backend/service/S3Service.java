@@ -1,8 +1,10 @@
 package com.EC.backend.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,20 +22,25 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String uploadFile(MultipartFile file, String folderName) throws IOException {
-        // 파일명 중복 방지를 위한 UUID 생성
-        String fileName = folderName + "/" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+    private String sanitize(String filename) {
+        return filename == null ? "file" : filename.replaceAll("[^A-Za-z0-9._-]", "_");
+    }
 
-        // S3에 전송할 메타데이터 설정
+    public String uploadFile(MultipartFile file, String folderName) throws IOException {
+        // 1. 파일명 및 폴더명 정규화
+        String safeFolderName = folderName.replaceAll("[^A-Za-z0-9._-]", "_");
+        String safeFileName = UUID.randomUUID() + "_" + file.getOriginalFilename().replaceAll("[^A-Za-z0-9._-]", "_");
+        String fullPath = safeFolderName + "/" + safeFileName;
+
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
 
-        // S3로 파일 업로드
-        amazonS3.putObject(bucket, fileName, file.getInputStream(), metadata);
+        // 2. S3 업로드 시 PublicRead 권한 부여
+        amazonS3.putObject(new PutObjectRequest(bucket, fullPath, file.getInputStream(), metadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
 
-        // 업로드된 파일의 공개 URL 반환
-        return amazonS3.getUrl(bucket, fileName).toString();
+        return amazonS3.getUrl(bucket, fullPath).toString();
     }
 
     public void deleteFile(String fileUrl) {
