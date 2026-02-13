@@ -112,6 +112,9 @@ const Apply = () => {
             <h1>지원하기</h1>
             <p className="subtitle">현재 모집 중인 항목을 확인하고 지원하세요.</p>
           </div>
+
+          {error && <div className="no-data error">{error}</div>}
+
           <div className="recruitment-list-vertical">
             {events.map(item => (
               <div

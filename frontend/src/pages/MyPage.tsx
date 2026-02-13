@@ -6,7 +6,7 @@ import PasswordChangeModal from '../components/PasswordChangeModal';
 import { useState, useEffect } from 'react';
 
 const MyPage = () => {
-  const { user, logout, loading } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
@@ -29,7 +29,7 @@ const MyPage = () => {
       <div className="mypage-header">
         <h1>마이페이지</h1>
       </div>
-      
+
       <ul className="tablewrite">
         <li>
           <dl>
