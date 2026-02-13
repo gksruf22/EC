@@ -1,0 +1,149 @@
+/* src/pages/admin/ApplicationManagement.css */
+.app-manage-page {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.info-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0f9ff;
+    color: #0369a1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.recruitment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.recruitment-item-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.recruitment-item-card:hover {
+    transform: translateY(-5px);
+    border-color: #38bdf8;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.type-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.type-tag.RECRUITMENT {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.type-tag.GENERAL {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.status-pill {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.status-pill.OPEN {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-pill.READY {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.status-pill.CLOSED {
+    background: #f1f5f9;
+    color: #94a3b8;
+}
+
+.title-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gen-text {
+    font-size: 13px;
+    color: #0ea5e9;
+    font-weight: 700;
+}
+
+.event-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.4;
+}
+
+.count-section {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.count-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #64748b;
+}
+
+.count-label {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+}
+
+.count-number {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1e293b;
+}
+
+.card-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.recruitment-item-card:hover .card-footer {
+    color: #0ea5e9;
+}

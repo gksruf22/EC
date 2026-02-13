@@ -1,0 +1,186 @@
+/* src/pages/admin/ApplicantList.css */
+.applicant-list-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.list-header {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.back-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: #64748b;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.back-link:hover {
+    color: #1e293b;
+}
+
+.title-area h1 {
+    font-size: 24px;
+    color: #1e293b;
+}
+
+.title-area .count {
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* 툴바 */
+.list-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    max-width: 350px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.export-btn {
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 10px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.export-btn:hover {
+    background: #f8fafc;
+}
+
+/* 테이블 */
+.table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.applicant-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.applicant-table th {
+    background: #f8fafc;
+    padding: 16px;
+    text-align: left;
+    font-size: 13px;
+    color: #64748b;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.applicant-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+}
+
+.user-name {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.user-id {
+    color: #64748b;
+    font-family: monospace;
+}
+
+.applied-at {
+    color: #94a3b8;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 상태 배지 */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-badge.PENDING {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.status-badge.PASSED {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-badge.FAILED {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.detail-link-btn {
+    background: #f1f5f9;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.detail-link-btn:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+}

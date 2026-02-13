@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'; // 추가
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -11,14 +11,34 @@ import Login from './pages/Login';
 import MyPage from './pages/MyPage';
 import { AuthProvider } from './context/AuthContext';
 
+// 관리자 페이지 임포트
+import AdminLayout from './pages/admin/AdminLayout';
+import Dashboard from './pages/admin/Dashboard';
+import NoticeManagement from './pages/admin/NoticeManagement';
+import ScheduleManagement from './pages/admin/ScheduleManagement';
+import ApplicationManagement from './pages/admin/ApplicationManagement';
+import ApplicationList from './pages/admin/ApplicationList';
+import ApplicationDetail from './pages/admin/ApplicationDetail';
+import ProtectedRoute from './components/ProtectedRoute';
+
+// 사용자용 레이아웃 (Header/Footer 포함)
+const UserLayout = () => (
+  <>
+    <Header />
+    <main style={{ flex: 1 }}>
+      <Outlet />
+    </main>
+    <Footer />
+  </>
+);
+
 function App() {
   return (
     <AuthProvider>
       <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Header />
-        
-        <main style={{ flex: 1 }}>
-          <Routes>
+        <Routes>
+          {/* 1. 일반 사용자 경로 */}
+          <Route element={<UserLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/members" element={<Members />} />
@@ -27,10 +47,21 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/mypage" element={<MyPage />} />
-          </Routes>
-        </main>
+          </Route>
 
-        <Footer />
+          {/* 2. 관리자 경로 (보호됨) */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="notices" element={<NoticeManagement />} />
+              <Route path="schedules" element={<ScheduleManagement />} />
+              <Route path="applications" element={<ApplicationManagement />} />
+              <Route path="applications/:eventId" element={<ApplicationList />} />
+              <Route path="applications/detail/:id" element={<ApplicationDetail />} />
+            </Route>
+          </Route>
+        </Routes>
       </div>
     </AuthProvider>
   );

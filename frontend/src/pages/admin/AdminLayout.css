@@ -1,0 +1,203 @@
+/* src/pages/admin/AdminLayout.css */
+:root {
+    --admin-sidebar-width: 260px;
+    --admin-sidebar-bg: #1e293b;
+    --admin-active-blue: #38bdf8;
+    --admin-bg-light: #f8fafc;
+    --admin-text-muted: #94a3b8;
+}
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--admin-bg-light);
+}
+
+/* 사이드바 스타일 */
+.admin-sidebar {
+    width: var(--admin-sidebar-width);
+    background: var(--admin-sidebar-bg);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    position: fixed;
+    height: 100vh;
+}
+
+.admin-sidebar.closed {
+    width: 0;
+    transform: translateX(-100%);
+}
+
+.sidebar-header {
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--admin-active-blue);
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.mobile-close {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: var(--admin-text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    background: #334155;
+    color: white;
+}
+
+.nav-link.active {
+    background: #334155;
+    color: var(--admin-active-blue);
+    font-weight: 600;
+}
+
+.nav-icon {
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-text {
+    flex: 1;
+}
+
+.nav-arrow {
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.nav-link.active .nav-arrow {
+    opacity: 1;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid #334155;
+}
+
+.logout-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: none;
+    border: none;
+    color: #f87171;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.logout-button:hover {
+    background: #450a0a;
+}
+
+/* 메인 영역 스타일 */
+.admin-main-wrapper {
+    flex: 1;
+    margin-left: var(--admin-sidebar-width);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.admin-sidebar.closed+.admin-main-wrapper {
+    margin-left: 0;
+}
+
+.admin-top-nav {
+    height: 70px;
+    background: white;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    gap: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.current-page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    flex: 1;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    background: var(--admin-active-blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.admin-page-content {
+    padding: 30px;
+    max-width: 1400px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 100%;
+    }
+
+    .admin-main-wrapper {
+        margin-left: 0;
+    }
+
+    .mobile-close {
+        display: block;
+    }
+}
