@@ -26,4 +26,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     // 5. [관리자용] 특정 기수의 지원자 명단을 최신순으로 가져오기 (새로 추가)
     List<Application> findByEventGenerationOrderByCreatedAtDesc(int generation);
+
+    // 6. [통계용] 특정 활동의 지원자 수 세기
+    int countByEvent(Event event);
 }

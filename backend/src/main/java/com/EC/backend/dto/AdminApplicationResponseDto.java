@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,4 +15,6 @@ public class AdminApplicationResponseDto {
     private String name;
     private String studentId;
     private ApplicationStatus status;
+    private Long eventId;
+    private LocalDateTime appliedAt;
 }

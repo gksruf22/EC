@@ -77,7 +77,9 @@ public class ApplicationService {
                         a.getId(),
                         a.getMember().getName(),
                         a.getMember().getStudentId(),
-                        a.getStatus()))
+                        a.getStatus(),
+                        a.getEvent().getId(),
+                        a.getCreatedAt()))
                 .collect(Collectors.toList());
     }
 
@@ -93,7 +95,10 @@ public class ApplicationService {
                 a.getMember().getPhoneNumber(),
                 a.getMotive(),
                 a.getExperience(),
-                a.getStatus()
+                a.getStatus(),
+                a.getCreatedAt(),
+                a.getEvent().getEventType(),
+                a.getEvent().getTitle()
         );
     }
 
