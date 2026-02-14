@@ -273,3 +273,8 @@
 .react-calendar__month-view__days__day--neighboringMonth {
     opacity: 0.3 !important;
 }
+
+.react-calendar__year-view .react-calendar__tile--hasActive {
+    background-color: rgb(165, 209, 135) !important;
+    color: white !important;
+}

@@ -4,6 +4,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { fetchSchedules } from '../api/schedule';
 
 const Home = () => {
   const originalSlides = [
@@ -55,18 +56,29 @@ const Home = () => {
   }, [current])
 
   const [value, setValue] = useState(new Date());
+  const [events, setEvents] = useState<{ date: string; title: string }[]>([]);
+
+  useEffect(() => {
+    const getSchedules = async () => {
+      try {
+        const data = await fetchSchedules();
+        const formattedEvents = data.map((schedule) => ({
+          date: schedule.startDateTime.split('T')[0],
+          title: schedule.title,
+        }));
+        setEvents(formattedEvents);
+      } catch (error) {
+        console.error('Failed to fetch schedules:', error);
+      }
+    };
+    getSchedules();
+  }, []);
 
   const handleDateChange = (nextValue: any) => {
     if (nextValue instanceof Date) {
       setValue(nextValue);
     }
   };
-
-  const events = [
-    { date: '2026-02-12', title: '정기 세미나' },
-    { date: '2026-02-15', title: '동아리 지원'},
-    { date: '2026-02-28', title: 'MT'},
-  ];
 
   const titleContent = ({ date, view }: { date: Date, view: string }) => {
     if (view === 'month') {
@@ -85,7 +97,7 @@ const Home = () => {
           </button>
 
           <div className="slider-window">
-            <div 
+            <div
               className="slider-track"
               onTransitionEnd={handleTransitionEnd}
               style={{
