@@ -27,15 +27,42 @@
     color: #1e293b;
 }
 
+.title-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .title-area h1 {
     font-size: 24px;
     color: #1e293b;
+    margin: 0;
 }
 
 .title-area .count {
     font-size: 18px;
     color: #94a3b8;
     font-weight: 500;
+}
+
+.edit-event-btn {
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.edit-event-btn:hover {
+    border-color: #cbd5e1;
+    color: #1e293b;
+    background: #f8fafc;
 }
 
 /* 툴바 */
@@ -110,6 +137,16 @@
     padding: 16px;
     border-bottom: 1px solid #f1f5f9;
     font-size: 14px;
+}
+
+/* Clickable Row Styles */
+.applicant-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.applicant-row:hover {
+    background-color: #f8fafc;
 }
 
 .user-name {

@@ -53,10 +53,21 @@
 }
 
 .detail-grid {
-    display: grid;
     grid-template-columns: 350px 1fr;
     gap: 24px;
     align-items: start;
+}
+
+/* Single column layout for non-recruitment */
+.detail-grid.single-column {
+    display: flex;
+    justify-content: center;
+}
+
+.detail-grid.single-column .info-side {
+    width: 100%;
+    /* max-width 제거 또는 늘림 */
+    max-width: 800px;
 }
 
 .detail-card {
@@ -72,39 +83,32 @@
     text-align: center;
 }
 
-.profile-avatar {
-    width: 80px;
-    height: 80px;
-    background: #38bdf8;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    font-weight: 800;
-    margin: 0 auto 20px;
-}
-
 .profile-name {
     font-size: 24px;
     color: #1e293b;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
-.applied-event-name {
-    color: #94a3b8;
-    font-size: 14px;
-    margin-bottom: 25px;
+/* 프로필 바디: 좌우 배치 */
+.profile-body {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 25px;
+    flex-wrap: wrap;
 }
 
 .quick-info {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 20px 0;
-    border-top: 1px solid #f1f5f9;
-    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0;
+    border: none;
 }
 
 .info-row {
@@ -112,12 +116,12 @@
     align-items: center;
     gap: 12px;
     color: #475569;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 /* 상태 제어 버튼 */
 .status-control {
-    margin-top: 25px;
+    margin-top: 0;
     text-align: left;
 }
 
@@ -125,13 +129,15 @@
     font-size: 13px;
     font-weight: 700;
     color: #64748b;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .btn-group {
     display: flex;
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .action-btn {
@@ -139,13 +145,19 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 12px;
+    padding: 10px 16px;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
+    border-radius: 8px;
     background: white;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+.action-btn:hover {
+    background: #f8fafc;
 }
 
 .action-btn.pass:hover {
@@ -206,4 +218,15 @@
     min-height: 300px;
     color: #94a3b8;
     text-align: center;
+}
+
+/* 반응형: 화면이 작아지거나 사이드바가 좁을 때 */
+@media (max-width: 1000px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-body {
+        gap: 20px;
+    }
 }

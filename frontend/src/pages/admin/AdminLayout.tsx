@@ -3,6 +3,7 @@ import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
     Megaphone,
+    Group,
     Calendar,
     Users,
     LogOut,
@@ -22,16 +23,18 @@ const AdminLayout: React.FC = () => {
         const path = location.pathname;
         if (path.includes('dashboard')) return '대시보드';
         if (path.includes('notices')) return '공지사항 & 슬라이드 관리';
-        if (path.includes('schedules')) return '일정 관리';
+        if (path.includes('members')) return '회원 관리';
         if (path.includes('applications')) return '지원 관리';
+        if (path.includes('schedules')) return '일정 관리';
         return '관리자 홈';
     };
 
     const menuItems = [
         { name: '대시보드', path: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
         { name: '공지사항 관리', path: '/admin/notices', icon: <Megaphone size={20} /> },
+        { name: '멤버 관리', path: '/admin/members', icon: <Users size={20} /> },
+        { name: '지원 관리', path: '/admin/applications', icon: <Group size={20} /> },
         { name: '일정 관리', path: '/admin/schedules', icon: <Calendar size={20} /> },
-        { name: '지원 관리', path: '/admin/applications', icon: <Users size={20} /> },
     ];
 
     const handleLogout = () => {
@@ -47,7 +50,7 @@ const AdminLayout: React.FC = () => {
             <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
                 <div className="sidebar-header">
                     <div className="logo" onClick={() => navigate('/')}>
-                        <span className="logo-text">EC ADMIN</span>
+                        <span className="logo-text">EC 관리자 페이지</span>
                     </div>
                     <button className="mobile-close" onClick={() => setIsSidebarOpen(false)}>
                         <X size={24} />
@@ -83,10 +86,6 @@ const AdminLayout: React.FC = () => {
                         <Menu size={24} />
                     </button>
                     <h2 className="current-page-title">{getPageTitle()}</h2>
-                    <div className="admin-profile">
-                        <div className="avatar">A</div>
-                        <span className="admin-name">관리자님</span>
-                    </div>
                 </header>
 
                 <section className="admin-page-content">

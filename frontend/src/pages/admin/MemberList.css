@@ -1,0 +1,137 @@
+.member-list-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.member-list-page .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.member-list-page .list-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.member-list-page .count {
+    font-size: 16px;
+    color: var(--admin-point-color);
+    background: #ecfdf5;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.member-list-page .list-toolbar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 12px;
+}
+
+.member-list-page .search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    max-width: 400px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: white;
+    padding-left: 12px;
+    transition: all 0.2s;
+}
+
+.member-list-page .search-box:focus-within {
+    border-color: var(--admin-point-color);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+
+.member-list-page .search-box svg {
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.member-list-page .search-box input {
+    width: 100%;
+    padding: 10px 12px 10px 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+}
+
+.member-list-page .table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.member-list-page .member-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.member-list-page .member-table th {
+    background: #f8fafc;
+    padding: 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.member-list-page .member-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: #334155;
+}
+
+.member-list-page .member-table tr:last-child td {
+    border-bottom: none;
+}
+
+.member-list-page .member-table tr:hover {
+    background-color: #f8fafc;
+}
+
+.member-list-page .user-info {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.member-list-page .user-contact {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.member-list-page .role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.member-list-page .role-badge.admin {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.no-results {
+    text-align: center;
+    color: #94a3b8;
+    padding: 40px !important;
+}

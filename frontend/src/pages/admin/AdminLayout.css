@@ -2,7 +2,7 @@
 :root {
     --admin-sidebar-width: 260px;
     --admin-sidebar-bg: #1e293b;
-    --admin-active-blue: #38bdf8;
+    --admin-point-color: rgb(90, 160, 90);
     --admin-bg-light: #f8fafc;
     --admin-text-muted: #94a3b8;
 }
@@ -41,7 +41,7 @@
 .logo {
     font-size: 22px;
     font-weight: 800;
-    color: var(--admin-active-blue);
+    color: var(--admin-point-color);
     cursor: pointer;
     letter-spacing: 1px;
 }
@@ -78,7 +78,7 @@
 
 .nav-link.active {
     background: #334155;
-    color: var(--admin-active-blue);
+    color: var(--admin-point-color);
     font-weight: 600;
 }
 
@@ -162,24 +162,6 @@
     font-weight: 700;
     color: #1e293b;
     flex: 1;
-}
-
-.admin-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.avatar {
-    width: 35px;
-    height: 35px;
-    background: var(--admin-active-blue);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
 }
 
 .admin-page-content {

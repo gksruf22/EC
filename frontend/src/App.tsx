@@ -19,6 +19,9 @@ import ScheduleManagement from './pages/admin/ScheduleManagement';
 import ApplicationManagement from './pages/admin/ApplicationManagement';
 import ApplicationList from './pages/admin/ApplicationList';
 import ApplicationDetail from './pages/admin/ApplicationDetail';
+import EventCreate from './pages/admin/EventCreate';
+import EventEdit from './pages/admin/EventEdit';
+import MemberList from './pages/admin/MemberList';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // 사용자용 레이아웃 (Header/Footer 포함)
@@ -57,8 +60,11 @@ function App() {
               <Route path="notices" element={<NoticeManagement />} />
               <Route path="schedules" element={<ScheduleManagement />} />
               <Route path="applications" element={<ApplicationManagement />} />
+              <Route path="applications/new" element={<EventCreate />} />
               <Route path="applications/:eventId" element={<ApplicationList />} />
+              <Route path="applications/edit/:id" element={<EventEdit />} />
               <Route path="applications/detail/:id" element={<ApplicationDetail />} />
+              <Route path="members" element={<MemberList />} />
             </Route>
           </Route>
         </Routes>

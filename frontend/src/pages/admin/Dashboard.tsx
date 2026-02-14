@@ -1,51 +1,144 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../../utils/api';
 import { Users, FileText, Calendar, Clock, ArrowUpRight } from 'lucide-react';
 import './Dashboard.css';
 
 interface DashboardStats {
-    totalApplicants: number;
+    totalMembers: number;  // changed from totalApplicants
     newApplicantsToday: number;
     ongoingEvents: number;
     upcomingSchedules: number;
 }
 
 const Dashboard: React.FC = () => {
-    // 실제로는 API에서 가져올 데이터 (현재는 초기값/더미)
+    const navigate = useNavigate();
     const [stats, setStats] = useState<DashboardStats>({
-        totalApplicants: 42,
-        newApplicantsToday: 5,
-        ongoingEvents: 2,
-        upcomingSchedules: 3
+        totalMembers: 0,
+        newApplicantsToday: 0,
+        ongoingEvents: 0,
+        upcomingSchedules: 0
     });
+    const [recentApplicants, setRecentApplicants] = useState<any[]>([]);
+    const [upcomingList, setUpcomingList] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                // 병렬 요청으로 데이터 가져오기
+                const [eventsRes, schedulesRes, membersRes] = await Promise.all([
+                    api.get('/events'),
+                    api.get('/schedules'),
+                    api.get('/members')
+                ]);
+
+                const events = eventsRes.data;
+                const schedules = schedulesRes.data;
+                const totalMembers = membersRes.data.length;
+
+                // 1. 진행 중인 모집
+                const ongoing = events.filter((e: any) => e.status === 'OPEN').length;
+
+                // 2. 예정된 일정
+                const today = new Date();
+                const upcomingSchedulesFiltered = schedules.filter((s: any) => new Date(s.startDate) > today);
+                const upcoming = upcomingSchedulesFiltered.length;
+
+                // 다가오는 일정 리스트 (가까운 날짜순 3개)
+                const upcomingTop3 = upcomingSchedulesFiltered
+                    .sort((a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+                    .slice(0, 3);
+
+                setUpcomingList(upcomingTop3);
+
+                // 3. 최근 지원자 (가장 최근 모집 기수 기준)
+                const recruitmentEvents = events.filter((e: any) => e.eventType === 'RECRUITMENT');
+                let todayApps = 0;
+                let recent: any[] = [];
+
+                if (recruitmentEvents.length > 0) {
+                    // 가장 최근 기수 찾기 (ID가 크거나 generation이 큰 순)
+                    const latestEvent = recruitmentEvents.sort((a: any, b: any) => b.id - a.id)[0];
+                    if (latestEvent) {
+                        try {
+                            const appRes = await api.get(`/admin/applications/generation/${latestEvent.generation}`);
+                            const apps = appRes.data;
+
+                            // 오늘 지원자 수
+                            const todayStr = new Date().toDateString();
+                            todayApps = apps.filter((a: any) => new Date(a.appliedAt).toDateString() === todayStr).length;
+
+                            // 최근 3명
+                            recent = apps.slice(0, 3).map((a: any) => ({
+                                id: a.id,
+                                name: a.name,
+                                eventTitle: latestEvent.title, // API 응답에 없으면 이벤트 제목 사용
+                                status: a.status,
+                                appliedAt: a.appliedAt
+                            }));
+                        } catch (appErr) {
+                            console.error("지원자 데이터 로드 실패:", appErr);
+                        }
+                    }
+                }
+
+                setStats({
+                    totalMembers: totalMembers,
+                    newApplicantsToday: todayApps,
+                    ongoingEvents: ongoing,
+                    upcomingSchedules: upcoming
+                });
+                setRecentApplicants(recent);
+
+            } catch (err) {
+                console.error("대시보드 데이터를 불러오는데 실패했습니다.", err);
+            }
+        };
+
+        fetchStats();
+    }, []);
 
     return (
         <div className="dashboard-page">
             {/* 1. 상단 통계 카드 섹션 */}
             <div className="stats-grid">
-                <div className="stat-card blue">
+                <div
+                    className="stat-card green"
+                    onClick={() => navigate('/admin/members')}
+                    style={{ cursor: 'pointer' }}
+                >
                     <div className="stat-icon"><Users size={24} /></div>
                     <div className="stat-info">
-                        <span className="stat-label">전체 지원자</span>
+                        <span className="stat-label">전체 회원수</span>
                         <div className="stat-value-group">
-                            <span className="stat-value">{stats.totalApplicants}명</span>
-                            <span className="stat-change">+{stats.newApplicantsToday} today</span>
+                            <span className="stat-value">{stats.totalMembers}명</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="stat-card green">
+                <div
+                    className="stat-card blue"
+                    onClick={() => navigate('/admin/applications')}
+                    style={{ cursor: 'pointer' }}>
                     <div className="stat-icon"><FileText size={24} /></div>
                     <div className="stat-info">
                         <span className="stat-label">진행 중인 모집</span>
-                        <span className="stat-value">{stats.ongoingEvents}건</span>
+                        <div className="stat-value-group">
+                            <span className="stat-value">{stats.ongoingEvents}건</span>
+                        </div>
                     </div>
                 </div>
 
-                <div className="stat-card purple">
+                <div
+                    className="stat-card purple"
+                    onClick={() => navigate('/admin/schedules')}
+                    style={{ cursor: 'pointer' }}>
                     <div className="stat-icon"><Calendar size={24} /></div>
                     <div className="stat-info">
                         <span className="stat-label">예정된 일정</span>
-                        <span className="stat-value">{stats.upcomingSchedules}개</span>
+                        <div className="stat-value-group">
+                            <span className="stat-value">{stats.upcomingSchedules}개</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,24 +161,22 @@ const Dashboard: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>조한결</td>
-                                    <td>36기 정기 모집</td>
-                                    <td><span className="badge pending">대기</span></td>
-                                    <td>2시간 전</td>
-                                </tr>
-                                <tr>
-                                    <td>김철수</td>
-                                    <td>36기 정기 모집</td>
-                                    <td><span className="badge passed">합격</span></td>
-                                    <td>5시간 전</td>
-                                </tr>
-                                <tr>
-                                    <td>이영희</td>
-                                    <td>개강 파티</td>
-                                    <td><span className="badge pending">대기</span></td>
-                                    <td>어제</td>
-                                </tr>
+                                {recentApplicants.length === 0 ? (
+                                    <tr><td colSpan={4} className="text-center">최근 지원 내역이 없습니다.</td></tr>
+                                ) : (
+                                    recentApplicants.map((applicant) => (
+                                        <tr key={applicant.id}>
+                                            <td>{applicant.name}</td>
+                                            <td>{applicant.eventTitle}</td>
+                                            <td>
+                                                <span className={`badge ${applicant.status === 'PENDING' ? 'pending' : (applicant.status === 'PASSED' ? 'passed' : 'failed')}`}>
+                                                    {applicant.status === 'PENDING' ? '대기' : (applicant.status === 'PASSED' ? '합격' : '불합격')}
+                                                </span>
+                                            </td>
+                                            <td>{new Date(applicant.appliedAt).toLocaleDateString()}</td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -97,20 +188,24 @@ const Dashboard: React.FC = () => {
                         <h3>다가오는 일정</h3>
                     </div>
                     <div className="activity-list">
-                        <div className="activity-item">
-                            <div className="activity-date">Feb 20</div>
-                            <div className="activity-content">
-                                <p className="activity-title">36기 서류 마감</p>
-                                <span className="activity-time"><Clock size={12} /> 23:59</span>
-                            </div>
-                        </div>
-                        <div className="activity-item">
-                            <div className="activity-date">Feb 22</div>
-                            <div className="activity-content">
-                                <p className="activity-title">개강 파티</p>
-                                <span className="activity-time"><Clock size={12} /> 18:00</span>
-                            </div>
-                        </div>
+                        {upcomingList.length === 0 ? (
+                            <p className="no-data">예정된 일정이 없습니다.</p>
+                        ) : (
+                            upcomingList.map((schedule) => (
+                                <div className="activity-item" key={schedule.id}>
+                                    <div className="activity-date">
+                                        {new Date(schedule.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                                    </div>
+                                    <div className="activity-content">
+                                        <p className="activity-title">{schedule.title}</p>
+                                        <span className="activity-time">
+                                            <Clock size={12} />
+                                            {new Date(schedule.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
             </div>

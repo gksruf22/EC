@@ -1,149 +1,146 @@
-/* src/pages/admin/ApplicationManagement.css */
 .app-manage-page {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+    padding: 20px;
 }
 
-.info-badge {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #f0f9ff;
-    color: #0369a1;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 13px;
-    margin-top: 10px;
-}
-
-.recruitment-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
-}
-
-.recruitment-item-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 24px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    position: relative;
-    overflow: hidden;
-}
-
-.recruitment-item-card:hover {
-    transform: translateY(-5px);
-    border-color: #38bdf8;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.card-top {
+.page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
-.type-tag {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
-}
-
-.type-tag.RECRUITMENT {
-    background: #e0f2fe;
-    color: #0369a1;
-}
-
-.type-tag.GENERAL {
-    background: #f1f5f9;
-    color: #475569;
-}
-
-.status-pill {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 20px;
-}
-
-.status-pill.OPEN {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-.status-pill.READY {
-    background: #fef3c7;
-    color: #d97706;
-}
-
-.status-pill.CLOSED {
-    background: #f1f5f9;
-    color: #94a3b8;
-}
-
-.title-section {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.gen-text {
-    font-size: 13px;
-    color: #0ea5e9;
-    font-weight: 700;
-}
-
-.event-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1e293b;
-    line-height: 1.4;
-}
-
-.count-section {
-    background: #f8fafc;
-    padding: 16px;
-    border-radius: 12px;
-}
-
-.count-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.header-text .description {
     color: #64748b;
+    margin: 0;
 }
 
-.count-label {
-    font-size: 14px;
-    font-weight: 500;
-    flex: 1;
-}
-
-.count-number {
-    font-size: 20px;
-    font-weight: 800;
-    color: #1e293b;
-}
-
-.card-footer {
-    margin-top: auto;
+.add-event-btn {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    color: #94a3b8;
-    font-size: 13px;
+    gap: 6px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 600;
+    cursor: pointer;
     transition: 0.2s;
 }
 
-.recruitment-item-card:hover .card-footer {
-    color: #0ea5e9;
+.add-event-btn:hover {
+    background: #2563eb;
+}
+
+.table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.event-title-cell {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gen-badge {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+/* 활동 분류 배지 스타일 */
+.admin-type-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.admin-type-badge.RECRUITMENT {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.admin-type-badge.GENERAL {
+    background-color: #f5f5f5;
+    color: #616161;
+    font-weight: 500;
+}
+
+/* 상태 배지 */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.status-badge.OPEN {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.status-badge.READY {
+    background-color: #fff3e0;
+    color: #ef6c00;
+    border: 1px solid #ffe0b2;
+}
+
+.status-badge.CLOSED {
+    background-color: #f5f5f5;
+    color: #757575;
+    border: 1px solid #e0e0e0;
+}
+
+.view-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #555;
+    transition: all 0.2s;
+    margin: 0 auto;
+}
+
+.view-btn:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+    color: #333;
 }

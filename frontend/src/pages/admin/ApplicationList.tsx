@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, FileDown, ExternalLink, UserCheck, UserX, Clock } from 'lucide-react';
+import { ArrowLeft, Search, FileDown, UserCheck, UserX, Clock, Edit } from 'lucide-react';
 import api from '../../utils/api';
 import './ApplicationList.css';
 
@@ -19,6 +19,7 @@ const ApplicantList: React.FC = () => {
     const [applicants, setApplicants] = useState<Applicant[]>([]);
     const [eventTitle, setEventTitle] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [isRecruitment, setIsRecruitment] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -26,13 +27,35 @@ const ApplicantList: React.FC = () => {
 
     const fetchData = async () => {
         try {
-            // 1. 이벤트 정보 가져오기 (제목 표시용)
-            const eventRes = await api.get(`/admin/events/${eventId}`);
-            setEventTitle(eventRes.data.title);
+            if (!eventId) return;
 
-            // 2. 지원자 명단 가져오기
-            const applicantRes = await api.get(`/admin/events/${eventId}/applicants`);
-            setApplicants(applicantRes.data);
+            // 1. 이벤트 정보 가져오기 (제목 및 기수 확인용)
+            // 관리자용 이벤트 상세가 없으므로 일반 이벤트 API 사용
+            const eventRes = await api.get(`/events/${eventId}`);
+            const eventData = eventRes.data;
+            setEventTitle(eventData.title);
+            setIsRecruitment(eventData.eventType === 'RECRUITMENT');
+
+            // 2. 해당 기수의 지원자 명단 가져오기
+            // 백엔드는 기수 단위로 지원자를 반환하므로, 가져온 후 eventId로 필터링해야 함
+            const generation = eventData.generation;
+            const applicantRes = await api.get(`/admin/applications/generation/${generation}`);
+
+            // 3. 현재 이벤트에 해당하는 지원자만 필터링 및 데이터 매핑
+            const mappedApplicants = applicantRes.data
+                .filter((app: any) => app.eventId === Number(eventId))
+                .map((app: any) => ({
+                    id: app.id,
+                    name: app.name,
+                    studentId: app.studentId,
+                    // 백엔드 status (PENDING, APPROVED, REJECTED, PASSED) -> 프론트 status 매핑
+                    status: app.status === 'REJECTED' ? 'FAILED' :
+                        (app.status === 'APPROVED' ? 'PENDING' : app.status),
+                    // APPROVED(서류합격)는 우선 대기/진행중으로 처리하거나 별도 상태 추가 필요
+                    appliedAt: app.appliedAt
+                }));
+
+            setApplicants(mappedApplicants);
         } catch (err) {
             console.error("데이터 로드 실패:", err);
         }
@@ -41,6 +64,13 @@ const ApplicantList: React.FC = () => {
     // CSV 내보내기 (간이 기능)
     const exportToCSV = () => {
         alert("엑셀 추출 기능을 준비 중입니다.");
+    };
+
+    // 공고 수정 페이지로 이동
+    const handleEditEvent = () => {
+        if (eventId) {
+            navigate(`/admin/applications/edit/${eventId}`);
+        }
     };
 
     const filteredApplicants = applicants.filter(ap =>
@@ -55,6 +85,9 @@ const ApplicantList: React.FC = () => {
                 </button>
                 <div className="title-area">
                     <h1>{eventTitle} <span className="count">({applicants.length}명)</span></h1>
+                    <button className="edit-event-btn" onClick={handleEditEvent} title="공고 수정">
+                        <Edit size={18} />
+                    </button>
                 </div>
             </div>
 
@@ -81,15 +114,18 @@ const ApplicantList: React.FC = () => {
                             <th>학번</th>
                             <th>지원 일시</th>
                             <th>상태</th>
-                            <th className="text-center">상세보기</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredApplicants.length === 0 ? (
-                            <tr><td colSpan={5} className="no-results">조건에 맞는 지원자가 없습니다.</td></tr>
+                            <tr><td colSpan={4} className="no-results">조건에 맞는 지원자가 없습니다.</td></tr>
                         ) : (
                             filteredApplicants.map((ap) => (
-                                <tr key={ap.id}>
+                                <tr
+                                    key={ap.id}
+                                    className={isRecruitment ? "applicant-row" : ""}
+                                    onClick={() => isRecruitment && navigate(`/admin/applications/detail/${ap.id}`)}
+                                >
                                     <td className="user-name">{ap.name}</td>
                                     <td className="user-id">{ap.studentId}</td>
                                     <td className="applied-at">
@@ -101,14 +137,6 @@ const ApplicantList: React.FC = () => {
                                             {ap.status === 'PASSED' && <><UserCheck size={12} /> 합격</>}
                                             {ap.status === 'FAILED' && <><UserX size={12} /> 불합격</>}
                                         </span>
-                                    </td>
-                                    <td className="text-center">
-                                        <button
-                                            className="detail-link-btn"
-                                            onClick={() => navigate(`/admin/applications/detail/${ap.id}`)}
-                                        >
-                                            상세 정보 <ExternalLink size={14} />
-                                        </button>
                                     </td>
                                 </tr>
                             ))
