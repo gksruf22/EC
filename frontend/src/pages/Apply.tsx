@@ -157,7 +157,9 @@ const Apply = () => {
           {selectedItem.applied ? (
             <button className="apply-start-btn completed" disabled>이미 신청한 활동입니다</button>
           ) : selectedItem.status === 'OPEN' ? (
-            <button className="apply-start-btn" onClick={handleStartApply}>지원하기</button>
+            <button className="apply-start-btn" onClick={handleStartApply}>
+              {selectedItem.eventType === 'RECRUITMENT' ? '지원하기' : '신청하기'}
+            </button>
           ) : (
             <button className="apply-start-btn" disabled style={{ background: '#999', cursor: 'not-allowed' }}>
               {selectedItem.status === 'READY' ? '모집 예정' : '모집 마감'}
@@ -170,18 +172,16 @@ const Apply = () => {
       {step === 'form' && selectedItem && (
         <div className="apply-container form-view">
           <button className="back-btn" onClick={() => setStep('detail')}>← 이전으로</button>
-          <h1>지원서 작성</h1>
-          <p className="selected-title">{selectedItem.title}</p>
+          <h1>{selectedItem.eventType === 'RECRUITMENT' ? '지원서 작성' : '신청서 작성'}</h1>
 
           <form onSubmit={handleSubmit} className="apply-form">
             <section className="info-section">
-              <h3>기본 정보</h3>
               <div className="input-group"><label>이름</label><input type="text" value={user?.name || ''} disabled /></div>
               <div className="input-group"><label>학번</label><input type="text" value={user?.studentId || ''} disabled /></div>
               <div className="input-group"><label>전화번호</label><input type="text" value={user?.phoneNumber || ''} disabled /></div>
             </section>
 
-            {selectedItem.eventType === 'RECRUITMENT' ? (
+            {selectedItem.eventType === 'RECRUITMENT' && (
               <section className="content-section">
                 <div className="input-group">
                   <label>지원 동기</label>
@@ -190,13 +190,6 @@ const Apply = () => {
                 <div className="input-group">
                   <label>관련 경험</label>
                   <textarea name="experience" value={formData.experience} onChange={handleChange} required rows={8} placeholder="관련된 경험이나 프로젝트가 있다면 작성해주세요." />
-                </div>
-              </section>
-            ) : (
-              <section className="content-section">
-                <div className="notice-box">
-                  <p>이 활동은 별도의 지원서 작성 없이 바로 신청이 가능합니다.</p>
-                  <p>아래 '신청하기' 버튼을 누르면 접수가 완료됩니다.</p>
                 </div>
               </section>
             )}

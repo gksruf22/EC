@@ -1,0 +1,159 @@
+.members-page {
+    padding: 0;
+    background-color: #fcfcfc;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.members-hero {
+    background: linear-gradient(0deg, rgb(90, 160, 90) 0%, rgb(180, 210, 160) 100%);
+    padding: 120px 0;
+    text-align: center;
+}
+
+.members-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.members-hero p {
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.members-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.section-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Main Executives (President, VP) */
+.main-executives {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+}
+
+/* Team Leaders (Rest) */
+.team-leaders {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    /* Constrain width to force wrapping if needed, though flex-wrap handles small screens */
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+
+    .main-executives,
+    .team-leaders {
+        gap: 20px;
+    }
+}
+
+.member-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    text-align: center;
+    border: 1px solid #eee;
+    width: 280px;
+    /* Fixed width for consistent flex items */
+}
+
+.member-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.image-wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border: 3px solid rgb(90, 160, 90);
+    padding: 3px;
+    background-color: white;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.member-info {
+    width: 100%;
+}
+
+.member-info .role {
+    color: rgb(90, 160, 90);
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.member-info .name {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.department-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: #777;
+    font-size: 0.95rem;
+}
+
+.separator {
+    color: #ddd;
+}
+
+.section-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 80px auto;
+    width: 100%;
+    max-width: 1000px;
+}

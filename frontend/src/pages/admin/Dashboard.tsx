@@ -146,7 +146,7 @@ const Dashboard: React.FC = () => {
             <div className="dashboard-main-grid">
                 {/* 2. 최근 지원 현황 (테이블) */}
                 <div className="dashboard-section recent-applicants">
-                    <div className="section-header">
+                    <div className="dashboard-section-header">
                         <h3>최근 지원 현황</h3>
                         <button className="view-all-btn">전체보기 <ArrowUpRight size={16} /></button>
                     </div>
@@ -184,7 +184,7 @@ const Dashboard: React.FC = () => {
 
                 {/* 3. 다가오는 일정 요약 */}
                 <div className="dashboard-section upcoming-list">
-                    <div className="section-header">
+                    <div className="dashboard-section-header">
                         <h3>다가오는 일정</h3>
                     </div>
                     <div className="activity-list">
