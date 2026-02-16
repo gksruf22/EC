@@ -25,7 +25,17 @@ public class EmailService {
         if(memberRepository.findByEmail(email).isPresent()) {
             throw new IllegalStateException("이미 가입된 이메일입니다.");
         }
+        sendCode(email, "EC 회원가입 인증번호");
+    }
 
+    public void sendPasswordResetCode(String email) {
+        if(memberRepository.findByEmail(email).isEmpty()) {
+            throw new IllegalStateException("가입되지 않은 이메일입니다.");
+        }
+        sendCode(email, "EC 비밀번호 재설정 인증번호");
+    }
+
+    private void sendCode(String email, String subject) {
         String code = String.valueOf((int)(Math.random() * 899999) + 100000);
 
         redisTemplate.opsForValue().set(
@@ -34,7 +44,7 @@ public class EmailService {
                 Duration.ofSeconds(VERIFICATION_LIMIT_TIME)
         );
 
-        sendMail(email, code);
+        sendMail(email, code, subject);
     }
 
     public boolean verifyCode(String email, String code) {
@@ -61,20 +71,20 @@ public class EmailService {
         return Boolean.TRUE.equals(redisTemplate.hasKey(KEY_PREFIX_AUTH_COMPLETE + email));
     }
 
-    private void sendMail(String email, String code) {
+    private void sendMail(String email, String code, String subject) {
         try {
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             // MimeMessageHelper를 사용해 멀티파트 메시지 설정 가능 (UTF-8 지정)
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             helper.setTo(email);
-            helper.setSubject("EC 회원가입 인증번호 안내");
+            helper.setSubject(subject);
 
             // HTML 형식의 메일 본문 작성
             String htmlContent =
                     "<div style='background-color: #f4f4f4; padding: 40px; font-family: Arial, sans-serif;'>" +
                             "<div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; shadow: 0 4px 6px rgba(0,0,0,0.1);'>" +
-                            "<h2 style='color: #2D3E50; text-align: center;'>EC 회원가입 인증번호</h2>" +
+                            "<h2 style='color: #2D3E50; text-align: center;'>" + subject + "</h2>" +
                             "<p style='font-size: 16px; color: #555; text-align: center'>아래 인증 번호를 입력하여 가입 절차를 완료해 주세요.</p>" +
                             "<div style='margin: 30px 0; padding: 20px; background-color: #F8F9FA; border-radius: 4px; text-align: center;'>" +
                             "<span style='font-size: 32px; font-weight: bold; color: rgba(90, 160, 90); letter-spacing: 5px;'>" + code + "</span>" +

@@ -64,7 +64,7 @@
   text-align: center;
 }
 
-.submit-btn {
+.login-submit-btn {
   width: 100%;
   padding: 14px;
   background-color: rgb(90, 160, 90);
@@ -77,11 +77,11 @@
   transition: background-color 0.3s;
 }
 
-.submit-btn:hover:not(:disabled) {
+.login-submit-btn:hover:not(:disabled) {
   background-color: rgb(150, 200, 150);
 }
 
-.submit-btn:disabled {
+.login-submit-btn:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
@@ -94,11 +94,19 @@
 }
 
 .signup-link a {
-  color: #4a90e2;
+  color: rgb(90, 160, 90);
   text-decoration: none;
   font-weight: 500;
 }
 
 .signup-link a:hover {
   text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .login-box {
+    padding: 30px 20px;
+    width: 90%;
+  }
 }

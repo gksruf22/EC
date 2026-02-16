@@ -17,7 +17,7 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
-  
+
   // 이메일 인증 관련 상태
   const [emailSending, setEmailSending] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -28,10 +28,6 @@ const Signup = () => {
   const handleSendEmailCode = async () => {
     if (!formData.email) {
       setEmailError('이메일을 입력해주세요.');
-      return;
-    }
-    if (!formData.email.endsWith('@seoultech.ac.kr')) {
-      setEmailError('잘못된 이메일 형식입니다.');
       return;
     }
 
@@ -79,6 +75,23 @@ const Signup = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
+    if (name === 'phoneNumber') {
+      const numbers = value.replace(/[^0-9]/g, '');
+      let formatted = numbers;
+
+      if (numbers.length <= 3) {
+        formatted = numbers;
+      } else if (numbers.length <= 7) {
+        formatted = `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+      } else {
+        formatted = `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+      }
+
+      setFormData(prev => ({ ...prev, phoneNumber: formatted }));
+      setError('');
+      return;
+    }
+
     // 이메일 입력 시 에러 초기화 및 인증 상태 리셋
     if (name === 'email') {
       setEmailError(null);
@@ -90,7 +103,7 @@ const Signup = () => {
         emailCode: ''
       }));
       setError('');
-      return; 
+      return;
     }
 
     setFormData({
@@ -98,7 +111,7 @@ const Signup = () => {
       [name]: value,
     });
     setError('');
-    
+
     if (name === 'password' || name === 'confirmPassword') {
       setPasswordMatch(null);
     }
@@ -111,12 +124,9 @@ const Signup = () => {
   };
 
   const validateForm = () => {
-    if (!formData.email.endsWith('@seoultech.ac.kr')) {
-      setError('서울과학기술대학교 이메일(@seoultech.ac.kr)로만 가입 가능합니다.');
-      return false;
-    }
-    if (formData.password.length < 6) {
-      setError('비밀번호는 최소 6자 이상이어야 합니다.');
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      setError('비밀번호는 8자 이상이어야 하며, 영문, 숫자, 특수문자(@$!%*#?&)를 모두 포함해야 합니다.');
       return false;
     }
     if (formData.password !== formData.confirmPassword) {
@@ -136,7 +146,7 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -155,7 +165,7 @@ const Signup = () => {
 
       const response = await api.post('/members/signup', signupData);
       console.log('회원가입 성공, ID:', response.data);
-      
+
       alert('회원가입이 완료되었습니다!');
       navigate('/login');
     } catch (err: any) {
@@ -203,9 +213,9 @@ const Signup = () => {
                 disabled={isEmailVerified}
               />
               {!isEmailSent ? (
-                <button 
-                  type="button" 
-                  className="verify-btn" 
+                <button
+                  type="button"
+                  className="verify-btn"
                   onClick={handleSendEmailCode}
                   disabled={emailSending || isEmailVerified}
                 >
@@ -213,17 +223,17 @@ const Signup = () => {
                 </button>
               ) : !isEmailVerified ? (
                 <>
-                  <button 
-                    type="button" 
-                    className="verify-btn confirm-btn" 
+                  <button
+                    type="button"
+                    className="verify-btn confirm-btn"
                     onClick={handleVerifyEmailCode}
                     disabled={emailVerifying}
                   >
                     {emailVerifying ? '확인 중...' : '인증 확인'}
                   </button>
-                  <button 
-                    type="button" 
-                    className="verify-btn resend-btn" 
+                  <button
+                    type="button"
+                    className="verify-btn resend-btn"
                     onClick={handleSendEmailCode}
                     disabled={emailSending}
                   >
@@ -235,7 +245,10 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">비밀번호</label>
+            <label htmlFor="password">
+              비밀번호
+              <span className="password-requirements"> (8자 이상, 영문/숫자/특수문자 포함)</span>
+            </label>
             <input
               type="password"
               id="password"
@@ -243,7 +256,7 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
               onBlur={handlePasswordBlur}
-              placeholder="최소 6자 이상"
+              placeholder="8자 이상, 영문/숫자/특수문자 포함"
               required
             />
           </div>
@@ -312,7 +325,7 @@ const Signup = () => {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button type="submit" className="submit-btn" disabled={loading}>
+          <button type="submit" className="signup-submit-btn" disabled={loading}>
             {loading ? '처리 중...' : '회원가입'}
           </button>
         </form>

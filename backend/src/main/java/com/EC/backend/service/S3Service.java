@@ -1,7 +1,6 @@
 package com.EC.backend.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -36,9 +35,8 @@ public class S3Service {
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
 
-        // 2. S3 업로드 시 PublicRead 권한 부여
-        amazonS3.putObject(new PutObjectRequest(bucket, fullPath, file.getInputStream(), metadata)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+        // 2. S3 업로드 (ACL 설정 제거 - 버킷 정책 설정 따름)
+        amazonS3.putObject(new PutObjectRequest(bucket, fullPath, file.getInputStream(), metadata));
 
         return amazonS3.getUrl(bucket, fullPath).toString();
     }

@@ -97,6 +97,20 @@ public class MemberService {
     }
 
     @Transactional
+    public void resetPassword(String email, String newPassword) {
+        // 이메일 인증 체크
+        if (!emailService.isVerified(email)) {
+            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
+        }
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        member.updatePassword(encodedPassword);
+    }
+
+    @Transactional
     public void logout(String token) {
         long expiration = jwtTokenProvider.getExpiration(token);
         long now = new Date().getTime();

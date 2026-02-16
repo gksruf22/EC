@@ -48,4 +48,24 @@ public class HomeSlideService {
 
         slideRepository.delete(slide);
     }
+
+    // 슬라이드 수정
+    @Transactional
+    public Long updateSlide(Long id, HomeSlideRequestDto dto) {
+        HomeSlide slide = slideRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("슬라이드를 찾을 수 없습니다."));
+
+        slide.update(dto.getImageUrl(), dto.getTitle(), dto.getLinkUrl(), dto.getSequence());
+        return id;
+    }
+
+    // 슬라이드 순서 일괄 수정
+    @Transactional
+    public void updateSlideSequences(List<com.EC.backend.dto.HomeSlideSequenceDto> dtos) {
+        for (com.EC.backend.dto.HomeSlideSequenceDto dto : dtos) {
+            HomeSlide slide = slideRepository.findById(dto.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("슬라이드를 찾을 수 없습니다: " + dto.getId()));
+            slide.updateSequence(dto.getSequence());
+        }
+    }
 }

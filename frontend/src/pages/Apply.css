@@ -1,5 +1,4 @@
 .apply-page {
-  padding: 60px 20px;
   background-color: #fcfcfc;
   min-height: 100vh;
 }
@@ -20,21 +19,91 @@
   padding: 20px 0;
 }
 
-.List-header {
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.apply-hero {
+  background: linear-gradient(0deg, rgb(90, 160, 90) 0%, rgb(180, 210, 160) 100%);
+  padding: 120px 0;
+  text-align: center;
+}
+
+.apply-hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.apply-hero p {
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.apply-table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  width: 90%;
+  margin-top: 40px;
+  margin-inline: auto;
+}
+
+.apply-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  border-top: 2px solid rgb(90, 160, 90);
+  border-bottom: 2px solid rgb(90, 160, 90);
   margin-bottom: 40px;
+}
+
+.apply-table th {
+  padding: 1.2rem 1.5rem;
+  background-color: #f8f9fa;
+  color: #444;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.apply-th-title {
   text-align: left;
 }
 
-.List-header h1 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  margin-bottom: 10px;
+.apply-th-period {
+  text-align: center;
+}
+
+.apply-th-apply {
+  text-align: center;
+}
+
+.apply-th-status {
+  text-align: center;
+}
+
+.apply-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.apply-row:hover {
+  background-color: #f8faff;
+}
+
+.apply-row td {
+  padding: 1.2rem 1.5rem;
   color: #333;
 }
 
-.List-header .subtitle {
-  font-size: 16px;
-  color: #666;
+.apply-td-title {
+  text-align: left;
 }
 
 .recruitment-list-vertical {
@@ -298,28 +367,29 @@
   color: #e74c3c;
 }
 
-.notice-box {
-  background: #f0f8ff;
-  border: 1px solid #d0e3ff;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #004085;
-}
-
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .apply-page {
     padding: 30px 15px;
   }
 
+  .apply-hero {
+    padding: 80px 0;
+  }
+
+  .apply-hero h1 {
+    font-size: 2rem;
+  }
+
   .apply-container {
     padding: 30px 20px;
   }
 
-  .List-header h1 {
-    font-size: 2rem;
+  .apply-table th.apply-th-period,
+  .apply-table td.apply-td-period,
+  .apply-table th.apply-th-status,
+  .apply-table td.apply-td-status {
+    display: none;
   }
 
   .info-grid {
@@ -329,5 +399,10 @@
 
   .recruitment-card {
     padding: 25px;
+  }
+
+  /* Form inputs stack */
+  .input-group {
+    width: 100%;
   }
 }

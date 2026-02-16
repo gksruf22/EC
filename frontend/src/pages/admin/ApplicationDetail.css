@@ -1,0 +1,264 @@
+/* src/pages/admin/ApplicantDetail.css */
+.applicant-detail-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: #64748b;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.PENDING {
+    background: #f59e0b;
+}
+
+.status-dot.PASSED {
+    background: #10b981;
+}
+
+.status-dot.FAILED {
+    background: #ef4444;
+}
+
+.status-dot.APPROVED {
+    background: #4338ca;
+}
+
+.detail-grid {
+    grid-template-columns: 350px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Single column layout for non-recruitment */
+.detail-grid.single-column {
+    display: flex;
+    justify-content: center;
+}
+
+.detail-grid.single-column .info-side {
+    width: 100%;
+    /* max-width 제거 또는 늘림 */
+    max-width: 800px;
+}
+
+.detail-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* 프로필 카드 */
+.profile-card {
+    padding: 30px;
+    text-align: center;
+}
+
+.profile-name {
+    font-size: 24px;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+/* 프로필 바디: 좌우 배치 */
+.profile-body {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 25px;
+    flex-wrap: wrap;
+}
+
+.quick-info {
+    display: flex;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0;
+    border: none;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #475569;
+    font-size: 15px;
+}
+
+/* 상태 제어 버튼 */
+.status-control {
+    margin-top: 0;
+    text-align: left;
+}
+
+.control-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+.btn-group {
+    display: flex;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+.action-btn:hover {
+    background: #f8fafc;
+}
+
+.action-btn.pass:hover {
+    color: #10b981;
+    border-color: #10b981;
+    background: #f0fdf4;
+}
+
+.action-btn.fail:hover {
+    color: #ef4444;
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+.action-btn.pass.active {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+.action-btn.pending:hover {
+    color: #f59e0b;
+    border-color: #f59e0b;
+    background: #fef3c7;
+}
+
+.action-btn.pending.active {
+    background: #f59e0b;
+    color: white;
+    border-color: #f59e0b;
+}
+
+.status-dot.APPROVED {
+    background: #4338ca;
+}
+
+.action-btn.approve:hover {
+    color: #4338ca;
+    border-color: #4338ca;
+    background: #e0e7ff;
+}
+
+.action-btn.approve.active {
+    background: #4338ca;
+    color: white;
+    border-color: #4338ca;
+}
+
+.action-btn.fail.active {
+    background: #ef4444;
+    color: white;
+    border-color: #ef4444;
+}
+
+/* 내용 카드 */
+.content-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.content-card {
+    padding: 24px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    color: #1e293b;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.content-text {
+    line-height: 1.8;
+    color: #334155;
+    white-space: pre-line;
+}
+
+.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #94a3b8;
+    text-align: center;
+}
+
+/* 반응형: 화면이 작아지거나 사이드바가 좁을 때 */
+@media (max-width: 1000px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-body {
+        gap: 20px;
+    }
+}

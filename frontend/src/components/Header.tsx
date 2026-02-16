@@ -39,7 +39,7 @@ const Header = () => {
           <li><Link to="/apply" onClick={closeMenu}>지원하기</Link></li>
           <li><Link to="/notice" onClick={closeMenu}>공지사항</Link></li>
         </ul>
-        
+
         {/* 모바일에서만 보이는 로그인/회원가입 섹션 */}
         <div className="mobile-auth">
           {isAuthenticated ? (
@@ -57,7 +57,7 @@ const Header = () => {
       <div className="header-right">
         {isAuthenticated ? (
           <>
-            <Link to="/mypage" className="user-name">{user?.name}님</Link>
+            <Link to={user?.role === 'ROLE_ADMIN' ? '/admin' : '/mypage'} className="user-name">{user?.name}님</Link>
             <span className="separator">|</span>
             <a href="/" onClick={handleLogout} className="logout">로그아웃</a>
           </>

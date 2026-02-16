@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.email || !formData.password) {
       setError('이메일과 비밀번호를 입력해주세요.');
       return;
@@ -36,9 +36,9 @@ const Login = () => {
     try {
       const response = await api.post('/members/login', formData);
       const token = response.data;
-      
+
       await login(token);
-      
+
       alert('로그인 성공!');
       navigate('/');
     } catch (err: any) {
@@ -81,13 +81,15 @@ const Login = () => {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button type="submit" className="submit-btn" disabled={loading}>
+          <button type="submit" className="login-submit-btn" disabled={loading}>
             {loading ? '로그인 중...' : '로그인'}
           </button>
         </form>
 
         <div className="signup-link">
-          계정이 없으신가요? <a href="/signup">회원가입</a>
+          <a href="/find-password" style={{ marginRight: '15px' }}>비밀번호 찾기</a>
+          |
+          <a href="/signup" style={{ marginLeft: '15px' }}>회원가입</a>
         </div>
       </div>
     </div>

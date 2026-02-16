@@ -21,6 +21,13 @@ public class AdminEventController {
         return ResponseEntity.ok(eventService.createEvent(dto));
     }
 
+    // 1-2. 활동 정보 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateEvent(@PathVariable Long id, @Valid @RequestBody EventRequestDto dto) {
+        eventService.updateEvent(id, dto);
+        return ResponseEntity.ok().build();
+    }
+
     // 2. 활동 상태 변경 (모집 중 -> 마감 등)
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> updateStatus(@PathVariable Long id, @RequestParam EventStatus status) {

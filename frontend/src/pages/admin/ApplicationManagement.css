@@ -1,0 +1,221 @@
+.admin-application-manage-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-application-manage-page .admin-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.admin-application-manage-page .admin-list-header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+}
+
+.admin-application-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.admin-search-bar {
+    flex: 1;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.admin-search-bar input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.add-event-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.add-event-btn:hover {
+    background: #2563eb;
+}
+
+.admin-application-table-container {
+    background: white;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 20px;
+    margin-inline: auto;
+}
+
+.admin-application-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    border-top: 2px solid rgb(90, 160, 90);
+    border-bottom: 2px solid rgb(90, 160, 90);
+}
+
+.admin-application-table th {
+    padding: 1.2rem 1.5rem;
+    background-color: #f8f9fa;
+    color: #444;
+    font-weight: 600;
+    font-size: 1rem;
+    border-bottom: 2px solid #ddd;
+}
+
+.admin-application-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+    color: #334155;
+    text-align: center;
+}
+
+.admin-application-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-application-table tr:hover {
+    background-color: #eaf0fd;
+    cursor: pointer;
+}
+
+.event-title-cell {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gen-badge {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+/* 활동 분류 배지 스타일 */
+.admin-type-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.admin-type-badge.RECRUITMENT {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.admin-type-badge.GENERAL {
+    background-color: #f5f5f5;
+    color: #616161;
+    font-weight: 500;
+}
+
+/* 상태 배지 */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.status-badge.OPEN {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.status-badge.READY {
+    background-color: #fff3e0;
+    color: #ef6c00;
+    border: 1px solid #ffe0b2;
+}
+
+.status-badge.CLOSED {
+    background-color: #f5f5f5;
+    color: #757575;
+    border: 1px solid #e0e0e0;
+}
+
+.view-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #555;
+    transition: all 0.2s;
+    margin: 0 auto;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .admin-application-manage-page {
+        padding: 10px;
+    }
+
+    .admin-application-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .admin-search-bar {
+        max-width: 100%;
+    }
+
+    .add-event-btn {
+        justify-content: center;
+    }
+
+    .admin-application-table-container {
+        overflow-x: auto;
+    }
+
+    .admin-application-table th,
+    .admin-application-table td {
+        white-space: nowrap;
+        padding: 10px;
+    }
+
+    .view-btn {
+        padding: 4px 8px;
+    }
+}

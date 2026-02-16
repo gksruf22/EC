@@ -23,12 +23,17 @@ public class EventResponseDto {
     private LocalDateTime endDate;
     private int generation;
     private boolean isApplied;
+    private int applicantCount;
 
     public EventResponseDto(Event event) {
-        this(event, false);
+        this(event, false, 0);
     }
 
     public EventResponseDto(Event event, boolean isApplied) {
+        this(event, isApplied, 0);
+    }
+
+    public EventResponseDto(Event event, boolean isApplied, int applicantCount) {
         this.id = event.getId();
         this.title = event.getTitle();
         this.description = event.getDescription();
@@ -38,5 +43,6 @@ public class EventResponseDto {
         this.endDate = event.getEndDate();
         this.generation = event.getGeneration();
         this.isApplied = isApplied;
+        this.applicantCount = applicantCount;
     }
 }

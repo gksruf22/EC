@@ -1,0 +1,144 @@
+.check-status-page {
+    background-color: #fcfcfc;
+    min-height: 100vh;
+}
+
+.check-status-hero {
+    background: linear-gradient(0deg, rgb(90, 160, 90) 0%, rgb(180, 210, 160) 100%);
+    padding: 120px 0;
+    text-align: center;
+}
+
+.check-status-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.check-status-hero p {
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.check-status-container {
+    max-width: 600px;
+    margin: -60px auto 0;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 10;
+}
+
+.check-status-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.input-group input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: rgb(90, 160, 90);
+    outline: none;
+}
+
+.submit-btn {
+    margin-top: 10px;
+    padding: 15px;
+    background: rgb(90, 160, 90);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.submit-btn:hover {
+    background: rgb(75, 140, 75);
+}
+
+.result-card {
+    text-align: center;
+    padding: 30px;
+    margin-top: 20px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+}
+
+.result-card.pass {
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+}
+
+.result-card.fail {
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+}
+
+.result-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.result-card.pass h2 {
+    color: #2e7d32;
+}
+
+.result-card.fail h2 {
+    color: #c62828;
+}
+
+.result-card p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #888;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .check-status-hero {
+        padding: 80px 0;
+    }
+
+    .check-status-hero h1 {
+        font-size: 2rem;
+    }
+
+    .check-status-container {
+        width: 85%;
+        padding: 30px 20px;
+    }
+}

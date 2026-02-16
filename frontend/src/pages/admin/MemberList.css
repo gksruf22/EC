@@ -1,0 +1,148 @@
+.admin-member-list-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-member-list-page .admin-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.admin-member-list-page .admin-list-header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+}
+
+.admin-member-list-page .count {
+    font-size: 16px;
+    color: var(--admin-point-color);
+    background: #ecfdf5;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.admin-member-list-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.admin-search-bar {
+    flex: 1;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.admin-search-bar input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.admin-member-list-page .table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.admin-member-list-page .admin-member-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    border-top: 2px solid rgb(90, 160, 90);
+    border-bottom: 2px solid rgb(90, 160, 90);
+}
+
+.admin-member-list-page .admin-member-list-table th {
+    padding: 1.2rem 1.5rem;
+    background-color: #f8f9fa;
+    color: #444;
+    font-weight: 600;
+    font-size: 1rem;
+    border-bottom: 2px solid #ddd;
+}
+
+.admin-member-list-page .admin-member-list-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+    color: #334155;
+    text-align: center;
+}
+
+.admin-member-list-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.admin-member-list-row:hover {
+    background-color: #eaf0fd;
+    cursor: pointer;
+}
+
+.admin-member-list-page .role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.admin-member-list-page .role-badge.admin {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.admin-member-list-page .no-results {
+    text-align: center;
+    color: #94a3b8;
+    padding: 40px !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .admin-member-list-page {
+        padding: 10px;
+    }
+
+    .admin-member-list-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .admin-search-bar {
+        max-width: 100%;
+    }
+
+    .admin-member-list-page .table-container {
+        overflow-x: auto;
+    }
+
+    .admin-member-list-page .admin-member-list-table th,
+    .admin-member-list-page .admin-member-list-table td {
+        white-space: nowrap;
+        padding: 10px;
+    }
+}

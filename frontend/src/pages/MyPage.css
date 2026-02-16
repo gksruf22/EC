@@ -28,7 +28,6 @@
 }
 
 .tablewrite {
-  border-top: 1px solid #ddd;
   margin-bottom: 50px;
   list-style: none;
   padding: 0;
@@ -426,4 +425,45 @@
 
 .btn-st1.bg-green:hover {
   background-color: rgb(150, 200, 150);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .mypage-container {
+    padding: 20px 10px;
+    width: 95%;
+  }
+
+  .tablewrite>li>dl,
+  .tablewrite-pw>li>dl,
+  .tablewrite-newpw>li>dl {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .tablewrite>li>dl>dt,
+  .tablewrite-pw>li>dl>dt,
+  .tablewrite-newpw>li>dl>dt {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    justify-content: flex-start;
+    padding: 10px 15px;
+    text-align: left;
+  }
+
+  .tablewrite>li>dl>dd,
+  .tablewrite-pw>li>dl>dd,
+  .tablewrite-newpw>li>dl>dd {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .btn_w-st1 {
+    flex-direction: column;
+  }
+
+  .btn-st1 {
+    width: 100%;
+  }
 }

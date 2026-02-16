@@ -40,6 +40,25 @@
     color: #ccc;
 }
 
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icons a {
+    color: #ccc;
+    font-size: 24px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-icons a:hover {
+    color: #ffffff;
+}
+
 .footer h3,
 .footer h4 {
     margin-bottom: 20px;
@@ -75,4 +94,26 @@
     margin-top: 30px;
     font-size: 12px !important;
     color: #666 !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .footer-logo-area {
+        justify-content: center;
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+
+    .footer-links,
+    .footer-contact {
+        align-items: center;
+    }
 }
