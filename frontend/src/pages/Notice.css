@@ -1,0 +1,273 @@
+.notice-page {
+    background-color: #fcfcfc;
+    min-height: 100vh;
+}
+
+.notice-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.notice-hero {
+    background: linear-gradient(0deg, rgb(90, 160, 90) 0%, rgb(180, 210, 160) 100%);
+    padding: 120px 0;
+    text-align: center;
+}
+
+.notice-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.notice-hero p {
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.notice-header-section {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.notice-header-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.notice-header-section p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Table Styles */
+.notice-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-top: 20px;
+    width: 90%;
+    margin-inline: auto;
+}
+
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    border-top: 2px solid rgb(90, 160, 90);
+    border-bottom: 2px solid rgb(90, 160, 90);
+}
+
+.notice-table th {
+    padding: 1.2rem 1.5rem;
+    background-color: #f8f9fa;
+    color: #444;
+    font-weight: 600;
+    font-size: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.th-id {
+    width: 10%;
+    text-align: center;
+}
+
+.th-title {
+    width: 70%;
+}
+
+.th-date {
+    width: 20%;
+    text-align: center;
+}
+
+.notice-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #ddd;
+}
+
+.notice-row:hover {
+    background-color: #f8faff;
+}
+
+.notice-row td {
+    padding: 1.2rem 1.5rem;
+    color: #333;
+}
+
+.notice-td-id {
+    text-align: center;
+    color: #666;
+    font-weight: 500;
+}
+
+.notice-td-title {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notice-td-date {
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* Expanded Content */
+.notice-content-row {
+    background-color: #fcfcfc;
+}
+
+.notice-content {
+    padding: 2rem 3rem;
+    border-bottom: 1px solid #eee;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.content-text {
+    color: #444;
+    line-height: 1.7;
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.no-notices {
+    text-align: center;
+    padding: 4rem 0 !important;
+    color: #666;
+}
+
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+.info-grid {
+    display: flex;
+    gap: 30px;
+    margin: 30px 0;
+    padding: 25px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-item strong {
+    color: #333;
+    font-size: 14px;
+}
+
+.info-item span {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.detail-content {
+    margin: 40px 0;
+    line-height: 1.8;
+    color: #444;
+}
+
+.detail-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    margin-top: 30px;
+    border-left: 4px solid rgb(90, 160, 90);
+    padding-left: 10px;
+    color: #222;
+}
+
+.detail-content ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-content li {
+    margin-bottom: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .notice-container {
+        padding: 2rem 1rem;
+    }
+
+    .th-id,
+    .td-id,
+    .th-date,
+    .td-date {
+        display: none;
+    }
+
+    .th-title,
+    .td-title {
+        width: 100%;
+    }
+
+    .notice-table th {
+        display: none;
+        /* Hide header on mobile for simpler look */
+    }
+
+    .notice-row {
+        display: block;
+        padding: 1rem;
+        position: relative;
+    }
+
+    .td-title {
+        display: block;
+        padding: 0;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Inject date via pseudo-element or just hide it? 
+       Actually, let's keep it simple. Accessing data attributes in CSS is hard without changing HTML.
+       Let's just show title.
+    */
+
+    .notice-content {
+        padding: 1.5rem;
+    }
+}

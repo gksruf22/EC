@@ -114,23 +114,40 @@ const Apply = () => {
               <p>현재 모집 중인 항목을 확인하고 지원하세요.</p>
             </div>
           </section>
-          <div className="apply-list-full">
-            {error && <div className="no-data error">{error}</div>}
 
-            <div className="recruitment-list-vertical">
-              {events.map(item => (
-                <div
-                  key={item.id}
-                  className={`recruitment-card ${item.applied ? 'applied' : ''}`}
-                  onClick={() => handleItemClick(item)}
-                >
-                  {item.applied ? <span className="badge applied-check">신청완료 ✅</span> : getStatusBadge(item.status)}
-                  <h3>{item.title}</h3>
-                  <p className="period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
-                  <p className="type-badge">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</p>
-                </div>
-              ))}
-            </div>
+          <div className="apply-table-container">
+            <table className="apply-table">
+              <thead>
+                <tr>
+                  <th className="apply-th-title">제목</th>
+                  <th className="apply-th-period">모집 기간</th>
+                  <th className="apply-th-status">상태</th>
+                  <th className="apply-th-apply">모집 구분</th>
+                </tr>
+              </thead>
+              <tbody>
+                {events.length > 0 ? (
+                  events.map(item => (
+                    <tr
+                      key={item.id}
+                      className={`apply-row ${item.applied ? 'applied' : ''}`}
+                      onClick={() => handleItemClick(item)}
+                    >
+                      <td className="td-title">{item.title}</td>
+                      <td className="td-period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</td>
+                      <td className="td-status">{getStatusBadge(item.status)}</td>
+                      <td className="td-apply">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} className="no-events">
+                      등록된 모집 공고가 없습니다.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </>
       )}

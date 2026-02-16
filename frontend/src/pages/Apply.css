@@ -42,6 +42,73 @@
   color: #ffffff;
 }
 
+.apply-table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  width: 90%;
+  margin-top: 40px;
+  margin-inline: auto;
+}
+
+.apply-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  border-top: 2px solid rgb(90, 160, 90);
+  border-bottom: 2px solid rgb(90, 160, 90);
+}
+
+.apply-table th {
+  padding: 1.2rem 1.5rem;
+  background-color: #f8f9fa;
+  color: #444;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.apply-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #ddd;
+}
+
+.apply-row:hover {
+  background-color: #f8faff;
+}
+
+.apply-row td {
+  padding: 1.2rem 1.5rem;
+  color: #333;
+}
+
+.apply-td-title {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.apply-td-period {
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.apply-td-status {
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.apply-td-apply {
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+}
+
 .recruitment-list-vertical {
   display: flex;
   flex-direction: column;
