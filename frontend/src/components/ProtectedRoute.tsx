@@ -1,5 +1,4 @@
 // src/components/ProtectedRoute.tsx
-import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -14,10 +13,8 @@ const ProtectedRoute = () => {
         );
     }
 
-    console.log("현재 로그인 유저 정보:", user);
-
     if (!isAuthenticated || user?.role !== 'ROLE_ADMIN') {
-        alert(`접근 권한이 없습니다. (현재 권한: ${user?.role || '없음'})`);
+        alert(`접근 권한이 없습니다.`);
         return <Navigate to="/" replace />;
     }
 

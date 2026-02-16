@@ -9,7 +9,8 @@ import {
     LogOut,
     Menu,
     X,
-    ChevronRight
+    ChevronRight,
+    Monitor
 } from 'lucide-react';
 import './AdminLayout.css';
 
@@ -22,7 +23,8 @@ const AdminLayout: React.FC = () => {
     const getPageTitle = () => {
         const path = location.pathname;
         if (path.includes('dashboard')) return '대시보드';
-        if (path.includes('notices')) return '공지사항 & 슬라이드 관리';
+        if (path.includes('slides')) return '홈 화면 슬라이드 관리';
+        if (path.includes('notices')) return '공지사항 관리';
         if (path.includes('members')) return '회원 관리';
         if (path.includes('applications')) return '지원 관리';
         if (path.includes('schedules')) return '일정 관리';
@@ -31,6 +33,7 @@ const AdminLayout: React.FC = () => {
 
     const menuItems = [
         { name: '대시보드', path: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
+        { name: '홈 슬라이드 관리', path: '/admin/slides', icon: <Monitor size={20} /> },
         { name: '공지사항 관리', path: '/admin/notices', icon: <Megaphone size={20} /> },
         { name: '멤버 관리', path: '/admin/members', icon: <Users size={20} /> },
         { name: '지원 관리', path: '/admin/applications', icon: <Group size={20} /> },

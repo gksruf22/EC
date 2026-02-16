@@ -5,27 +5,49 @@ import { Link } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { fetchSchedules } from '../api/schedule';
+import { getSlides, type HomeSlide } from '../api/homeSlide';
+
+interface DisplaySlide extends HomeSlide {
+  isExternal: boolean;
+}
 
 const Home = () => {
-  const originalSlides = [
-    // 관리자 페이지에서 관리할 수 있게 할 예정(일단은 하드코딩으로)
-    { id: 1, image: 'https://via.placeholder.com/1000x500/333/fff?text=Slide+1', notice: '[공지] 2026년도 신입 부원 모집 안내', path: '/apply', isExternal: false },
-    { id: 2, image: 'https://via.placeholder.com/1000x500/444/fff?text=Slide+2', notice: '[알림] 제 35회 정기 세미나 개최 안내', path: '/notice', isExternal: false },
-    { id: 3, image: 'https://via.placeholder.com/1000x500/555/fff?text=Slide+3', notice: '[소식] 대학생 공모전 안내', path: 'https://google.com', isExternal: true },
-  ];
-
-  const slides = [
-    originalSlides[originalSlides.length - 1],
-    ...originalSlides,
-    originalSlides[0]
-  ]
-
+  const [slides, setSlides] = useState<DisplaySlide[]>([]);
   const [current, setCurrent] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(true);
-  const length = originalSlides.length;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadSlides = async () => {
+      try {
+        const data = await getSlides();
+        if (data.length > 0) {
+          const formattedSlides = data.map(slide => ({
+            ...slide,
+            isExternal: slide.linkUrl.startsWith('http')
+          }));
+
+          // 앞뒤로 복사본 추가 (무한 루프용)
+          setSlides([
+            formattedSlides[formattedSlides.length - 1],
+            ...formattedSlides,
+            formattedSlides[0]
+          ]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch slides:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadSlides();
+  }, []);
+
+  const length = slides.length - 2; // 실제 슬라이드 개수 (앞뒤 복사본 제외)
 
   // 다음 슬라이드 이동 함수
   const nextSlide = () => {
+    if (slides.length <= 1) return;
     if (current >= slides.length - 1) return;
     setIsTransitioning(true);
     setCurrent((prev) => prev + 1);
@@ -33,6 +55,7 @@ const Home = () => {
 
   // 이전 슬라이드 이동 함수
   const prevSlide = () => {
+    if (slides.length <= 1) return;
     if (current <= 0) return;
     setIsTransitioning(true);
     setCurrent((prev) => prev - 1);
@@ -51,9 +74,10 @@ const Home = () => {
 
   // 자동 슬라이드 설정 (3초마다 실행)
   useEffect(() => {
+    if (slides.length <= 3) return; // 슬라이드가 1개 이하일 경우 (앞뒤 복사본 포함 3개) 자동 슬라이드 안 함
     const timer = setInterval(nextSlide, 3000);
     return () => clearInterval(timer);
-  }, [current])
+  }, [current, slides.length]);
 
   const [value, setValue] = useState(new Date());
   const [events, setEvents] = useState<{ date: string; title: string }[]>([]);
@@ -91,74 +115,94 @@ const Home = () => {
   return (
     <div className="home-container">
       <section className="slider-section">
-        <div className="slider-container">
-          <button className="arrow left-arrow" onClick={prevSlide}>
-            <FaChevronLeft />
-          </button>
-
-          <div className="slider-window">
-            <div
-              className="slider-track"
-              onTransitionEnd={handleTransitionEnd}
-              style={{
-                transform: `translateX(calc(15% - ${current * 70}%))`,
-                transition: isTransitioning ? 'transform 0.6s ease-in-out' : 'none',
-              }}
-            >
-              {slides.map((slide, index) => {
-                const isCurrent = index === current;
-
-                const SlideContent = (
-                  <>
-                    <img src={slide.image} alt="notice" className="slide-image" />
-                    <div className="notice-overlay">
-                      <p className="notice-text">{slide.notice}</p>
-                    </div>
-                  </>
-                );
-
-                return (
-                  <div
-                    key={index}
-                    className={`slide ${isCurrent ? 'activeSlide' : ''}`}
-                    style={{
-                      transition: isTransitioning ? 'transform 0.6s ease-in-out' : 'none',
-                      transform: isCurrent ? 'scale(1)' : 'scale(0.85)',
-                      opacity: isCurrent ? 1 : 0.5,
-                    }}
-                  >
-                    {slide.isExternal ? (
-                      <a href={slide.path} target="_blank" rel="noopener noreferrer" className="slide-link">
-                        {SlideContent}
-                      </a>
-                    ) : (
-                      <Link to={slide.path} className="slide-link">
-                        {SlideContent}
-                      </Link>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+        {isLoading ? (
+          <div className="loading-slider">Loading slides...</div>
+        ) : slides.length === 0 ? (
+          <div className="no-slides-placeholder">
+            등록된 슬라이드가 없습니다.
           </div>
+        ) : (
+          <div className="slider-container">
+            <button className="arrow left-arrow" onClick={prevSlide}>
+              <FaChevronLeft />
+            </button>
 
-          <button className="arrow right-arrow" onClick={nextSlide}>
-            <FaChevronRight />
-          </button>
-        </div>
+            <div className="slider-window">
+              <div
+                className="slider-track"
+                onTransitionEnd={handleTransitionEnd}
+                style={{
+                  transform: `translateX(calc(15% - ${current * 70}%))`,
+                  transition: isTransitioning ? 'transform 0.6s ease-in-out' : 'none',
+                }}
+              >
+                {slides.map((slide, index) => {
+                  const isCurrent = index === current;
 
-        <div className="dots">
-          {originalSlides.map((_, index) => (
-            <span
-              key={index}
-              className={current === index + 1 || (current === 0 && index === length - 1) || (current === length + 1 && index === 0) ? 'dot active' : 'dot'}
-              onClick={() => {
-                setIsTransitioning(true);
-                setCurrent(index + 1);
-              }}
-            ></span>
-          ))}
-        </div>
+                  const SlideContent = (
+                    <>
+                      <img
+                        src={slide.imageUrl}
+                        alt="notice"
+                        className="slide-image"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null; // Infinite loop prevention
+                          target.src = 'https://via.placeholder.com/1000x500?text=Image+Not+Found'; // Fallback
+                          console.error('Image load failed:', slide.imageUrl);
+                        }}
+                      />
+                      <div className="notice-overlay">
+                        <p className="notice-text">{slide.title}</p>
+                      </div>
+                    </>
+                  );
+
+                  return (
+                    <div
+                      key={index}
+                      className={`slide ${isCurrent ? 'activeSlide' : ''}`}
+                      style={{
+                        transition: isTransitioning ? 'transform 0.6s ease-in-out' : 'none',
+                        transform: isCurrent ? 'scale(1)' : 'scale(0.85)',
+                        opacity: isCurrent ? 1 : 0.5,
+                      }}
+                    >
+                      {slide.isExternal ? (
+                        <a href={slide.linkUrl} target="_blank" rel="noopener noreferrer" className="slide-link">
+                          {SlideContent}
+                        </a>
+                      ) : (
+                        <Link to={slide.linkUrl} className="slide-link">
+                          {SlideContent}
+                        </Link>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <button className="arrow right-arrow" onClick={nextSlide}>
+              <FaChevronRight />
+            </button>
+          </div>
+        )}
+
+        {!isLoading && slides.length > 0 && (
+          <div className="dots">
+            {Array.from({ length }).map((_, index) => (
+              <span
+                key={index}
+                className={current === index + 1 || (current === 0 && index === length - 1) || (current === length + 1 && index === 0) ? 'dot active' : 'dot'}
+                onClick={() => {
+                  setIsTransitioning(true);
+                  setCurrent(index + 1);
+                }}
+              ></span>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="calendar-section">

@@ -17,7 +17,7 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
-  
+
   // 이메일 인증 관련 상태
   const [emailSending, setEmailSending] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -28,10 +28,6 @@ const Signup = () => {
   const handleSendEmailCode = async () => {
     if (!formData.email) {
       setEmailError('이메일을 입력해주세요.');
-      return;
-    }
-    if (!formData.email.endsWith('@seoultech.ac.kr')) {
-      setEmailError('잘못된 이메일 형식입니다.');
       return;
     }
 
@@ -79,6 +75,23 @@ const Signup = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
+    if (name === 'phoneNumber') {
+      const numbers = value.replace(/[^0-9]/g, '');
+      let formatted = numbers;
+
+      if (numbers.length <= 3) {
+        formatted = numbers;
+      } else if (numbers.length <= 7) {
+        formatted = `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+      } else {
+        formatted = `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+      }
+
+      setFormData(prev => ({ ...prev, phoneNumber: formatted }));
+      setError('');
+      return;
+    }
+
     // 이메일 입력 시 에러 초기화 및 인증 상태 리셋
     if (name === 'email') {
       setEmailError(null);
@@ -90,7 +103,7 @@ const Signup = () => {
         emailCode: ''
       }));
       setError('');
-      return; 
+      return;
     }
 
     setFormData({
@@ -98,7 +111,7 @@ const Signup = () => {
       [name]: value,
     });
     setError('');
-    
+
     if (name === 'password' || name === 'confirmPassword') {
       setPasswordMatch(null);
     }
@@ -136,7 +149,7 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -155,7 +168,7 @@ const Signup = () => {
 
       const response = await api.post('/members/signup', signupData);
       console.log('회원가입 성공, ID:', response.data);
-      
+
       alert('회원가입이 완료되었습니다!');
       navigate('/login');
     } catch (err: any) {
@@ -203,9 +216,9 @@ const Signup = () => {
                 disabled={isEmailVerified}
               />
               {!isEmailSent ? (
-                <button 
-                  type="button" 
-                  className="verify-btn" 
+                <button
+                  type="button"
+                  className="verify-btn"
                   onClick={handleSendEmailCode}
                   disabled={emailSending || isEmailVerified}
                 >
@@ -213,17 +226,17 @@ const Signup = () => {
                 </button>
               ) : !isEmailVerified ? (
                 <>
-                  <button 
-                    type="button" 
-                    className="verify-btn confirm-btn" 
+                  <button
+                    type="button"
+                    className="verify-btn confirm-btn"
                     onClick={handleVerifyEmailCode}
                     disabled={emailVerifying}
                   >
                     {emailVerifying ? '확인 중...' : '인증 확인'}
                   </button>
-                  <button 
-                    type="button" 
-                    className="verify-btn resend-btn" 
+                  <button
+                    type="button"
+                    className="verify-btn resend-btn"
                     onClick={handleSendEmailCode}
                     disabled={emailSending}
                   >
@@ -312,7 +325,7 @@ const Signup = () => {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button type="submit" className="submit-btn" disabled={loading}>
+          <button type="submit" className="signup-submit-btn" disabled={loading}>
             {loading ? '처리 중...' : '회원가입'}
           </button>
         </form>

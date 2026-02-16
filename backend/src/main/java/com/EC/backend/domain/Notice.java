@@ -24,25 +24,15 @@ public class Notice {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    private String imageUrl;
-
     private LocalDateTime createdAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member author;
-
-    public Notice(String title, String content, Member author) {
+    
+    public Notice(String title, String content) {
         this.title = title;
         this.content = content;
-        this.author = author;
-        this.imageUrl = imageUrl;
         this.createdAt = LocalDateTime.now();
     }
-
-    public void update(String title, String content, String imageUrl) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
-        this.imageUrl = imageUrl;
     }
 }

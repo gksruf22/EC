@@ -43,6 +43,7 @@ public class SecurityConfig {
 
                         // 2. [조회 기능] 일반 유저와 관리자 모두 가능 (공지사항 보기, 일정 보기 등)
                         .requestMatchers(HttpMethod.GET, "/api/notices/**", "/api/calendar/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/slides").permitAll() // 메인 슬라이드 조회 추가
                         .requestMatchers("/api/applications/result").permitAll()
                         .requestMatchers("/api/events/**").permitAll()
                         .requestMatchers("/api/notices/**").permitAll()
@@ -72,7 +73,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(allowedOrigins);
 
         // 허용할 HTTP 메서드
-        configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
         // 허용할 헤더
         configuration.setAllowedHeaders(List.of("*"));

@@ -1,79 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Trash2, Edit2, Monitor } from 'lucide-react';
+import { Plus, Search, Trash2, Edit2, X, Save } from 'lucide-react';
 import api from '../../utils/api';
 import './NoticeManagement.css';
 
 interface Notice {
     id: number;
     title: string;
+    content: string;
     createdAt: string;
-    isSlide: boolean; // 홈 화면 슬라이드 노출 여부
-    author: string;
 }
 
 const NoticeManagement: React.FC = () => {
     const [notices, setNotices] = useState<Notice[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
 
-    // 1. 공지사항 & 슬라이드 데이터 불러오기
+    // Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingNotice, setEditingNotice] = useState<Notice | null>(null);
+    const [formData, setFormData] = useState({ title: '', content: '' });
+
+    // 1. 공지사항 데이터 불러오기
     useEffect(() => {
-        fetchNoticesAndSlides();
+        fetchNotices();
     }, []);
 
-    const fetchNoticesAndSlides = async () => {
+    const fetchNotices = async () => {
         try {
-            const [noticesRes, slidesRes] = await Promise.all([
-                api.get('/notices'), // 공개된 공지사항 목록
-                api.get('/slides')   // 홈 슬라이드 목록
-            ]);
-
-            const fetchedNotices: Notice[] = noticesRes.data;
-            const slides: any[] = slidesRes.data;
-
-            // 슬라이드에 등록된 공지사항인지 확인하여 매핑
-            const noticesWithSlideStatus = fetchedNotices.map((notice) => {
-                const relatedSlide = slides.find(s => s.linkUrl && s.linkUrl.includes(`/notice/${notice.id}`));
-                return {
-                    ...notice,
-                    isSlide: !!relatedSlide,
-                    slideId: relatedSlide ? relatedSlide.id : undefined // 슬라이드 ID 저장 (삭제 등을 위해)
-                };
-            });
-
-            setNotices(noticesWithSlideStatus);
+            const response = await api.get('/notices');
+            setNotices(response.data);
         } catch (err) {
             console.error("데이터를 불러오지 못했습니다.", err);
         }
     };
 
-    // 2. 홈 슬라이드 노출 상태 변경 (토글)
-    const handleSlideToggle = async (notice: Notice & { slideId?: number }) => {
-        const currentStatus = notice.isSlide;
+    // Modal Handlers
+    const handleOpenCreateModal = () => {
+        setEditingNotice(null);
+        setFormData({ title: '', content: '' });
+        setIsModalOpen(true);
+    };
 
+    const handleOpenEditModal = (notice: Notice) => {
+        setEditingNotice(notice);
+        setFormData({ title: notice.title, content: notice.content || '' });
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setEditingNotice(null);
+        setFormData({ title: '', content: '' });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("Handle Submit Called. EditingNotice:", editingNotice);
         try {
-            if (currentStatus) {
-                // 슬라이드 해제 (HomeSlide 삭제)
-                if (notice.slideId) {
-                    await api.delete(`/admin/slides/${notice.slideId}`);
-                }
+            if (editingNotice) {
+                // Edit
+                console.log("Sending PUT request to:", `/admin/notices/${editingNotice.id}`);
+                await api.put(`/admin/notices/${editingNotice.id}`, formData);
+                alert("공지사항이 수정되었습니다.");
             } else {
-                // 슬라이드 등록 (HomeSlide 생성)
-                await api.post('/admin/slides', {
-                    title: notice.title,
-                    imageUrl: "https://via.placeholder.com/800x400", // 임시 이미지 (실제로는 공지사항 이미지나 기본 이미지 사용)
-                    linkUrl: `/notice/${notice.id}`,
-                    sequence: 0
-                });
+                // Create
+                console.log("Sending POST request to: /admin/notices");
+                await api.post('/admin/notices', formData);
+                alert("공지사항이 등록되었습니다.");
             }
-            // 목록 새로고침
-            fetchNoticesAndSlides();
+            fetchNotices();
+            handleCloseModal();
         } catch (err) {
-            console.error(err);
-            alert("슬라이드 상태 변경에 실패했습니다.");
+            console.error("저장 실패:", err);
+            alert("공지사항 저장에 실패했습니다.");
         }
     };
 
-    // 3. 공지사항 삭제
+    // 공지사항 삭제
     const handleDelete = async (id: number) => {
         if (window.confirm("정말로 이 공지사항을 삭제하시겠습니까?")) {
             try {
@@ -97,7 +99,7 @@ const NoticeManagement: React.FC = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <button className="add-btn" onClick={() => alert('공지사항 작성 페이지로 이동')}>
+                <button className="add-btn" onClick={handleOpenCreateModal}>
                     <Plus size={20} /> 새 공지 등록
                 </button>
             </div>
@@ -107,9 +109,7 @@ const NoticeManagement: React.FC = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>슬라이드</th>
                             <th>제목</th>
-                            <th>작성자</th>
                             <th>작성일</th>
                             <th className="text-center">관리</th>
                         </tr>
@@ -120,29 +120,66 @@ const NoticeManagement: React.FC = () => {
                             .map((notice) => (
                                 <tr key={notice.id}>
                                     <td>{notice.id}</td>
-                                    <td>
-                                        {/* 슬라이드 스위치 */}
-                                        <button
-                                            className={`slide-toggle ${notice.isSlide ? 'on' : 'off'}`}
-                                            onClick={() => handleSlideToggle(notice)}
-                                            title={notice.isSlide ? "슬라이드 해제" : "슬라이드 등록"}
-                                        >
-                                            <Monitor size={16} />
-                                            <span>{notice.isSlide ? '노출 중' : '미노출'}</span>
-                                        </button>
-                                    </td>
                                     <td className="notice-title">{notice.title}</td>
-                                    <td>{notice.author}</td>
                                     <td>{new Date(notice.createdAt).toLocaleDateString()}</td>
                                     <td className="actions text-center">
-                                        <button className="icon-btn edit" title="수정"><Edit2 size={16} /></button>
-                                        <button className="icon-btn delete" title="삭제" onClick={() => handleDelete(notice.id)}><Trash2 size={16} /></button>
+                                        <button className="icon-btn edit" title="수정" onClick={() => handleOpenEditModal(notice)}>
+                                            <Edit2 size={16} />
+                                        </button>
+                                        <button className="icon-btn delete" title="삭제" onClick={() => handleDelete(notice.id)}>
+                                            <Trash2 size={16} />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
                     </tbody>
                 </table>
             </div>
+
+            {/* Modal */}
+            {isModalOpen && (
+                <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) handleCloseModal(); }}>
+                    <div className="modal-container">
+                        <div className="modal-header">
+                            <h2>{editingNotice ? '공지사항 수정' : '새 공지사항 등록'}</h2>
+                            <button className="close-btn" onClick={handleCloseModal}>
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="modal-body">
+                                <div className="form-group">
+                                    <label>제목</label>
+                                    <input
+                                        type="text"
+                                        value={formData.title}
+                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                        required
+                                        placeholder="공지사항 제목을 입력하세요"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>내용</label>
+                                    <textarea
+                                        className="content-textarea"
+                                        value={formData.content}
+                                        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                        required
+                                        placeholder="공지사항 내용을 입력하세요"
+                                        rows={10}
+                                    />
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="cancel-btn" onClick={handleCloseModal}>취소</button>
+                                <button type="submit" className="save-btn">
+                                    <Save size={16} /> 저장
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

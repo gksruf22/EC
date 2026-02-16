@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, FileText, Hash } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import './EventForm.css';
 
 interface EventFormProps {

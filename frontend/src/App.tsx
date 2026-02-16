@@ -14,6 +14,7 @@ import { AuthProvider } from './context/AuthContext';
 // 관리자 페이지 임포트
 import AdminLayout from './pages/admin/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
+import HomeSlideManagement from './pages/admin/HomeSlideManagement';
 import NoticeManagement from './pages/admin/NoticeManagement';
 import ScheduleManagement from './pages/admin/ScheduleManagement';
 import ApplicationManagement from './pages/admin/ApplicationManagement';
@@ -57,6 +58,7 @@ function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="slides" element={<HomeSlideManagement />} />
               <Route path="notices" element={<NoticeManagement />} />
               <Route path="schedules" element={<ScheduleManagement />} />
               <Route path="applications" element={<ApplicationManagement />} />

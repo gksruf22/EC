@@ -107,29 +107,32 @@ const Apply = () => {
     <div className="apply-page">
       {/* 1. List View */}
       {step === 'list' && (
-        <div className="apply-list-full">
-          <div className="List-header">
-            <h1>지원하기</h1>
-            <p className="subtitle">현재 모집 중인 항목을 확인하고 지원하세요.</p>
-          </div>
+        <>
+          <section className="apply-hero">
+            <div className="container">
+              <h1>지원하기</h1>
+              <p>현재 모집 중인 항목을 확인하고 지원하세요.</p>
+            </div>
+          </section>
+          <div className="apply-list-full">
+            {error && <div className="no-data error">{error}</div>}
 
-          {error && <div className="no-data error">{error}</div>}
-
-          <div className="recruitment-list-vertical">
-            {events.map(item => (
-              <div
-                key={item.id}
-                className={`recruitment-card ${item.applied ? 'applied' : ''}`}
-                onClick={() => handleItemClick(item)}
-              >
-                {item.applied ? <span className="badge applied-check">신청완료 ✅</span> : getStatusBadge(item.status)}
-                <h3>{item.title}</h3>
-                <p className="period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
-                <p className="type-badge">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</p>
-              </div>
-            ))}
+            <div className="recruitment-list-vertical">
+              {events.map(item => (
+                <div
+                  key={item.id}
+                  className={`recruitment-card ${item.applied ? 'applied' : ''}`}
+                  onClick={() => handleItemClick(item)}
+                >
+                  {item.applied ? <span className="badge applied-check">신청완료 ✅</span> : getStatusBadge(item.status)}
+                  <h3>{item.title}</h3>
+                  <p className="period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
+                  <p className="type-badge">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* 2. Detail View */}

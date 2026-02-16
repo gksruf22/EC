@@ -28,4 +28,8 @@ public class HomeSlide {
         this.linkUrl = linkUrl;
         this.sequence = sequence;
     }
+
+    public void updateSequence(int sequence) {
+        this.sequence = sequence;
+    }
 }

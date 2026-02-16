@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+
 import java.util.List;
 
 @RestController
@@ -18,21 +18,22 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     // 공지사항 전체 조회
-    @GetMapping("/api/notices")
+    @GetMapping("/notices")
     public ResponseEntity<List<NoticeResponseDto>> getAllNotices() {
         return ResponseEntity.ok(noticeService.findAllNotices());
     }
 
     // 공지사항 상세 조회
-    @GetMapping("/api/notices/{id}")
+    @GetMapping("/notices/{id}")
     public ResponseEntity<NoticeResponseDto> getNotice(@PathVariable Long id) {
         return ResponseEntity.ok(noticeService.findById(id));
     }
 
     // 공지사항 등록 (관리자)
-    @PostMapping("/api/admin/notices")
-    public ResponseEntity<Long> createNotice(@RequestBody NoticeRequestDto dto, Principal principal) {
-        return ResponseEntity.ok(noticeService.createNotice(dto, principal.getName()));
+    @PostMapping("/admin/notices")
+    public ResponseEntity<Long> createNotice(@RequestBody NoticeRequestDto dto) {
+        System.out.println("Create Notice Request Received: " + dto.getTitle());
+        return ResponseEntity.ok(noticeService.createNotice(dto));
     }
 
     // 공지사항 수정 (관리자)
@@ -40,6 +41,7 @@ public class NoticeController {
     public ResponseEntity<Void> updateNotice(
             @PathVariable Long id,
             @RequestBody NoticeRequestDto dto) {
+        System.out.println("Update Notice Request Received ID: " + id + ", Title: " + dto.getTitle());
         noticeService.updateNotice(id, dto);
         return ResponseEntity.ok().build();
     }
