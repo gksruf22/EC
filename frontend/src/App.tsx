@@ -11,6 +11,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import FindPassword from './pages/FindPassword';
 import MyPage from './pages/MyPage';
+import CheckStatus from './pages/CheckStatus';
 import { AuthProvider } from './context/AuthContext';
 
 // 관리자 페이지 임포트
@@ -55,6 +56,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/find-password" element={<FindPassword />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/check-status" element={<CheckStatus />} />
           </Route>
 
           {/* 2. 관리자 경로 (보호됨) */}

@@ -186,6 +186,12 @@
     text-decoration: underline;
 }
 
+.slide-link-none {
+    color: #94a3b8;
+    font-size: 13px;
+    font-style: italic;
+}
+
 .slide-actions {
     display: flex;
     gap: 8px;
@@ -197,4 +203,34 @@
     color: #94a3b8;
     background: white;
     border-radius: 12px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .add-slide-form,
+    .slide-item {
+        flex-direction: column;
+    }
+
+    .image-upload-box,
+    .upload-label {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .admin-slide-image {
+        width: 100%;
+        height: 150px;
+    }
+
+    .slide-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
 }

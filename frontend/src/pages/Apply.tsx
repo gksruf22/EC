@@ -121,6 +121,12 @@ const Apply = () => {
             </div>
           </section>
 
+          {error && (
+            <div className="container" style={{ marginTop: '20px', color: 'red', textAlign: 'center' }}>
+              {error}
+            </div>
+          )}
+
           <div className="apply-table-container">
             <table className="apply-table">
               <thead>

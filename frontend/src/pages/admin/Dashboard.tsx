@@ -148,7 +148,7 @@ const Dashboard: React.FC = () => {
                 <div className="dashboard-section recent-applicants">
                     <div className="dashboard-section-header">
                         <h3>최근 지원 현황</h3>
-                        <button className="view-all-btn">전체보기 <ArrowUpRight size={16} /></button>
+                        <button className="view-all-btn" onClick={() => navigate('/admin/applications')}>전체보기 <ArrowUpRight size={16} /></button>
                     </div>
                     <div className="table-wrapper">
                         <table className="summary-table">

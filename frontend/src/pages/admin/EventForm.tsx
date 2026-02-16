@@ -33,6 +33,8 @@ const EventForm: React.FC<EventFormProps> = ({ initialData, onSubmit, isEditMode
         generation: 0
     });
 
+    const [isLimitParticipants, setIsLimitParticipants] = useState(false);
+
     useEffect(() => {
         if (initialData) {
             // 날짜 포맷팅 (ISO string -> YYYY-MM-DDTHH:mm)
@@ -46,6 +48,11 @@ const EventForm: React.FC<EventFormProps> = ({ initialData, onSubmit, isEditMode
                 startDate: formatForInput(initialData.startDate),
                 endDate: formatForInput(initialData.endDate)
             });
+
+            // 초기 데이터에 maxParticipants가 있으면 체크박스 활성화
+            if (initialData.maxParticipants && initialData.maxParticipants > 0) {
+                setIsLimitParticipants(true);
+            }
         }
     }, [initialData]);
 
@@ -57,9 +64,20 @@ const EventForm: React.FC<EventFormProps> = ({ initialData, onSubmit, isEditMode
         }));
     };
 
+    const handleLimitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setIsLimitParticipants(e.target.checked);
+        if (!e.target.checked) {
+            setFormData(prev => ({ ...prev, maxParticipants: 0 }));
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await onSubmit(formData);
+        const dataToSubmit = {
+            ...formData,
+            maxParticipants: isLimitParticipants ? formData.maxParticipants : undefined
+        };
+        await onSubmit(dataToSubmit);
     };
 
     return (
@@ -68,47 +86,42 @@ const EventForm: React.FC<EventFormProps> = ({ initialData, onSubmit, isEditMode
                 <button className="back-btn" onClick={() => navigate(-1)}>
                     <ChevronLeft size={20} /> 뒤로가기
                 </button>
-                <h2>{isEditMode ? '공고 수정' : '공고 등록'}</h2>
             </div>
 
             <form onSubmit={handleSubmit} className="event-form">
+                <h2>{isEditMode ? '공고 수정' : '공고 등록'}</h2>
+
                 <div className="form-group">
                     <label>제목</label>
-                    <div className="input-with-icon">
-                        <input
-                            type="text"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                            required
-                            placeholder="공고 제목을 입력하세요"
-                        />
-                    </div>
+                    <input
+                        type="text"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleChange}
+                        required
+                        placeholder="공고 제목을 입력하세요"
+                    />
                 </div>
 
                 <div className="form-row">
                     <div className="form-group half">
                         <label>활동 분류</label>
-                        <div className="input-with-icon">
-                            <select name="eventType" value={formData.eventType} onChange={handleChange}>
-                                <option value="RECRUITMENT">정기 모집</option>
-                                <option value="GENERAL">일반 활동</option>
-                            </select>
-                        </div>
+                        <select name="eventType" value={formData.eventType} onChange={handleChange}>
+                            <option value="RECRUITMENT">정기 모집</option>
+                            <option value="GENERAL">일반 활동</option>
+                        </select>
                     </div>
                     {formData.eventType === 'RECRUITMENT' && (
                         <div className="form-group half">
                             <label>모집 기수</label>
-                            <div className="input-with-icon">
-                                <input
-                                    type="number"
-                                    name="generation"
-                                    value={formData.generation}
-                                    onChange={handleChange}
-                                    required={formData.eventType === 'RECRUITMENT'}
-                                    min="1"
-                                />
-                            </div>
+                            <input
+                                type="number"
+                                name="generation"
+                                value={formData.generation}
+                                onChange={handleChange}
+                                required={formData.eventType === 'RECRUITMENT'}
+                                min="1"
+                            />
                         </div>
                     )}
                 </div>
@@ -123,43 +136,46 @@ const EventForm: React.FC<EventFormProps> = ({ initialData, onSubmit, isEditMode
                         </select>
                     </div>
                     <div className="form-group half">
-                        <label>최대 인원 (선택)</label>
-                        <div className="input-with-icon">
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            최대 인원 (선택)
                             <input
-                                type="number"
-                                name="maxParticipants"
-                                value={formData.maxParticipants}
-                                onChange={handleChange}
-                                placeholder="제한 없음"
+                                type="checkbox"
+                                checked={isLimitParticipants}
+                                onChange={handleLimitChange}
+                                style={{ width: 'auto' }}
                             />
-                        </div>
+                        </label>
+                        <input
+                            type="number"
+                            name="maxParticipants"
+                            value={formData.maxParticipants || ''}
+                            onChange={handleChange}
+                            placeholder={isLimitParticipants ? "최대 인원 입력" : "제한 없음"}
+                            disabled={!isLimitParticipants}
+                        />
                     </div>
                 </div>
 
                 <div className="form-row">
                     <div className="form-group half">
                         <label>시작 일시</label>
-                        <div className="input-with-icon">
-                            <input
-                                type="datetime-local"
-                                name="startDate"
-                                value={formData.startDate}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
+                        <input
+                            type="datetime-local"
+                            name="startDate"
+                            value={formData.startDate}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                     <div className="form-group half">
                         <label>종료 일시</label>
-                        <div className="input-with-icon">
-                            <input
-                                type="datetime-local"
-                                name="endDate"
-                                value={formData.endDate}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
+                        <input
+                            type="datetime-local"
+                            name="endDate"
+                            value={formData.endDate}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                 </div>
 
@@ -179,8 +195,8 @@ const EventForm: React.FC<EventFormProps> = ({ initialData, onSubmit, isEditMode
                     <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
                     <button type="submit" className="submit-btn">{isEditMode ? '수정 완료' : '등록 하기'}</button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     );
 };
 

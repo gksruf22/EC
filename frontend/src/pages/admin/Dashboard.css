@@ -179,3 +179,23 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .dashboard-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .view-all-btn {
+        align-self: flex-end;
+    }
+}

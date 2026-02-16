@@ -47,7 +47,7 @@
     cursor: default;
 }
 
-.slide.activeSlide .slide-link {
+.slide.activeSlide a.slide-link {
     pointer-events: auto;
     cursor: pointer;
 }
@@ -277,4 +277,38 @@
 .react-calendar__year-view .react-calendar__tile--hasActive {
     background-color: rgb(165, 209, 135) !important;
     color: white !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+
+    .slider-window,
+    .slide {
+        height: 300px;
+    }
+
+    .notice-text {
+        font-size: 1.1rem;
+        padding: 8px 15px;
+    }
+
+    .arrow {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .calendar-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .calendar-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
 }

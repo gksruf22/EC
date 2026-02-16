@@ -76,8 +76,8 @@ const HomeSlideManagement: React.FC = () => {
     };
 
     const handleUpload = async () => {
-        if (!newTitle || !newLink) {
-            alert("제목과 링크를 입력해주세요.");
+        if (!newTitle) {
+            alert("제목을 입력해주세요.");
             return;
         }
 
@@ -213,7 +213,7 @@ const HomeSlideManagement: React.FC = () => {
                         </div>
                     </div>
                     <div className="form-group">
-                        <label>링크 URL (클릭 시 이동)</label>
+                        <label>링크 URL (선택)</label>
                         <div className="link-input-group">
                             <LinkIcon size={18} />
                             <input
@@ -242,9 +242,13 @@ const HomeSlideManagement: React.FC = () => {
                             </div>
                             <div className="slide-info">
                                 <h4>{slide.title}</h4>
-                                <a href={slide.linkUrl} target="_blank" rel="noopener noreferrer" className="slide-link">
-                                    <ExternalLink size={14} /> {slide.linkUrl} (이동 확인)
-                                </a>
+                                {slide.linkUrl ? (
+                                    <a href={slide.linkUrl} target="_blank" rel="noopener noreferrer" className="slide-link">
+                                        <ExternalLink size={14} /> {slide.linkUrl} (이동 확인)
+                                    </a>
+                                ) : (
+                                    <span className="slide-link-none">링크 없음</span>
+                                )}
                             </div>
                             <div className="slide-actions">
                                 <div className="order-actions">

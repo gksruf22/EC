@@ -173,13 +173,29 @@
 @media (max-width: 768px) {
     .admin-sidebar {
         width: 100%;
+        transform: translateX(-100%);
+    }
+
+    .admin-sidebar.open {
+        transform: translateX(0);
     }
 
     .admin-main-wrapper {
         margin-left: 0;
+        width: 100%;
     }
 
     .mobile-close {
         display: block;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .admin-top-nav {
+        padding: 0 20px;
+    }
+
+    .admin-page-content {
+        padding: 20px;
     }
 }

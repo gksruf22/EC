@@ -168,14 +168,20 @@ const Home = () => {
                         opacity: isCurrent ? 1 : 0.5,
                       }}
                     >
-                      {slide.isExternal ? (
-                        <a href={slide.linkUrl} target="_blank" rel="noopener noreferrer" className="slide-link">
-                          {SlideContent}
-                        </a>
+                      {slide.linkUrl ? (
+                        slide.isExternal ? (
+                          <a href={slide.linkUrl} target="_blank" rel="noopener noreferrer" className="slide-link">
+                            {SlideContent}
+                          </a>
+                        ) : (
+                          <Link to={slide.linkUrl} className="slide-link">
+                            {SlideContent}
+                          </Link>
+                        )
                       ) : (
-                        <Link to={slide.linkUrl} className="slide-link">
+                        <div className="slide-link">
                           {SlideContent}
-                        </Link>
+                        </div>
                       )}
                     </div>
                   );

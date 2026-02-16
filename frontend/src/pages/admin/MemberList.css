@@ -119,3 +119,30 @@
     color: #94a3b8;
     padding: 40px !important;
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .admin-member-list-page {
+        padding: 10px;
+    }
+
+    .admin-member-list-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .admin-search-bar {
+        max-width: 100%;
+    }
+
+    .admin-member-list-page .table-container {
+        overflow-x: auto;
+    }
+
+    .admin-member-list-page .admin-member-list-table th,
+    .admin-member-list-page .admin-member-list-table td {
+        white-space: nowrap;
+        padding: 10px;
+    }
+}

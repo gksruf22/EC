@@ -8,7 +8,6 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    margin-bottom: 30px;
 }
 
 .back-btn {
@@ -23,10 +22,12 @@
     font-size: 14px;
 }
 
-.form-header h2 {
-    font-size: 24px;
+.event-form h2 {
+    font-size: 1.5rem;
     color: #1e293b;
     margin: 0;
+    text-align: center;
+    padding-bottom: 20px;
 }
 
 .event-form {
@@ -58,6 +59,31 @@
     font-size: 14px;
     font-weight: 600;
     color: #475569;
+    display: flex;
+    align-items: center;
+    min-height: 24px;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.event-form label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0 0 0 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.event-form input:not([type="checkbox"]),
+.event-form select,
+.event-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+    box-sizing: border-box;
 }
 
 .input-with-icon {

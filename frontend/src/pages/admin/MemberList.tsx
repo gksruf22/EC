@@ -72,7 +72,7 @@ const MemberList: React.FC = () => {
     return (
         <div className="admin-member-list-page">
             <div className="admin-list-header">
-                <h1>전체 회원 관리 <span className="count">{members.length}명</span></h1>
+                <h1>회원 관리 <span className="count">{members.length}명</span></h1>
             </div>
 
             <div className="admin-member-list-toolbar">

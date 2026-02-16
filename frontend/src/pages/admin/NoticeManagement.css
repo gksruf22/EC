@@ -70,8 +70,6 @@
 /* 테이블 스타일 */
 .admin-notice-table-container {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     width: 100%;
     margin-top: 20px;
@@ -296,5 +294,41 @@
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .admin-notice-manage-page {
+        padding: 10px;
+    }
+
+    .admin-notice-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .admin-search-bar {
+        max-width: 100%;
+    }
+
+    .add-btn {
+        justify-content: center;
+    }
+
+    .admin-notice-table-container {
+        overflow-x: auto;
+    }
+
+    .admin-notice-table th,
+    .admin-notice-table td {
+        white-space: nowrap;
+        padding: 10px;
+    }
+
+    .modal-container {
+        width: 95%;
+        max-height: 95vh;
     }
 }

@@ -373,12 +373,23 @@
     padding: 30px 15px;
   }
 
+  .apply-hero {
+    padding: 80px 0;
+  }
+
+  .apply-hero h1 {
+    font-size: 2rem;
+  }
+
   .apply-container {
     padding: 30px 20px;
   }
 
-  .List-header h1 {
-    font-size: 2rem;
+  .apply-table th.apply-th-period,
+  .apply-table td.apply-td-period,
+  .apply-table th.apply-th-status,
+  .apply-table td.apply-td-status {
+    display: none;
   }
 
   .info-grid {
@@ -388,5 +399,10 @@
 
   .recruitment-card {
     padding: 25px;
+  }
+
+  /* Form inputs stack */
+  .input-group {
+    width: 100%;
   }
 }

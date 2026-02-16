@@ -102,3 +102,11 @@
 .signup-link a:hover {
   text-decoration: underline;
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .login-box {
+    padding: 30px 20px;
+    width: 90%;
+  }
+}

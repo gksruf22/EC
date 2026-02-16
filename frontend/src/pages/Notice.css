@@ -40,6 +40,7 @@
     margin-bottom: 1rem;
     background: linear-gradient(135deg, #6e8efb, #a777e3);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -209,46 +210,50 @@
     margin-bottom: 8px;
 }
 
-/* Responsive Design */
+/* Mobile Responsive */
 @media (max-width: 768px) {
     .notice-container {
         padding: 2rem 1rem;
     }
 
-    .th-id,
-    .td-id,
-    .th-date,
-    .td-date {
+    .notice-hero {
+        padding: 80px 0;
+    }
+
+    .notice-hero h1 {
+        font-size: 2rem;
+    }
+
+    .notice-header-section h1 {
+        font-size: 2rem;
+    }
+
+    .notice-table th.notice-th-date,
+    .notice-row td.td-date {
         display: none;
     }
 
-    .th-title,
+    .notice-th-title,
     .td-title {
         width: 100%;
+        display: block;
+        box-sizing: border-box;
+    }
+
+    .notice-row {
+        display: flex;
+        padding: 1rem 0;
     }
 
     .notice-table th {
         display: none;
-        /* Hide header on mobile for simpler look */
+        /* Hide all headers on mobile if we want a list look */
     }
 
-    .notice-row {
-        display: block;
-        padding: 1rem;
-        position: relative;
+    .notice-row td {
+        padding: 0.5rem 1rem;
+        border: none;
     }
-
-    .td-title {
-        display: block;
-        padding: 0;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-
-    /* Inject date via pseudo-element or just hide it? 
-       Actually, let's keep it simple. Accessing data attributes in CSS is hard without changing HTML.
-       Let's just show title.
-    */
 
     .notice-content {
         padding: 1.5rem;

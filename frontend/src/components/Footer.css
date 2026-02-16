@@ -95,3 +95,25 @@
     font-size: 12px !important;
     color: #666 !important;
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .footer-logo-area {
+        justify-content: center;
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+
+    .footer-links,
+    .footer-contact {
+        align-items: center;
+    }
+}

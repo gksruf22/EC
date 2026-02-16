@@ -194,3 +194,20 @@
   background-color: #f0f0f0;
   cursor: not-allowed;
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .signup-box {
+    padding: 30px 20px;
+    width: 90%;
+  }
+
+  .input-with-button {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .verify-btn {
+    width: 100%;
+  }
+}
