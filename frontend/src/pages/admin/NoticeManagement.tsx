@@ -88,9 +88,13 @@ const NoticeManagement: React.FC = () => {
     };
 
     return (
-        <div className="notice-manage-page">
-            <div className="page-header">
-                <div className="search-bar">
+        <div className="admin-notice-manage-page">
+            <div className="admin-list-header">
+                <h1>공지사항 관리</h1>
+            </div>
+
+            <div className="admin-notice-toolbar">
+                <div className="admin-search-bar">
                     <Search size={18} />
                     <input
                         type="text"
@@ -104,14 +108,14 @@ const NoticeManagement: React.FC = () => {
                 </button>
             </div>
 
-            <div className="notice-table-container">
-                <table className="admin-table">
+            <div className="admin-notice-table-container">
+                <table className="admin-notice-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>제목</th>
-                            <th>작성일</th>
-                            <th className="text-center">관리</th>
+                            <th className="admin-notice-th-id">ID</th>
+                            <th className="admin-notice-th-title">제목</th>
+                            <th className="admin-notice-th-date">작성일</th>
+                            <th className="admin-notice-th-manage">관리</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,10 +123,10 @@ const NoticeManagement: React.FC = () => {
                             .filter(n => n.title.includes(searchTerm))
                             .map((notice) => (
                                 <tr key={notice.id}>
-                                    <td>{notice.id}</td>
-                                    <td className="notice-title">{notice.title}</td>
-                                    <td>{new Date(notice.createdAt).toLocaleDateString()}</td>
-                                    <td className="actions text-center">
+                                    <td className="admin-notice-td-id">{notice.id}</td>
+                                    <td className="admin-notice-td-title">{notice.title}</td>
+                                    <td className="admin-notice-td-date">{new Date(notice.createdAt).toLocaleDateString()}</td>
+                                    <td className="admin-notice-td-manage">
                                         <button className="icon-btn edit" title="수정" onClick={() => handleOpenEditModal(notice)}>
                                             <Edit2 size={16} />
                                         </button>
@@ -137,50 +141,52 @@ const NoticeManagement: React.FC = () => {
             </div>
 
             {/* Modal */}
-            {isModalOpen && (
-                <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) handleCloseModal(); }}>
-                    <div className="modal-container">
-                        <div className="modal-header">
-                            <h2>{editingNotice ? '공지사항 수정' : '새 공지사항 등록'}</h2>
-                            <button className="close-btn" onClick={handleCloseModal}>
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <form onSubmit={handleSubmit}>
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <label>제목</label>
-                                    <input
-                                        type="text"
-                                        value={formData.title}
-                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                        required
-                                        placeholder="공지사항 제목을 입력하세요"
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>내용</label>
-                                    <textarea
-                                        className="content-textarea"
-                                        value={formData.content}
-                                        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                        required
-                                        placeholder="공지사항 내용을 입력하세요"
-                                        rows={10}
-                                    />
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="cancel-btn" onClick={handleCloseModal}>취소</button>
-                                <button type="submit" className="save-btn">
-                                    <Save size={16} /> 저장
+            {
+                isModalOpen && (
+                    <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) handleCloseModal(); }}>
+                        <div className="modal-container">
+                            <div className="modal-header">
+                                <h2>{editingNotice ? '공지사항 수정' : '새 공지사항 등록'}</h2>
+                                <button className="close-btn" onClick={handleCloseModal}>
+                                    <X size={20} />
                                 </button>
                             </div>
-                        </form>
+                            <form onSubmit={handleSubmit}>
+                                <div className="modal-body">
+                                    <div className="form-group">
+                                        <label>제목</label>
+                                        <input
+                                            type="text"
+                                            value={formData.title}
+                                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                            required
+                                            placeholder="공지사항 제목을 입력하세요"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>내용</label>
+                                        <textarea
+                                            className="content-textarea"
+                                            value={formData.content}
+                                            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                            required
+                                            placeholder="공지사항 내용을 입력하세요"
+                                            rows={10}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="cancel-btn" onClick={handleCloseModal}>취소</button>
+                                    <button type="submit" className="save-btn">
+                                        <Save size={16} /> 저장
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 

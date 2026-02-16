@@ -124,12 +124,9 @@ const Signup = () => {
   };
 
   const validateForm = () => {
-    if (!formData.email.endsWith('@seoultech.ac.kr')) {
-      setError('서울과학기술대학교 이메일(@seoultech.ac.kr)로만 가입 가능합니다.');
-      return false;
-    }
-    if (formData.password.length < 6) {
-      setError('비밀번호는 최소 6자 이상이어야 합니다.');
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      setError('비밀번호는 8자 이상이어야 하며, 영문, 숫자, 특수문자(@$!%*#?&)를 모두 포함해야 합니다.');
       return false;
     }
     if (formData.password !== formData.confirmPassword) {
@@ -248,7 +245,10 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">비밀번호</label>
+            <label htmlFor="password">
+              비밀번호
+              <span className="password-requirements"> (8자 이상, 영문/숫자/특수문자 포함)</span>
+            </label>
             <input
               type="password"
               id="password"
@@ -256,7 +256,7 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
               onBlur={handlePasswordBlur}
-              placeholder="최소 6자 이상"
+              placeholder="8자 이상, 영문/숫자/특수문자 포함"
               required
             />
           </div>

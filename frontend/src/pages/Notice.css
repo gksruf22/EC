@@ -76,17 +76,11 @@
     border-bottom: 1px solid #ddd;
 }
 
-.th-id {
-    width: 10%;
-    text-align: center;
+.notice-th-title {
+    text-align: left;
 }
 
-.th-title {
-    width: 70%;
-}
-
-.th-date {
-    width: 20%;
+.notice-th-date {
     text-align: center;
 }
 
@@ -105,23 +99,12 @@
     color: #333;
 }
 
-.notice-td-id {
-    text-align: center;
-    color: #666;
-    font-weight: 500;
+.td-title {
+    text-align: left;
 }
 
-.notice-td-title {
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.notice-td-date {
+.td-date {
     text-align: center;
-    color: #888;
-    font-size: 0.9rem;
 }
 
 /* Expanded Content */

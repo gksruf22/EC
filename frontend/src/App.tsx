@@ -5,9 +5,11 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Members from './pages/Members';
 import Notice from './pages/Notice';
+import NoticeDetail from './pages/NoticeDetail';
 import Apply from './pages/Apply';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import FindPassword from './pages/FindPassword';
 import MyPage from './pages/MyPage';
 import { AuthProvider } from './context/AuthContext';
 
@@ -48,8 +50,10 @@ function App() {
             <Route path="/members" element={<Members />} />
             <Route path="/apply" element={<Apply />} />
             <Route path="/notice" element={<Notice />} />
+            <Route path="/notice/:id" element={<NoticeDetail />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/find-password" element={<FindPassword />} />
             <Route path="/mypage" element={<MyPage />} />
           </Route>
 

@@ -67,6 +67,12 @@ const Apply = () => {
     e.preventDefault();
     if (!selectedItem) return;
 
+    if (selectedItem.eventType === 'RECRUITMENT') {
+      if (!window.confirm('제출 후 수정할 수 없습니다. 제출하시겠습니까?')) {
+        return;
+      }
+    }
+
     try {
       const payload = {
         eventId: selectedItem.id,
@@ -133,10 +139,10 @@ const Apply = () => {
                       className={`apply-row ${item.applied ? 'applied' : ''}`}
                       onClick={() => handleItemClick(item)}
                     >
-                      <td className="td-title">{item.title}</td>
-                      <td className="td-period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</td>
-                      <td className="td-status">{getStatusBadge(item.status)}</td>
-                      <td className="td-apply">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</td>
+                      <td className="apply-td-title">{item.title}</td>
+                      <td className="apply-td-period">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</td>
+                      <td className="apply-td-status">{getStatusBadge(item.status)}</td>
+                      <td className="apply-td-apply">{item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}</td>
                     </tr>
                   ))
                 ) : (
@@ -193,6 +199,9 @@ const Apply = () => {
         <div className="apply-container form-view">
           <button className="back-btn" onClick={() => setStep('detail')}>← 이전으로</button>
           <h1>{selectedItem.eventType === 'RECRUITMENT' ? '지원서 작성' : '신청서 작성'}</h1>
+          {selectedItem.eventType === 'RECRUITMENT' && (
+            <p style={{ color: 'red' }}>새로고침 시 작성중인 내용이 모두 사라집니다.</p>
+          )}
 
           <form onSubmit={handleSubmit} className="apply-form">
             <section className="info-section">
@@ -205,11 +214,11 @@ const Apply = () => {
               <section className="content-section">
                 <div className="input-group">
                   <label>지원 동기</label>
-                  <textarea name="motive" value={formData.motive} onChange={handleChange} required rows={8} placeholder="지원 동기를 작성해주세요." />
+                  <textarea name="motive" value={formData.motive} onChange={handleChange} required rows={8} placeholder="지원 동기를 작성해주세요. (800자 내외로 작성해주세요.)" />
                 </div>
                 <div className="input-group">
                   <label>관련 경험</label>
-                  <textarea name="experience" value={formData.experience} onChange={handleChange} required rows={8} placeholder="관련된 경험이나 프로젝트가 있다면 작성해주세요." />
+                  <textarea name="experience" value={formData.experience} onChange={handleChange} required rows={8} placeholder="관련된 경험이나 프로젝트가 있다면 작성해주세요. (800자 내외로 작성해주세요.)" />
                 </div>
               </section>
             )}

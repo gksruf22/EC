@@ -193,6 +193,11 @@
     color: #dc2626;
 }
 
+.status-badge.APPROVED {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
 .detail-link-btn {
     background: #f1f5f9;
     border: none;

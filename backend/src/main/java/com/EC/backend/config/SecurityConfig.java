@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 1. 누구나 접근 가능한 경로 (로그인, 가입, 인증, 조회성 데이터)
                         .requestMatchers("/api/members/signup", "/api/members/login").permitAll()
-                        .requestMatchers("/api/members/email-verification/**").permitAll()
+                        .requestMatchers("/api/members/email-verification/**", "/api/members/password-reset/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 
                         // 2. [조회 기능] 일반 유저와 관리자 모두 가능 (공지사항 보기, 일정 보기 등)

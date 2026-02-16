@@ -70,13 +70,13 @@ const MemberList: React.FC = () => {
     };
 
     return (
-        <div className="member-list-page">
-            <div className="list-header">
+        <div className="admin-member-list-page">
+            <div className="admin-list-header">
                 <h1>전체 회원 관리 <span className="count">{members.length}명</span></h1>
             </div>
 
-            <div className="list-toolbar">
-                <div className="search-box">
+            <div className="admin-member-list-toolbar">
+                <div className="admin-search-bar">
                     <Search size={18} />
                     <input
                         type="text"
@@ -87,8 +87,8 @@ const MemberList: React.FC = () => {
                 </div>
             </div>
 
-            <div className="table-container">
-                <table className="member-table">
+            <div className="admin-member-list-table-container">
+                <table className="admin-member-list-table">
                     <thead>
                         <tr>
                             <th>이름</th>
@@ -98,27 +98,27 @@ const MemberList: React.FC = () => {
                             <th>권한</th>
                         </tr>
                     </thead>
-                    <tbody style={{ cursor: 'pointer' }}>
+                    <tbody>
                         {loading ? (
                             <tr><td colSpan={6} className="text-center p-8">데이터를 불러오는 중...</td></tr>
                         ) : filteredMembers.length === 0 ? (
                             <tr><td colSpan={6} className="no-results">조건에 맞는 회원이 없습니다.</td></tr>
                         ) : (
                             filteredMembers.map((member) => (
-                                <tr key={member.id} onClick={() => handleMemberClick(member)} className="cursor-pointer hover:bg-gray-50">
-                                    <td className="user-info">
-                                        <div className="flex items-center gap-2">
+                                <tr key={member.id} onClick={() => handleMemberClick(member)} className="admin-member-list-row">
+                                    <td>
+                                        <div>
                                             {member.name}
                                         </div>
                                     </td>
                                     <td>{member.studentId}</td>
-                                    <td className="user-contact">
-                                        <div className="flex items-center gap-2">
+                                    <td>
+                                        <div>
                                             {member.phoneNumber}
                                         </div>
                                     </td>
-                                    <td className="user-contact">
-                                        <div className="flex items-center gap-2">
+                                    <td>
+                                        <div>
                                             {member.email}
                                         </div>
                                     </td>

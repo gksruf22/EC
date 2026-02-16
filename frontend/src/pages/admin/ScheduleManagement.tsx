@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Clock } from 'lucide-react';
+import { Plus, Trash2, Search } from 'lucide-react';
 import api from '../../utils/api';
 import './ScheduleManagement.css';
 
@@ -14,6 +14,7 @@ interface Schedule {
 const ScheduleManagement: React.FC = () => {
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
     // 새 일정 입력을 위한 상태
     const [newSchedule, setNewSchedule] = useState({
@@ -75,29 +76,45 @@ const ScheduleManagement: React.FC = () => {
         }
     };
 
+    const filteredSchedules = schedules.filter(schedule =>
+        schedule.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
-        <div className="schedule-manage-page">
-            <div className="page-header">
-                <p className="description">메인 화면 달력에 표시될 일정을 관리합니다.</p>
-                <button className="add-schedule-btn" onClick={() => setIsModalOpen(true)}>
-                    <Plus size={18} /> 일정 추가
+        <div className="admin-schedule-manage-page">
+            <div className="admin-list-header">
+                <h1>일정 관리</h1>
+            </div>
+
+            <div className="admin-schedule-toolbar">
+                <div className="admin-search-bar">
+                    <Search size={18} />
+                    <input
+                        type="text"
+                        placeholder="일정명 검색"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <button className="add-btn" onClick={() => setIsModalOpen(true)}>
+                    <Plus size={20} /> 일정 추가
                 </button>
             </div>
 
-            <div className="schedule-list-container">
-                <table className="admin-table">
+            <div className="admin-schedule-table-container">
+                <table className="admin-schedule-table">
                     <thead>
                         <tr>
                             <th>일정명</th>
                             <th>기간</th>
-                            <th className="text-center">관리</th>
+                            <th>관리</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {schedules.length === 0 ? (
+                        {filteredSchedules.length === 0 ? (
                             <tr><td colSpan={3} className="no-data">등록된 일정이 없습니다.</td></tr>
                         ) : (
-                            schedules.map((item) => (
+                            filteredSchedules.map((item) => (
                                 <tr key={item.id}>
                                     <td className="schedule-title">
                                         {item.title}
@@ -108,7 +125,6 @@ const ScheduleManagement: React.FC = () => {
                                         )}
                                     </td>
                                     <td className="schedule-date">
-                                        <Clock size={14} />
                                         {new Date(item.startDateTime).toLocaleString()} ~ {new Date(item.endDateTime).toLocaleString()}
                                     </td>
                                     <td className="actions text-center">

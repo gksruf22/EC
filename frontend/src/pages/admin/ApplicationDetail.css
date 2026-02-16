@@ -52,6 +52,10 @@
     background: #ef4444;
 }
 
+.status-dot.APPROVED {
+    background: #4338ca;
+}
+
 .detail-grid {
     grid-template-columns: 350px 1fr;
     gap: 24px;
@@ -176,6 +180,34 @@
     background: #10b981;
     color: white;
     border-color: #10b981;
+}
+
+.action-btn.pending:hover {
+    color: #f59e0b;
+    border-color: #f59e0b;
+    background: #fef3c7;
+}
+
+.action-btn.pending.active {
+    background: #f59e0b;
+    color: white;
+    border-color: #f59e0b;
+}
+
+.status-dot.APPROVED {
+    background: #4338ca;
+}
+
+.action-btn.approve:hover {
+    color: #4338ca;
+    border-color: #4338ca;
+    background: #e0e7ff;
+}
+
+.action-btn.approve.active {
+    background: #4338ca;
+    color: white;
+    border-color: #4338ca;
 }
 
 .action-btn.fail.active {

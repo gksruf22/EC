@@ -87,7 +87,9 @@ const Login = () => {
         </form>
 
         <div className="signup-link">
-          계정이 없으신가요? <a href="/signup">회원가입</a>
+          <a href="/find-password" style={{ marginRight: '15px' }}>비밀번호 찾기</a>
+          |
+          <a href="/signup" style={{ marginLeft: '15px' }}>회원가입</a>
         </div>
       </div>
     </div>

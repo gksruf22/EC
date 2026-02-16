@@ -42,6 +42,28 @@ public class MemberController {
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 코드가 일치하지 않습니다.");
     }
 
+    // 비밀번호 재설정 인증 코드 요청
+    @PostMapping("/password-reset/request")
+    public ResponseEntity<String> requestPasswordReset(@RequestParam String email) {
+        try {
+            emailService.sendPasswordResetCode(email);
+            return ResponseEntity.ok("인증 코드가 발송되었습니다.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // 비밀번호 재설정 (인증 후)
+    @PostMapping("/password-reset/confirm")
+    public ResponseEntity<String> confirmPasswordReset(@RequestBody com.EC.backend.dto.PasswordResetRequestDto dto) {
+        try {
+            memberService.resetPassword(dto.getEmail(), dto.getNewPassword());
+            return ResponseEntity.ok("비밀번호가 성공적으로 재설정되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     // 회원가입 API
     @PostMapping("/signup")
     public ResponseEntity<Long> signup(@RequestBody MemberSignupRequest dto) {

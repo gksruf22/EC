@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import api from '../../utils/api';
 import './ApplicationManagement.css';
 
@@ -17,6 +17,7 @@ const ApplicationManagement: React.FC = () => {
     const navigate = useNavigate();
     const [events, setEvents] = useState<RecruitmentSummary[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchRecruitments();
@@ -39,22 +40,37 @@ const ApplicationManagement: React.FC = () => {
         navigate('/admin/applications/new');
     };
 
+    const filteredEvents = events.filter(item =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
-        <div className="app-manage-page">
-            <div className="page-header">
-                <div className="header-text">
-                    <p className="description">지원자 명단을 확인하려는 모집 항목을 선택하세요.</p>
+        <div className="admin-application-manage-page">
+            <div className="admin-list-header">
+                <h1>지원 관리</h1>
+            </div>
+
+            <div className="admin-application-toolbar">
+                <div className="admin-search-bar">
+                    <Search size={18} />
+                    <input
+                        type="text"
+                        placeholder="지원 공고 검색..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
-                <button className="add-event-btn" onClick={handleAddEvent}>
-                    <Plus size={18} /> 공고 등록
+                <button className="add-btn" onClick={handleAddEvent}>
+                    <Plus size={20} /> 새 공고 등록
                 </button>
             </div>
+
 
             {loading ? (
                 <div className="loading-state">데이터를 불러오는 중...</div>
             ) : (
-                <div className="table-container">
-                    <table className="admin-table">
+                <div className="admin-application-table-container">
+                    <table className="admin-application-table">
                         <thead>
                             <tr>
                                 <th>제목</th>
@@ -64,20 +80,20 @@ const ApplicationManagement: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {events.map((item) => (
-                                <tr key={item.id} className="cursor-pointer" onClick={() => navigate(`/admin/applications/${item.id}`)}>
+                            {filteredEvents.map((application) => (
+                                <tr key={application.id} className="admin-application-row" onClick={() => navigate(`/admin/applications/${application.id}`)}>
                                     <td className="event-title-cell">
-                                        {item.title}
+                                        {application.title}
                                     </td>
                                     <td>
-                                        <span className={`admin-type-badge ${item.eventType}`}>
-                                            {item.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}
+                                        <span className={`admin-type-badge ${application.eventType}`}>
+                                            {application.eventType === 'RECRUITMENT' ? '정기 모집' : '일반 활동'}
                                         </span>
                                     </td>
-                                    <td>{item.applicantCount}명</td>
+                                    <td>{application.applicantCount}명</td>
                                     <td>
-                                        <span className={`status-badge ${item.status}`}>
-                                            {item.status === 'OPEN' ? '모집 중' : item.status === 'READY' ? '준비 중' : '마감'}
+                                        <span className={`status-badge ${application.status}`}>
+                                            {application.status === 'OPEN' ? '모집 중' : application.status === 'READY' ? '준비 중' : '마감'}
                                         </span>
                                     </td>
                                 </tr>

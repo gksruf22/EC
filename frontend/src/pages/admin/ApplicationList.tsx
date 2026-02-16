@@ -8,7 +8,7 @@ interface Applicant {
     id: number;
     name: string;
     studentId: string;
-    status: 'PENDING' | 'PASSED' | 'FAILED';
+    status: 'PENDING' | 'PASSED' | 'FAILED' | 'APPROVED';
     appliedAt: string;
 }
 
@@ -49,9 +49,7 @@ const ApplicantList: React.FC = () => {
                     name: app.name,
                     studentId: app.studentId,
                     // 백엔드 status (PENDING, APPROVED, REJECTED, PASSED) -> 프론트 status 매핑
-                    status: app.status === 'REJECTED' ? 'FAILED' :
-                        (app.status === 'APPROVED' ? 'PENDING' : app.status),
-                    // APPROVED(서류합격)는 우선 대기/진행중으로 처리하거나 별도 상태 추가 필요
+                    status: app.status === 'REJECTED' ? 'FAILED' : app.status,
                     appliedAt: app.appliedAt
                 }));
 
@@ -106,8 +104,8 @@ const ApplicantList: React.FC = () => {
                 </button>
             </div>
 
-            <div className="table-container">
-                <table className="applicant-table">
+            <div className="admin-application-table-container">
+                <table className="admin-application-table">
                     <thead>
                         <tr>
                             <th>이름</th>
@@ -123,7 +121,7 @@ const ApplicantList: React.FC = () => {
                             filteredApplicants.map((ap) => (
                                 <tr
                                     key={ap.id}
-                                    className={isRecruitment ? "applicant-row" : ""}
+                                    className={isRecruitment ? "admin-application-row" : ""}
                                     onClick={() => isRecruitment && navigate(`/admin/applications/detail/${ap.id}`)}
                                 >
                                     <td className="user-name">{ap.name}</td>
@@ -136,6 +134,7 @@ const ApplicantList: React.FC = () => {
                                             {ap.status === 'PENDING' && <><Clock size={12} /> 대기</>}
                                             {ap.status === 'PASSED' && <><UserCheck size={12} /> 합격</>}
                                             {ap.status === 'FAILED' && <><UserX size={12} /> 불합격</>}
+                                            {ap.status === 'APPROVED' && <><FileDown size={12} /> 서류 합격</>}
                                         </span>
                                     </td>
                                 </tr>

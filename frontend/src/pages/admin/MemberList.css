@@ -1,26 +1,24 @@
-.member-list-page {
+.admin-member-list-page {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.member-list-page .list-header {
+.admin-member-list-page .admin-list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    gap: 20px;
 }
 
-.member-list-page .list-header h1 {
-    font-size: 24px;
+.admin-member-list-page .admin-list-header h1 {
+    font-size: 2.4rem;
     font-weight: 700;
-    color: #1e293b;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    text-align: center;
+    width: 100%;
 }
 
-.member-list-page .count {
+.admin-member-list-page .count {
     font-size: 16px;
     color: var(--admin-point-color);
     background: #ecfdf5;
@@ -28,93 +26,79 @@
     border-radius: 12px;
 }
 
-.member-list-page .list-toolbar {
+.admin-member-list-toolbar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
     margin-bottom: 20px;
-    gap: 12px;
 }
 
-.member-list-page .search-box {
-    position: relative;
-    display: flex;
-    align-items: center;
+.admin-search-bar {
     flex: 1;
     max-width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 10px;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background-color: white;
-    padding-left: 12px;
-    transition: all 0.2s;
 }
 
-.member-list-page .search-box:focus-within {
-    border-color: var(--admin-point-color);
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
-}
-
-.member-list-page .search-box svg {
-    color: #94a3b8;
-    flex-shrink: 0;
-}
-
-.member-list-page .search-box input {
-    width: 100%;
-    padding: 10px 12px 10px 8px;
+.admin-search-bar input {
     border: none;
     outline: none;
+    width: 100%;
     font-size: 14px;
-    background: transparent;
 }
 
-.member-list-page .table-container {
+.admin-member-list-page .table-container {
     background: white;
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-.member-list-page .member-table {
+.admin-member-list-page .admin-member-list-table {
     width: 100%;
     border-collapse: collapse;
+    text-align: center;
+    border-top: 2px solid rgb(90, 160, 90);
+    border-bottom: 2px solid rgb(90, 160, 90);
 }
 
-.member-list-page .member-table th {
-    background: #f8fafc;
-    padding: 16px;
-    text-align: left;
-    font-size: 13px;
+.admin-member-list-page .admin-member-list-table th {
+    padding: 1.2rem 1.5rem;
+    background-color: #f8f9fa;
+    color: #444;
     font-weight: 600;
-    color: #64748b;
-    border-bottom: 1px solid #e2e8f0;
+    font-size: 1rem;
+    border-bottom: 2px solid #ddd;
 }
 
-.member-list-page .member-table td {
+.admin-member-list-page .admin-member-list-table td {
     padding: 16px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #f1f5f9;
     font-size: 14px;
     color: #334155;
+    text-align: center;
 }
 
-.member-list-page .member-table tr:last-child td {
-    border-bottom: none;
+.admin-member-list-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
 }
 
-.member-list-page .member-table tr:hover {
-    background-color: #f8fafc;
+.admin-member-list-row:hover {
+    background-color: #eaf0fd;
+    cursor: pointer;
 }
 
-.member-list-page .user-info {
-    font-weight: 500;
-    color: #0f172a;
-}
-
-.member-list-page .user-contact {
-    color: #64748b;
-    font-size: 13px;
-}
-
-.member-list-page .role-badge {
+.admin-member-list-page .role-badge {
     display: inline-flex;
     align-items: center;
     padding: 4px 8px;
@@ -125,12 +109,12 @@
     color: #475569;
 }
 
-.member-list-page .role-badge.admin {
+.admin-member-list-page .role-badge.admin {
     background: #eff6ff;
     color: #2563eb;
 }
 
-.no-results {
+.admin-member-list-page .no-results {
     text-align: center;
     color: #94a3b8;
     padding: 40px !important;

@@ -18,7 +18,7 @@ interface ApplicantDetailData {
     name: string;
     studentId: string;
     phoneNumber: string;
-    status: 'PENDING' | 'PASSED' | 'FAILED';
+    status: 'PENDING' | 'PASSED' | 'FAILED' | 'APPROVED';
     motive: string;
     experience: string;
     appliedAt: string;
@@ -45,8 +45,7 @@ const ApplicantDetail: React.FC = () => {
             const mappedData: ApplicantDetailData = {
                 ...data,
                 // 백엔드 status -> 프론트 status
-                status: data.status === 'REJECTED' ? 'FAILED' :
-                    (data.status === 'APPROVED' ? 'PENDING' : data.status),
+                status: data.status === 'REJECTED' ? 'FAILED' : data.status,
                 appliedAt: data.appliedAt
             };
             setApplicant(mappedData);
@@ -57,8 +56,8 @@ const ApplicantDetail: React.FC = () => {
         }
     };
 
-    const handleStatusChange = async (newStatus: 'PASSED' | 'FAILED' | 'PENDING') => {
-        const statusText = newStatus === 'PASSED' ? '합격' : newStatus === 'FAILED' ? '불합격' : '대기';
+    const handleStatusChange = async (newStatus: 'PASSED' | 'FAILED' | 'PENDING' | 'APPROVED') => {
+        const statusText = newStatus === 'PASSED' ? '합격' : newStatus === 'FAILED' ? '불합격' : newStatus === 'APPROVED' ? '서류 합격' : '대기';
         if (!window.confirm(`이 지원자를 [${statusText}] 상태로 변경하시겠습니까?`)) return;
 
         try {
@@ -116,10 +115,16 @@ const ApplicantDetail: React.FC = () => {
                             <div className="status-control">
                                 <div className="btn-group">
                                     <button
-                                        className={`action-btn pass ${applicant.status === 'PASSED' ? 'active' : ''}`}
-                                        onClick={() => handleStatusChange('PASSED')}
+                                        className={`action-btn pending ${applicant.status === 'PENDING' ? 'active' : ''}`}
+                                        onClick={() => handleStatusChange('PENDING')}
                                     >
-                                        <CheckCircle size={18} /> 합격 처리
+                                        <RotateCcw size={18} /> 대기
+                                    </button>
+                                    <button
+                                        className={`action-btn approve ${applicant.status === 'APPROVED' ? 'active' : ''}`}
+                                        onClick={() => handleStatusChange('APPROVED')}
+                                    >
+                                        <FileText size={18} /> 서류 합격
                                     </button>
                                     <button
                                         className={`action-btn fail ${applicant.status === 'FAILED' ? 'active' : ''}`}
@@ -128,10 +133,10 @@ const ApplicantDetail: React.FC = () => {
                                         <XCircle size={18} /> 불합격 처리
                                     </button>
                                     <button
-                                        className="action-btn reset"
-                                        onClick={() => handleStatusChange('PENDING')}
+                                        className={`action-btn pass ${applicant.status === 'PASSED' ? 'active' : ''}`}
+                                        onClick={() => handleStatusChange('PASSED')}
                                     >
-                                        <RotateCcw size={18} /> 대기
+                                        <CheckCircle size={18} /> 최종 합격
                                     </button>
                                 </div>
                             </div>

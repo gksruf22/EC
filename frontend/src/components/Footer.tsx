@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { FaInstagram, FaGithub } from 'react-icons/fa';
+import { SiNotion } from 'react-icons/si';
 import './Footer.css';
 import logo from '../assets/logo.png';
 
@@ -10,7 +12,7 @@ const Footer = () => {
         <div className="footer-info">
           {/* 로고와 이름을 감싸는 새로운 div 추가 */}
           <div className="footer-logo-area">
-            <img src={logo} alt="Logo" className="footer-logo-img"/>
+            <img src={logo} alt="Logo" className="footer-logo-img" />
             <h3>Endless Creation</h3>
           </div>
           <p>Designed By{" "}
@@ -37,10 +39,17 @@ const Footer = () => {
         {/* 오른쪽: SNS 또는 연락처 */}
         <div className="footer-contact">
           <h4>연락처</h4>
-          <p>Email: contact@mybrand.com</p>
+          <p>Email: seoultech.ec@gmail.com</p>
           <div className="social-icons">
-            <span>Instagram</span>
-            <span>Twitter</span>
+            <a href="https://www.instagram.com/endless__creation/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <FaInstagram />
+            </a>
+            <a href="https://github.com/Endless-Creation-Official" target="_blank" rel="noopener noreferrer" aria-label="Github">
+              <FaGithub />
+            </a>
+            <a href="https://blush-opal-daf.notion.site/Endless-Creation-2f3ff8b6d33f80a4ab21d4babb18ab40" target="_blank" rel="noopener noreferrer" aria-label="Notion">
+              <SiNotion />
+            </a>
           </div>
         </div>
       </div>
