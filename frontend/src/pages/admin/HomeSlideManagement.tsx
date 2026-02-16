@@ -241,7 +241,7 @@ const HomeSlideManagement: React.FC = () => {
                                 <img src={slide.imageUrl} alt={slide.title} />
                             </div>
                             <div className="slide-info">
-                                <h4>{slide.title} <span className="sequence-badge">No.{slide.sequence}</span></h4>
+                                <h4>{slide.title}</h4>
                                 <a href={slide.linkUrl} target="_blank" rel="noopener noreferrer" className="slide-link">
                                     <ExternalLink size={14} /> {slide.linkUrl} (이동 확인)
                                 </a>
