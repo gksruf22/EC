@@ -221,10 +221,12 @@ const Apply = () => {
                 <div className="input-group">
                   <label>지원 동기</label>
                   <textarea name="motive" value={formData.motive} onChange={handleChange} required rows={8} placeholder="지원 동기를 작성해주세요. (800자 내외로 작성해주세요.)" />
+                  <div className="char-count">{formData.motive.length}자</div>
                 </div>
                 <div className="input-group">
                   <label>관련 경험</label>
                   <textarea name="experience" value={formData.experience} onChange={handleChange} required rows={8} placeholder="관련된 경험이나 프로젝트가 있다면 작성해주세요. (800자 내외로 작성해주세요.)" />
+                  <div className="char-count">{formData.experience.length}자</div>
                 </div>
               </section>
             )}

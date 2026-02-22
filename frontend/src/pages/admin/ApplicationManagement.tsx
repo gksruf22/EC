@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Trash2 } from 'lucide-react';
 import api from '../../utils/api';
 import './ApplicationManagement.css';
 
@@ -40,6 +40,19 @@ const ApplicationManagement: React.FC = () => {
         navigate('/admin/applications/new');
     };
 
+    // 공고 삭제
+    const handleDelete = async (id: number) => {
+        if (window.confirm("이 지원 공고를 삭제하시겠습니까? 관련된 지원자 데이터가 모두 삭제될 수 있습니다.")) {
+            try {
+                await api.delete(`/admin/events/${id}`);
+                fetchRecruitments(); // 목록 새로고침
+            } catch (err) {
+                console.error("공고 삭제 실패:", err);
+                alert("공고 삭제에 실패했습니다.");
+            }
+        }
+    };
+
     const filteredEvents = events.filter(item =>
         item.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -77,6 +90,7 @@ const ApplicationManagement: React.FC = () => {
                                 <th>활동 분류</th>
                                 <th>총 지원자 수</th>
                                 <th>모집 상태</th>
+                                <th>관리</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +109,11 @@ const ApplicationManagement: React.FC = () => {
                                         <span className={`status-badge ${application.status}`}>
                                             {application.status === 'OPEN' ? '모집 중' : application.status === 'READY' ? '준비 중' : '마감'}
                                         </span>
+                                    </td>
+                                    <td className="actions text-center" onClick={(e) => e.stopPropagation()}>
+                                        <button className="delete-btn" onClick={() => handleDelete(application.id)}>
+                                            <Trash2 size={16} />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

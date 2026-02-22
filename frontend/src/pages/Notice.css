@@ -245,11 +245,6 @@
         padding: 1rem 0;
     }
 
-    .notice-table th {
-        display: none;
-        /* Hide all headers on mobile if we want a list look */
-    }
-
     .notice-row td {
         padding: 0.5rem 1rem;
         border: none;

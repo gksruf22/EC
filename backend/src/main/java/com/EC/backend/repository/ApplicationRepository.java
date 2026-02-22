@@ -29,4 +29,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     // 6. [통계용] 특정 활동의 지원자 수 세기
     int countByEvent(Event event);
+
+    // 7. [관리자용] 특정 활동 삭제 시 관련 지원자 명단 모두 삭제
+    void deleteByEvent(Event event);
 }

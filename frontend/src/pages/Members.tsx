@@ -1,4 +1,12 @@
 import './Members.css';
+import subImg from '../assets/sub.png';
+// import kgtImg from '../assets/kgt.png';
+import ljhImg from '../assets/ljh.png';
+// import pghImg from '../assets/pgh.png';
+import kcyImg from '../assets/kcy.jpeg';
+import chgImg from '../assets/chg.jpg';
+import ljsImg from '../assets/ljs.png';
+
 
 interface Member {
     id: number;
@@ -17,7 +25,7 @@ const Members = () => {
             role: '회장',
             department: '컴퓨터공학과',
             studentId: '25학번',
-            imageUrl: 'https://via.placeholder.com/150?text=President',
+            imageUrl: subImg,
         },
         {
             id: 2,
@@ -25,15 +33,15 @@ const Members = () => {
             role: '부회장',
             department: '컴퓨터공학과',
             studentId: '22학번',
-            imageUrl: 'https://via.placeholder.com/150?text=Vice+President',
+            imageUrl: 'https://via.placeholder.com/150?text=Promotion',
         },
         {
             id: 3,
             name: '이재훈',
             role: '학술부장',
             department: '컴퓨터공학과',
-            studentId: '22학번',
-            imageUrl: 'https://via.placeholder.com/150?text=Academic',
+            studentId: '24학번',
+            imageUrl: ljhImg,
         },
         {
             id: 4,
@@ -49,7 +57,7 @@ const Members = () => {
             role: '기획부장',
             department: '컴퓨터공학과',
             studentId: '25학번',
-            imageUrl: 'https://via.placeholder.com/150?text=Planning',
+            imageUrl: kcyImg,
         },
         {
             id: 6,
@@ -57,7 +65,7 @@ const Members = () => {
             role: '인사부장',
             department: '컴퓨터공학과',
             studentId: '25학번',
-            imageUrl: 'https://via.placeholder.com/150?text=Admin',
+            imageUrl: chgImg,
         },
         {
             id: 7,
@@ -65,7 +73,7 @@ const Members = () => {
             role: '재무부장',
             department: '컴퓨터공학과',
             studentId: '25학번',
-            imageUrl: 'https://via.placeholder.com/150?text=Finance',
+            imageUrl: ljsImg,
         },
     ];
 
