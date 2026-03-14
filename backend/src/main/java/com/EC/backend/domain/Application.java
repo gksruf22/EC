@@ -28,6 +28,9 @@ public class Application extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String experience;  // ⭐️ 경험 및 활동 사항
 
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String project;     // ⭐️ 하고 싶은 프로젝트
+
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status; // PENDING, APPROVED 등
 

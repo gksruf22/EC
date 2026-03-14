@@ -62,8 +62,11 @@
     outline: none;
 }
 
-.submit-btn {
-    margin-top: 10px;
+.check-status-submit-btn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 20px;
     padding: 15px;
     background: rgb(90, 160, 90);
     color: white;
@@ -75,7 +78,7 @@
     transition: background 0.2s;
 }
 
-.submit-btn:hover {
+.check-status-submit-btn:hover {
     background: rgb(75, 140, 75);
 }
 

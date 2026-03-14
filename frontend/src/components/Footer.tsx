@@ -41,7 +41,7 @@ const Footer = () => {
           <h4>연락처</h4>
           <p>Email: seoultech.ec@gmail.com</p>
           <div className="social-icons">
-            <a href="https://www.instagram.com/endless__creation/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a href="https://www.instagram.com/ec_official26/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <FaInstagram />
             </a>
             <a href="https://github.com/Endless-Creation-Official" target="_blank" rel="noopener noreferrer" aria-label="Github">

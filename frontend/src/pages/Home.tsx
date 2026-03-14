@@ -106,7 +106,8 @@ const Home = () => {
 
   const titleContent = ({ date, view }: { date: Date, view: string }) => {
     if (view === 'month') {
-      const dateStr = date.toISOString().split('T')[0];
+      const offset = date.getTimezoneOffset() * 60000;
+      const dateStr = new Date(date.getTime() - offset).toISOString().split('T')[0];
       const hasEvent = events.find((e) => e.date === dateStr);
       return hasEvent ? <div className="event-dot"></div> : null;
     }
@@ -242,14 +243,22 @@ const Home = () => {
               <h3>{value.toLocaleDateString()} 일정</h3>
               <ul className="event-list">
                 {events
-                  .filter(e => e.date === value.toISOString().split('T')[0])
+                  .filter(e => {
+                    const offset = value.getTimezoneOffset() * 60000;
+                    const dateStr = new Date(value.getTime() - offset).toISOString().split('T')[0];
+                    return e.date === dateStr;
+                  })
                   .map((e, i) => (
                     <li key={i}>{e.title}</li>
                   ))
                 }
-                {events.filter(e => e.date === value.toISOString().split('T')[0]).length === 0 && (
-                  <p className="no-events">등록된 일정이 없습니다.</p>
-                )}
+                {events.filter(e => {
+                  const offset = value.getTimezoneOffset() * 60000;
+                  const dateStr = new Date(value.getTime() - offset).toISOString().split('T')[0];
+                  return e.date === dateStr;
+                }).length === 0 && (
+                    <p className="no-events">등록된 일정이 없습니다.</p>
+                  )}
               </ul>
             </div>
           </div>

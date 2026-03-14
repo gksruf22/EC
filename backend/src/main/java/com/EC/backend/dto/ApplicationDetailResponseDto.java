@@ -18,6 +18,7 @@ public class ApplicationDetailResponseDto {
     private String phoneNumber;     // 전화번호
     private String motive;
     private String experience;
+    private String project;
     private ApplicationStatus status; // 현재 상태
     private LocalDateTime appliedAt;
     private EventType eventType;

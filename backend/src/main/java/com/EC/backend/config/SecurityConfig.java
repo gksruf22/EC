@@ -44,6 +44,7 @@ public class SecurityConfig {
                         // 2. [조회 기능] 일반 유저와 관리자 모두 가능 (공지사항 보기, 일정 보기 등)
                         .requestMatchers(HttpMethod.GET, "/api/notices/**", "/api/calendar/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/slides").permitAll() // 메인 슬라이드 조회 추가
+                        .requestMatchers(HttpMethod.GET, "/api/admin/pass-fail-settings").permitAll() // 합격자 조회 전 설정 확인(공개용)
                         .requestMatchers("/api/applications/result").permitAll()
                         .requestMatchers("/api/events/**").permitAll()
                         .requestMatchers("/api/notices/**").permitAll()

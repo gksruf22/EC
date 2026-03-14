@@ -10,7 +10,8 @@ import {
     Menu,
     X,
     ChevronRight,
-    Monitor
+    Monitor,
+    Home
 } from 'lucide-react';
 import './AdminLayout.css';
 
@@ -27,16 +28,18 @@ const AdminLayout: React.FC = () => {
         if (path.includes('notices')) return '공지사항 관리';
         if (path.includes('members')) return '회원 관리';
         if (path.includes('applications')) return '지원 관리';
+        if (path.includes('pass-fail-settings')) return '합격자 조회 설정';
         if (path.includes('schedules')) return '일정 관리';
         return '관리자 홈';
     };
 
     const menuItems = [
         { name: '대시보드', path: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
-        { name: '홈 슬라이드 관리', path: '/admin/slides', icon: <Monitor size={20} /> },
+        { name: '홈 슬라이드 관리', path: '/admin/slides', icon: <Home size={20} /> },
         { name: '공지사항 관리', path: '/admin/notices', icon: <Megaphone size={20} /> },
         { name: '멤버 관리', path: '/admin/members', icon: <Users size={20} /> },
         { name: '지원 관리', path: '/admin/applications', icon: <Group size={20} /> },
+        { name: '합격자 조회 설정', path: '/admin/pass-fail-settings', icon: <Monitor size={20} /> },
         { name: '일정 관리', path: '/admin/schedules', icon: <Calendar size={20} /> },
     ];
 

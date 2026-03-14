@@ -25,7 +25,7 @@ const Apply = () => {
   const [step, setStep] = useState<'list' | 'detail' | 'form'>('list');
   const [selectedItem, setSelectedItem] = useState<EventItem | null>(null);
 
-  const [formData, setFormData] = useState({ motive: '', experience: '' });
+  const [formData, setFormData] = useState({ motive: '', experience: '', project: '' });
 
   // Fetch events from backend
   useEffect(() => {
@@ -76,8 +76,10 @@ const Apply = () => {
     try {
       const payload = {
         eventId: selectedItem.id,
+        generation: selectedItem.generation,
         motive: formData.motive || (selectedItem.eventType === 'GENERAL' ? '일반 활동 신청' : ''),
-        experience: formData.experience || (selectedItem.eventType === 'GENERAL' ? '해당 없음' : '')
+        experience: formData.experience || (selectedItem.eventType === 'GENERAL' ? '해당 없음' : ''),
+        project: formData.project || (selectedItem.eventType === 'GENERAL' ? '해당 없음' : '')
       };
 
       await api.post('/applications', payload);
@@ -219,14 +221,19 @@ const Apply = () => {
             {selectedItem.eventType === 'RECRUITMENT' && (
               <section className="content-section">
                 <div className="input-group">
-                  <label>지원 동기</label>
-                  <textarea name="motive" value={formData.motive} onChange={handleChange} required rows={8} placeholder="지원 동기를 작성해주세요. (800자 내외로 작성해주세요.)" />
+                  <label>자기 소개 및 지원 동기를 작성해주세요.</label>
+                  <textarea name="motive" value={formData.motive} onChange={handleChange} required rows={8} placeholder="편하게 작성해주세요:) (800자 내외로 작성해주세요.)" />
                   <div className="char-count">{formData.motive.length}자</div>
                 </div>
                 <div className="input-group">
-                  <label>관련 경험</label>
-                  <textarea name="experience" value={formData.experience} onChange={handleChange} required rows={8} placeholder="관련된 경험이나 프로젝트가 있다면 작성해주세요. (800자 내외로 작성해주세요.)" />
+                  <label>문제를 해결하면서 얻었던 경험을 작성해 주세요. 꼭 개발 관련 경험이 아니어도 괜찮습니다</label>
+                  <textarea name="experience" value={formData.experience} onChange={handleChange} required rows={8} placeholder="편하게 작성해주세요:) (800자 내외로 작성해주세요.)" />
                   <div className="char-count">{formData.experience.length}자</div>
+                </div>
+                <div className="input-group">
+                  <label>EC 에 들어오면 하고 싶은 프로젝트가 있을까요? 있다면 자유롭게 작성해주세요!</label>
+                  <textarea name="project" value={formData.project} onChange={handleChange} required rows={8} placeholder="편하게 작성해주세요:) (800자 내외로 작성해주세요.)" />
+                  <div className="char-count">{formData.project.length}자</div>
                 </div>
               </section>
             )}
