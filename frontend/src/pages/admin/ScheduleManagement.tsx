@@ -152,7 +152,7 @@ const ScheduleManagement: React.FC = () => {
                                     required
                                     value={newSchedule.title}
                                     onChange={(e) => setNewSchedule({ ...newSchedule, title: e.target.value })}
-                                    placeholder="예: 36기 서류 접수"
+                                    placeholder="일정 제목"
                                 />
                             </div>
 

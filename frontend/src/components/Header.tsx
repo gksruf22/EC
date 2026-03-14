@@ -43,7 +43,10 @@ const Header = () => {
         {/* 모바일에서만 보이는 로그인/회원가입 섹션 */}
         <div className="mobile-auth">
           {isAuthenticated ? (
-            <a href="/" onClick={handleLogout}>로그아웃</a>
+            <>
+              <Link to={user?.role === 'ROLE_ADMIN' ? '/admin' : '/mypage'} onClick={closeMenu}>{user?.name}님</Link>
+              <a href="/" onClick={handleLogout}>로그아웃</a>
+            </>
           ) : (
             <>
               <Link to="/login" onClick={closeMenu}>로그인</Link>

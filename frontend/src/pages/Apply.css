@@ -48,7 +48,7 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   width: 90%;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-inline: auto;
 }
 
@@ -58,7 +58,6 @@
   text-align: left;
   border-top: 2px solid rgb(90, 160, 90);
   border-bottom: 2px solid rgb(90, 160, 90);
-  margin-bottom: 40px;
 }
 
 .apply-table th {
@@ -338,6 +337,13 @@
   outline: none;
 }
 
+.char-count {
+  font-size: 13px;
+  color: #777;
+  text-align: right;
+  margin-top: 4px;
+}
+
 /* Scoped to avoid conflict with Login.css/Signup.css */
 .apply-page .apply-form .submit-btn {
   width: 100%;
@@ -369,10 +375,6 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .apply-page {
-    padding: 30px 15px;
-  }
-
   .apply-hero {
     padding: 80px 0;
   }

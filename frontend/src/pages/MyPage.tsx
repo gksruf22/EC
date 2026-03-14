@@ -67,12 +67,14 @@ const MyPage = () => {
         </li>
       </ul>
 
-      {/* 나중에 로직 추가 */}
+      {/* 나중에 로직 추가 
       <div className="action-buttons">
         <button className="btn-infoedit">
           정보 수정 요청
         </button>
       </div>
+      */}
+
       <PasswordChangeModal
         isOpen={isPasswordModalOpen}
         onClose={() => setIsPasswordModalOpen(false)}

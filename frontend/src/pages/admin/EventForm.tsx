@@ -40,7 +40,9 @@ const EventForm: React.FC<EventFormProps> = ({ initialData, onSubmit, isEditMode
             // 날짜 포맷팅 (ISO string -> YYYY-MM-DDTHH:mm)
             const formatForInput = (dateStr: string) => {
                 if (!dateStr) return '';
-                return new Date(dateStr).toISOString().slice(0, 16);
+                const date = new Date(dateStr);
+                const offset = date.getTimezoneOffset() * 60000;
+                return (new Date(date.getTime() - offset)).toISOString().slice(0, 16);
             };
 
             setFormData({

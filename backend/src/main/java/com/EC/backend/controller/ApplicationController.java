@@ -32,12 +32,13 @@ public class ApplicationController {
 
     // 2. 결과 조회 API (로그인 불필요 - 특정 이벤트 ID 추가)
     @GetMapping("/result")
-    public ResponseEntity<ApplicationStatus> getResult(
+    public ResponseEntity<com.EC.backend.dto.ResultResponseDto> getResult(
             @RequestParam Long eventId,
+            @RequestParam String mode,
             @RequestParam String name,
             @RequestParam String studentId) {
 
-        return ResponseEntity.ok(applicationService.checkResult(eventId, name, studentId));
+        return ResponseEntity.ok(applicationService.checkResult(eventId, mode, name, studentId));
     }
 
     // 3. 관리자용: 특정 활동의 지원서 전체 조회

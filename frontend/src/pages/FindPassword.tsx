@@ -93,7 +93,7 @@ const FindPassword = () => {
     return (
         <div className="signup-container">
             <div className="signup-box">
-                <h1>비밀번호 찾기</h1>
+                <h1>비밀번호 변경</h1>
 
                 {step === 1 && (
                     <>

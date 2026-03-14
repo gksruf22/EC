@@ -14,6 +14,10 @@ public class AdminApplicationResponseDto {
     private Long id;
     private String name;
     private String studentId;
+    private String phoneNumber;
+    private String motive;
+    private String experience;
+    private String project;
     private ApplicationStatus status;
     private Long eventId;
     private LocalDateTime appliedAt;

@@ -24,8 +24,7 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final MemberRepository memberRepository;
     private final EventRepository eventRepository;
-
-    LocalDateTime now = LocalDateTime.now();
+    private final com.EC.backend.repository.PassFailSettingsRepository passFailSettingsRepository;
 
     // 1. 지원서 제출 (apply)
     @Transactional
@@ -35,6 +34,8 @@ public class ApplicationService {
 
         Event event = eventRepository.findById(dto.getEventId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 활동이 존재하지 않습니다."));
+
+        LocalDateTime now = LocalDateTime.now();
 
         // [체크 1] 모집 시작 기간 확인
         if (event.getStatus() == EventStatus.READY || now.isBefore(event.getStartDate())) {
@@ -62,6 +63,7 @@ public class ApplicationService {
                 .event(event)
                 .motive(dto.getMotive())
                 .experience(dto.getExperience())
+                .project(dto.getProject())
                 .status(initialStatus)
                 .build();
 
@@ -77,6 +79,10 @@ public class ApplicationService {
                         a.getId(),
                         a.getMember().getName(),
                         a.getMember().getStudentId(),
+                        a.getMember().getPhoneNumber(),
+                        a.getMotive(),
+                        a.getExperience(),
+                        a.getProject(),
                         a.getStatus(),
                         a.getEvent().getId(),
                         a.getCreatedAt()))
@@ -95,6 +101,7 @@ public class ApplicationService {
                 a.getMember().getPhoneNumber(),
                 a.getMotive(),
                 a.getExperience(),
+                a.getProject(),
                 a.getStatus(),
                 a.getCreatedAt(),
                 a.getEvent().getEventType(),
@@ -111,7 +118,7 @@ public class ApplicationService {
     }
 
     // 5. 결과 조회 (유저용)
-    public ApplicationStatus checkResult(Long eventId, String name, String studentId) {
+    public com.EC.backend.dto.ResultResponseDto checkResult(Long eventId, String mode, String name, String studentId) {
         Member member = memberRepository.findByNameAndStudentId(name, studentId)
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 지원 정보가 없습니다."));
 
@@ -121,7 +128,29 @@ public class ApplicationService {
         Application application = applicationRepository.findByMemberAndEvent(member, event)
                 .orElseThrow(() -> new IllegalArgumentException("지원 이력을 찾을 수 없습니다."));
 
-        return application.getStatus();
+        // 조회 기간 검증 로직 추가
+        com.EC.backend.domain.PassFailSettings settings = passFailSettingsRepository.findByEventIdAndMode(eventId, mode)
+                .orElseThrow(() -> new IllegalArgumentException("현재 해당 전형의 합격자 조회 기간이 아닙니다."));
+
+        if (!settings.isActive()) {
+            throw new IllegalArgumentException("조회가 비활성화되어 있습니다.");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        if (settings.getStartDate() != null && now.isBefore(settings.getStartDate())) {
+            throw new IllegalArgumentException("조회 기간 전입니다.");
+        }
+        if (settings.getEndDate() != null && now.isAfter(settings.getEndDate())) {
+            throw new IllegalArgumentException("조회 기간이 지났습니다.");
+        }
+
+        String interviewLink = null;
+        if ("first".equals(mode) && 
+            (application.getStatus() == ApplicationStatus.APPROVED || application.getStatus() == ApplicationStatus.PASSED)) {
+            interviewLink = settings.getInterviewLink();
+        }
+
+        return new com.EC.backend.dto.ResultResponseDto(application.getStatus().name(), interviewLink);
     }
 
     // 기존 컨트롤러와의 호환성을 위해

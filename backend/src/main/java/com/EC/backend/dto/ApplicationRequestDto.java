@@ -12,4 +12,6 @@ public class ApplicationRequestDto {
     private String motive;
 
     private String experience;
+
+    private String project;
 }

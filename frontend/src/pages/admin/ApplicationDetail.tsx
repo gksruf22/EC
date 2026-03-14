@@ -21,6 +21,7 @@ interface ApplicantDetailData {
     status: 'PENDING' | 'PASSED' | 'FAILED' | 'APPROVED';
     motive: string;
     experience: string;
+    project: string;
     appliedAt: string;
     eventType: 'RECRUITMENT' | 'GENERAL';
     eventTitle: string;
@@ -151,7 +152,7 @@ const ApplicantDetail: React.FC = () => {
                 <div className="content-side">
                     <div className="detail-card content-card">
                         <div className="card-header">
-                            <FileText size={20} /> <h3>지원 동기</h3>
+                            <FileText size={20} /> <h3>자기 소개 및 지원 동기</h3>
                         </div>
                         <div className="content-text">{applicant.motive}</div>
                     </div>
@@ -161,6 +162,13 @@ const ApplicantDetail: React.FC = () => {
                             <FileText size={20} /> <h3>관련 경험</h3>
                         </div>
                         <div className="content-text">{applicant.experience}</div>
+                    </div>
+
+                    <div className="detail-card content-card">
+                        <div className="card-header">
+                            <FileText size={20} /> <h3>희망 프로젝트</h3>
+                        </div>
+                        <div className="content-text">{applicant.project}</div>
                     </div>
                 </div>
             )}

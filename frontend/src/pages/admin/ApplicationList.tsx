@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, FileDown, UserCheck, UserX, Clock, Edit } from 'lucide-react';
 import api from '../../utils/api';
+import * as XLSX from 'xlsx';
 import './ApplicationList.css';
 
 interface Applicant {
     id: number;
     name: string;
     studentId: string;
+    phoneNumber?: string;
+    motive?: string;
+    experience?: string;
+    project?: string;
     status: 'PENDING' | 'PASSED' | 'FAILED' | 'APPROVED';
     appliedAt: string;
 }
@@ -48,6 +53,10 @@ const ApplicantList: React.FC = () => {
                     id: app.id,
                     name: app.name,
                     studentId: app.studentId,
+                    phoneNumber: app.phoneNumber,
+                    motive: app.motive,
+                    experience: app.experience,
+                    project: app.project,
                     // 백엔드 status (PENDING, APPROVED, REJECTED, PASSED) -> 프론트 status 매핑
                     status: app.status === 'REJECTED' ? 'FAILED' : app.status,
                     appliedAt: app.appliedAt
@@ -61,7 +70,36 @@ const ApplicantList: React.FC = () => {
 
     // CSV 내보내기 (간이 기능)
     const exportToCSV = () => {
-        alert("엑셀 추출 기능을 준비 중입니다.");
+        if (applicants.length === 0) {
+            alert("출력할 지원자 데이터가 없습니다.");
+            return;
+        }
+
+        const excelData = applicants.map((app) => ({
+            '이름': app.name,
+            '학번': app.studentId,
+            '전화번호': app.phoneNumber || '',
+            '지원날짜': new Date(app.appliedAt).toLocaleString('ko-KR'),
+            '자기소개 및 지원동기': app.motive || '',
+            '관련 경험': app.experience || '',
+            '하고싶은 프로젝트': app.project || ''
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+        worksheet['!cols'] = [
+            { wch: 10 }, // 이름
+            { wch: 15 }, // 학번
+            { wch: 15 }, // 전화번호
+            { wch: 20 }, // 지원날짜
+            { wch: 60 }, // 자기소개
+            { wch: 60 }, // 관련 경험
+            { wch: 60 }, // 하고싶은 프로젝트
+        ];
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, '지원자 명단');
+
+        XLSX.writeFile(workbook, `${eventTitle}_지원자_명단.xlsx`);
     };
 
     // 공고 수정 페이지로 이동

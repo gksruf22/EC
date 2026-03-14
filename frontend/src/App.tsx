@@ -26,6 +26,7 @@ import ApplicationDetail from './pages/admin/ApplicationDetail';
 import EventCreate from './pages/admin/EventCreate';
 import EventEdit from './pages/admin/EventEdit';
 import MemberList from './pages/admin/MemberList';
+import PassFailSettingsManagement from './pages/admin/PassFailSettingsManagement';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // 사용자용 레이아웃 (Header/Footer 포함)
@@ -72,6 +73,7 @@ function App() {
               <Route path="applications/:eventId" element={<ApplicationList />} />
               <Route path="applications/edit/:id" element={<EventEdit />} />
               <Route path="applications/detail/:id" element={<ApplicationDetail />} />
+              <Route path="pass-fail-settings" element={<PassFailSettingsManagement />} />
               <Route path="members" element={<MemberList />} />
             </Route>
           </Route>

@@ -149,6 +149,10 @@ public class EventService {
     public void deleteEvent(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 활동이 존재하지 않습니다. id=" + id));
+        
+        // 연관된 지원서 먼저 삭제
+        applicationRepository.deleteByEvent(event);
+        
         eventRepository.delete(event);
     }
 }
